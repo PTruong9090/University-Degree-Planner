@@ -44,7 +44,7 @@ const fs = require('fs');
     for (const link of course_links) {
         await page.goto(link);
         await page.waitForSelector('.css-3o8c36-styled--StyledFlexItem.e1ixoanv2');
-
+        
         // Get course name and units
         const course_name = await page.evaluate(() => document.querySelector('.css-1bzya3n-styled--StyledFlexItemSubheading.e1ixoanv1').textContent.trim());
         
@@ -53,7 +53,7 @@ const fs = require('fs');
             return Number(unit[0]);
         })
         console.log(course_unit);
-
+ 
         // Add course data into JSON
         courses_data.push({
             course_name,
