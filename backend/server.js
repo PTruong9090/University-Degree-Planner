@@ -1,4 +1,5 @@
 require('dotenv').config({path: `${process.cwd()}/.env`})
+
 const express = require('express')
 const cors = require('cors')
 const pool = require('./db')
