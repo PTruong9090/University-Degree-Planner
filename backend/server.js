@@ -2,8 +2,8 @@ require('dotenv').config({path: `${process.cwd()}/.env`})
 
 const express = require('express')
 const cors = require('cors')
-const pool = require('./db')
 const authRouter = require('./route/authRoute')
+const courseRouter = require('./route/courseRoute')
 
 const app = express()
 
@@ -23,12 +23,8 @@ app.post('/', (req, res) => {
 
 app.use('/api/v1/auth', authRouter)
 
-app.use('*', (req, res, next) => {
-    res.status(404).json({
-        status: 'Failed',
-        message: 'Route not found'
-    })
-})
+// Use the course routes
+app.use('/api', courseRouter);
 
 const PORT = process.env.APP_PORT || 3000
 

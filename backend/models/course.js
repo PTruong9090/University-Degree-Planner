@@ -1,16 +1,17 @@
 'use strict';
-const { Model, Sequelize} = require('sequelize');
+const { Model, Sequelize, UUID} = require('sequelize');
 const sequelize = require('../config/database');
 
-module.exports = sequelize.define('Course', {
-      id: {
+module.exports = sequelize.define('Courses', {
+      UUID: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
-      courseName: {
-        type: Sequelize.STRING
+      course_name: {
+        type: Sequelize.STRING,
+        unique: true
       },
       department: {
         type: Sequelize.STRING
@@ -29,7 +30,4 @@ module.exports = sequelize.define('Course', {
         allowNull: false,
         type: Sequelize.DATE
       }, 
-        paranoid: true,
-        freezeTableName: true,
-        modelName: 'course'
     });
