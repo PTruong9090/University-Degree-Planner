@@ -1,34 +1,86 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd' 
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <div className='main-container'>
+        {/* Sidebar */}
+        <div className='course-main-container'>
+          <div className='course-title'>
+            <h2>Courses</h2>
+          </div>
+          <div className='search-bar-container'>
+
+          </div>
+          <div className='course-container'>
+
+          </div>
+        </div>
+
+        {/* Plan Table */}
+        <div className='plan-title-container'>
+          {/* Container for 4-year-plan */}
+          <div className='title-container'>
+            {/* Top bar for title and necessary stuff */}
+            <h2>4 Year Plan</h2>
+          </div>
+
+          <div className='plan-container'>
+            {/* Use for 4x4 box for plan */}
+            {[1, 2, 3, 4].map((year) => (
+              <div key={year} className={`year${year}-container`}>
+                
+                <div className='fall-container'>
+                  <h3>Year {year} - Fall</h3>
+                  <div className='course-unit-container'>
+                    <div className='course-list-container'>
+                    </div>
+                    <div className='units-container'>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='winter-container'>
+                  <h3>Winter</h3>
+                  <div className='course-unit-container'>
+                    <div className='course-list-container'>
+                    </div>
+                    <div className='units-container'>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='spring-container'>
+                  <h3>Spring</h3>
+                  <div className='course-unit-container'>
+                    <div className='course-list-container'>
+                    </div>
+                    <div className='units-container'>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='summer-container'>
+                  <h3>Summer</h3>
+                  <div className='course-unit-container'>
+                    <div className='course-list-container'>
+                    </div>
+                    <div className='units-container'>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </main>
   )
 }
 
