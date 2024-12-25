@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import {DndContext} from '@dnd-kit/core';
+import { DndContext } from '@dnd-kit/core';
 
 
 
@@ -7,6 +7,7 @@ import './App.css'
 
 function App() {
   const [courses, setCourses] = useState([])
+  const quarters = ['Fall', 'Winter', 'Spring', 'Summer']
 
   // Get course data
   useEffect(() => {
@@ -26,84 +27,60 @@ function App() {
   
   return (
     <main>
-      <div className='main-container'>
-        {/* Sidebar */}
-        <div className='course-main-container'>
-          <div className='course-title'>
-            <h2>Courses</h2>
-          </div>
-          <input type='text' className='search-bar-container' placeholder='Subject...'>
-          </input>
-          <input type='text' className='search-bar-container' placeholder='Course...'>
-          </input>
-          <div className='courses-container'>
-            {courses.map((course) => (
-              <div className='individual_course-container' key={course.UUID}>
-                {course.course_name}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Plan Table */}
-        <div className='plan-title-container'>
-          {/* Container for 4-year-plan */}
-          <div className='title-container'>
-            {/* Top bar for title and necessary stuff */}
-            <h2>4 Year Plan</h2>
+      <DndContext>
+        <div className='main-container'>
+          {/* Sidebar */}
+          <div className='course-main-container'>
+            <div className='course-title'>
+              <h2>Courses</h2>
+            </div>
+            <input type='text' className='search-bar-container' placeholder='Subject...'>
+            </input>
+            <input type='text' className='search-bar-container' placeholder='Course...'>
+            </input>
+            <div className='courses-container'>
+              {courses.map((course) => (
+                <div className='individual_course-container' key={course.UUID}>
+                  {course.course_name}
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className='plan-container'>
-            {/* Use for 4x4 box for plan */}
+          {/* Plan Table */}
+          <div className='plan-title-container'>
+            {/* Container for 4-year-plan */}
+            <div className='title-container'>
+              {/* Top bar for title and necessary stuff */}
+              <h2>4 Year Plan</h2>
+            </div>
+
+            <div className='plan-container'>
             {[1, 2, 3, 4].map((year) => (
               <div key={year} className={`year${year}-container`}>
-                
-                <div className='fall-container'>
-                  <h3>Year {year} - Fall</h3>
-                  <div className='course-unit-container'>
-                    <div className='course-list-container'>
-                    </div>
-                    <div className='units-container'>
-                    </div>
-                  </div>
-                </div>
-
-                <div className='winter-container'>
-                  <h3>Winter</h3>
-                  <div className='course-unit-container'>
-                    <div className='course-list-container'>
-                    </div>
-                    <div className='units-container'>
+                {quarters.map((quarter) => (
+                  <div key={quarter} className={`${quarter.toLowerCase()}-container`}>
+                    <h3>Year {year} - {quarter}</h3>
+                    <div className='course-unit-container'>
+                      <div 
+                        className='course-list-container'
+                        id={`year${year}-${quarter.toLowerCase()}-courses`}
+                      >
+                      </div>
+                      <div 
+                        className='units-container'
+                        id={`year${year}-${quarter.toLowerCase()}-units`}                     
+                      >
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className='spring-container'>
-                  <h3>Spring</h3>
-                  <div className='course-unit-container'>
-                    <div className='course-list-container'>
-                    </div>
-                    <div className='units-container'>
-                    </div>
-                  </div>
-                </div>
-
-                <div className='summer-container'>
-                  <h3>Summer</h3>
-                  <div className='course-unit-container'>
-                    <div className='course-list-container'>
-                    </div>
-                    <div className='units-container'>
-                    </div>
-                  </div>
-                </div>
-
+                ))}
               </div>
             ))}
+            </div>
           </div>
         </div>
-
-      </div>
+      </DndContext>
     </main>
   )
 }
