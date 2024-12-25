@@ -9,13 +9,43 @@ function App() {
   const [plan, setPlan] = useState({
     'year1-fall': [],
     'year1-winter': [],
+    'year1-spring': [],
+    'year1-summer': [],
+    'year2-fall': [],
+    'year2-winter': [],
+    'year2-spring': [],
+    'year2-summer': [],
+    'year3-fall': [],
+    'year3-winter': [],
+    'year3-spring': [],
+    'year3-summer': [],
+    'year4-fall': [],
+    'year4-winter': [],
+    'year4-spring': [],
+    'year4-summer': [],
   })
 
   const quarters = ['Fall', 'Winter', 'Spring', 'Summer']
 
+  // Get course data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/api/get-courses');
+        const data = await response.json();
+
+        setCourses(data.courses)
+
+      } catch (error) {
+        console.error("Error fetching course data:", error)
+      }
+    };
+    fetchData();
+  }, [])
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
-
+    
   }
   
   return (
@@ -52,8 +82,20 @@ function App() {
             {[1, 2, 3, 4].map((year) => (
               <div key={year} className={`year${year}-container`}>
                 {quarters.map((quarter) => (
-                  <div id={`year${year}-${quarter}-container`} className={`${quarter.toLowerCase()}-container`}>
-                    <h2>{quarter}</h2>
+                  <div key={quarter} className={`${quarter.toLowerCase()}-container`}>
+                    <h3>Year {year} - {quarter}</h3>
+                    <div className='course-unit-container'>
+                      <div 
+                        className='course-list-container'
+                        id={`year${year}-${quarter.toLowerCase()}-courses`}
+                      >
+                      </div>
+                      <div 
+                        className='units-container'
+                        id={`year${year}-${quarter.toLowerCase()}-units`}                     
+                      >
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
