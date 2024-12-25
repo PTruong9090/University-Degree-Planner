@@ -1,9 +1,28 @@
-import { useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd' 
+import { useState, useEffect } from 'react'
+import {DndContext} from '@dnd-kit/core';
+
+
 
 import './App.css'
 
 function App() {
+  const [courses, setCourses] = useState([])
+
+  // Get course data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/api/get-courses');
+        const data = await response.json();
+
+        setCourses(data.courses)
+
+      } catch (error) {
+        console.error("Error fetching course data:", error)
+      }
+    };
+    fetchData();
+  }, [])
   
   return (
     <main>
@@ -13,11 +32,16 @@ function App() {
           <div className='course-title'>
             <h2>Courses</h2>
           </div>
-          <div className='search-bar-container'>
-
-          </div>
-          <div className='course-container'>
-
+          <input type='text' className='search-bar-container' placeholder='Subject...'>
+          </input>
+          <input type='text' className='search-bar-container' placeholder='Course...'>
+          </input>
+          <div className='courses-container'>
+            {courses.map((course) => (
+              <div className='individual_course-container' key={course.UUID}>
+                {course.course_name}
+              </div>
+            ))}
           </div>
         </div>
 

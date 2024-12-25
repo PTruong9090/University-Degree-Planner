@@ -41,10 +41,12 @@ const addCourse = async (req, res) => {
 
 const getCourse = async (req, res) => {
     try {
+        const courses = await Course.findAll();
         
+        res.json({courses})
     } catch (error) {
-
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
-module.exports = { insertCourses, addCourse }
+module.exports = { insertCourses, addCourse, getCourse }
