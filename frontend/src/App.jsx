@@ -2,28 +2,21 @@ import { useState, useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core';
 
 
-
 import './App.css'
 
 function App() {
   const [courses, setCourses] = useState([])
+  const [plan, setPlan] = useState({
+    'year1-fall': [],
+    'year1-winter': [],
+  })
+
   const quarters = ['Fall', 'Winter', 'Spring', 'Summer']
 
-  // Get course data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:1337/api/get-courses');
-        const data = await response.json();
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
 
-        setCourses(data.courses)
-
-      } catch (error) {
-        console.error("Error fetching course data:", error)
-      }
-    };
-    fetchData();
-  }, [])
+  }
   
   return (
     <main>
@@ -59,20 +52,8 @@ function App() {
             {[1, 2, 3, 4].map((year) => (
               <div key={year} className={`year${year}-container`}>
                 {quarters.map((quarter) => (
-                  <div key={quarter} className={`${quarter.toLowerCase()}-container`}>
-                    <h3>Year {year} - {quarter}</h3>
-                    <div className='course-unit-container'>
-                      <div 
-                        className='course-list-container'
-                        id={`year${year}-${quarter.toLowerCase()}-courses`}
-                      >
-                      </div>
-                      <div 
-                        className='units-container'
-                        id={`year${year}-${quarter.toLowerCase()}-units`}                     
-                      >
-                      </div>
-                    </div>
+                  <div id={`year${year}-${quarter}-container`} className={`${quarter.toLowerCase()}-container`}>
+                    <h2>{quarter}</h2>
                   </div>
                 ))}
               </div>
