@@ -34,6 +34,7 @@ h3 {
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  position: relative;
 }
 
 .course-main-container {
@@ -62,6 +63,7 @@ h3 {
   flex-direction: column;
   height: 100%;
 }
+
 
 .year1-container, .year2-container, .year3-container, .year4-container {
   display: flex;
@@ -93,6 +95,7 @@ h3 {
   height: 100%;
   width: 100%;
   background-color: #d0eaff;
+  align-items: center;
 }
 
 .course-list-container {

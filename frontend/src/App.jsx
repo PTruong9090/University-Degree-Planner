@@ -1,31 +1,39 @@
 import { useState, useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core';
 
+import { Draggable } from './Draggable';
+import { Droppable } from './Droppable';
 
 import './App.css'
 
 function App() {
   const [courses, setCourses] = useState([])
   const [plan, setPlan] = useState({
-    'year1-fall': [],
-    'year1-winter': [],
-    'year1-spring': [],
-    'year1-summer': [],
-    'year2-fall': [],
-    'year2-winter': [],
-    'year2-spring': [],
-    'year2-summer': [],
-    'year3-fall': [],
-    'year3-winter': [],
-    'year3-spring': [],
-    'year3-summer': [],
-    'year4-fall': [],
-    'year4-winter': [],
-    'year4-spring': [],
-    'year4-summer': [],
+    'year-1': {
+      'Fall': [],
+      'Winter': [],
+      'Spring': [],
+      'Summer': [],
+    },
+    'year-2': {
+      'Fall': [],
+      'Winter': [],
+      'Spring': [],
+      'Summer': [],
+    },
+    'year-3': {
+      'Fall': [],
+      'Winter': [],
+      'Spring': [],
+      'Summer': [],
+    },
+    'year-4': {
+      'Fall': [],
+      'Winter': [],
+      'Spring': [],
+      'Summer': []
+    }
   })
-
-  const quarters = ['Fall', 'Winter', 'Spring', 'Summer']
 
   // Get course data
   useEffect(() => {
@@ -45,12 +53,43 @@ function App() {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
+
+    const targetId = over.id
+      
+    // Get year and quarter from id
+    const temp = targetId.split('-')
+    const year = temp[0] + '-' + temp[1]
+    const quarter = temp[2]
     
+    
+    if (over) {
+      const draggedCourse = courses.find(course => course.UUID == active.id);
+      
+      // Add course into plan
+      if (draggedCourse) {
+        const isCourseinPlan = plan[year][quarter].some(course => course.UUID === draggedCourse.UUID)
+
+        if (!isCourseinPlan) {
+          setPlan((prevPlan) => ({
+            ...prevPlan,
+            [year]: {
+              ...prevPlan[year],
+              [quarter]: [...prevPlan[year][quarter], draggedCourse]
+            }
+          }))
+
+          // Remove from course list
+        }
+      }
+
+      // Handle dragging within course plan
+      const isDraggedfromPlan = year.startsWith('year')
+    }
   }
   
   return (
     <main>
-      <DndContext>
+      <DndContext onDragEnd={handleDragEnd}>
         <div className='main-container'>
           {/* Sidebar */}
           <div className='course-main-container'>
@@ -63,9 +102,11 @@ function App() {
             </input>
             <div className='courses-container'>
               {courses.map((course) => (
+                <Draggable key={course.UUID} id={course.UUID}>
                 <div className='individual_course-container' key={course.UUID}>
                   {course.course_name}
                 </div>
+                </Draggable>
               ))}
             </div>
           </div>
@@ -79,21 +120,36 @@ function App() {
             </div>
 
             <div className='plan-container'>
-            {[1, 2, 3, 4].map((year) => (
-              <div key={year} className={`year${year}-container`}>
-                {quarters.map((quarter) => (
+            {Object.keys(plan).map((year) => (
+              <div key={year.split('-')[1]} className={`year${year.split('-')[1]}-container`}>
+                {Object.keys(plan[year]).map((quarter) => (
                   <div key={quarter} className={`${quarter.toLowerCase()}-container`}>
-                    <h3>Year {year} - {quarter}</h3>
+                    <h3>Year {year.split('-')[1]} - {quarter}</h3>
                     <div className='course-unit-container'>
-                      <div 
-                        className='course-list-container'
-                        id={`year${year}-${quarter.toLowerCase()}-courses`}
-                      >
-                      </div>
+                      <Droppable id={`${year}-${quarter}-courses`} key={`${year}-${quarter.toLowerCase()}-courses`}>
+                        <div 
+                          className='course-list-container'
+                          id={`${year}-${quarter.toLowerCase()}-courses`}
+                        >
+                          {/* loop through array and add course */}
+                          {plan[year][quarter].map((course) => (
+                              <Draggable key={course.UUID} id={`${year}-${quarter}-${course.UUID}`}>
+                              <div className="course-item">
+                                {course.course_name}
+                              </div>
+                            </Draggable>
+                            ))}
+                        </div>
+                      </Droppable>
                       <div 
                         className='units-container'
-                        id={`year${year}-${quarter.toLowerCase()}-units`}                     
+                        id={`${year}-${quarter.toLowerCase()}-units`}                     
                       >
+                        {plan[year][quarter].map((course) => (
+                              <div key={course.UUID} className="course-item">
+                                {course.units}
+                              </div>
+                            ))}
                       </div>
                     </div>
                   </div>
