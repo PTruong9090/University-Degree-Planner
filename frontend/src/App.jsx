@@ -84,6 +84,9 @@ function App() {
 
       // Handle dragging within course plan
       const isDraggedfromPlan = year.startsWith('year')
+      if (isDraggedfromPlan) {
+        
+      }
     }
   }
   
