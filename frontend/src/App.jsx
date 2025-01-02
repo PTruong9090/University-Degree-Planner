@@ -56,37 +56,65 @@ function App() {
 
     const targetId = over.id
       
-    // Get year and quarter from id
-    const temp = targetId.split('-')
-    const year = temp[0] + '-' + temp[1]
-    const quarter = temp[2]
+    // Get year and quarter from id of over
+    const overTemp = targetId.split('-')
+    const overYear = overTemp[0] + '-' + overTemp[1]
+    const overQuarter = overTemp[2]
+
+    // Get data from actively dragging item
+    const activeTemp = active.id.split('-')
+    const activeYear = activeTemp[0] + '-' + activeTemp[1]
+    const activeQuarter = activeTemp[2]
+    const activeUUID = activeTemp.slice(3, activeTemp.length).join(" ").replace(/\s/g, '-')
     
     
     if (over) {
+      // Dragging from course list to planner
       const draggedCourse = courses.find(course => course.UUID == active.id);
-      
-      // Add course into plan
       if (draggedCourse) {
-        const isCourseinPlan = plan[year][quarter].some(course => course.UUID === draggedCourse.UUID)
-
+        // Check if course is already in plan
+        const isCourseinPlan = plan[overYear][overQuarter].some(course => course.UUID === draggedCourse.UUID)
+        // Add to plan if not already existing
         if (!isCourseinPlan) {
           setPlan((prevPlan) => ({
             ...prevPlan,
-            [year]: {
-              ...prevPlan[year],
-              [quarter]: [...prevPlan[year][quarter], draggedCourse]
+            [overYear]: {
+              ...prevPlan[overYear],
+              [overQuarter]: [...prevPlan[overYear][overQuarter], draggedCourse]
             }
           }))
+        }
+      } else {
+        // Dragging within the plan
+        const draggedCourseFromPlan = plan[activeYear][activeQuarter].find(
+        (course) => course.UUID === activeUUID
+        );
 
-          // Remove from course list
+        if (draggedCourseFromPlan) {
+          // Dragging within the plan
+        const draggedCourseFromPlan = plan[activeYear][activeQuarter].find(
+          (course) => course.UUID === activeUUID
+          );
+  
+          if (draggedCourseFromPlan) {
+            // Remove from old year and quarter
+            const updatedPlan = { ...plan };
+            updatedPlan[activeYear][activeQuarter] = updatedPlan[activeYear][activeQuarter].filter(
+              (course) => course.UUID !== activeUUID
+            );
+  
+            // Add to new year and quarter
+            updatedPlan[overYear][overQuarter] = [
+              ...updatedPlan[overYear][overQuarter],
+              draggedCourseFromPlan
+            ];
+  
+            setPlan(updatedPlan);
+          }
+        
         }
       }
-
-      // Handle dragging within course plan
-      const isDraggedfromPlan = year.startsWith('year')
-      if (isDraggedfromPlan) {
-        
-      }
+      
     }
   }
   
