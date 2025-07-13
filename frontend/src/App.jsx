@@ -41,7 +41,7 @@ function App() {
       try {
         const response = await fetch('http://localhost:1337/api/get-courses');
         const data = await response.json();
-
+        console.log(data.courses)
         setCourses(data.courses)
 
       } catch (error) {
@@ -71,6 +71,7 @@ function App() {
     if (over) {
       // Dragging from course list to planner
       const draggedCourse = courses.find(course => course.UUID == active.id);
+
       if (draggedCourse) {
         // Check if course is already in plan
         const isCourseinPlan = plan[overYear][overQuarter].some(course => course.UUID === draggedCourse.UUID)
@@ -84,6 +85,10 @@ function App() {
             }
           }))
         }
+
+        // Remove from courses list
+        setCourses(courses.filter(course => course !== draggedCourse))
+
       } else {
         // Dragging within the plan
         const draggedCourseFromPlan = plan[activeYear][activeQuarter].find(
@@ -130,14 +135,18 @@ function App() {
             <input type='text' className='search-bar-container' placeholder='Subject...'>
             </input>
             <input type='text' className='search-bar-container' placeholder='Course...'>
+              
             </input>
+            
             <div className='courses-container'>
-              {courses.map((course) => (
-                <Draggable key={course.UUID} id={course.UUID}>
-                <div className='individual_course-container' key={course.UUID}>
-                  {course.course_name}
+            {courses.map((course) => (
+                <div className='test'>
+                  <Draggable className='test' key={course.UUID} id={course.UUID}>
+                  <div className='individual_course-container' key={course.UUID}>
+                    {course.course_name}
+                  </div>
+                  </Draggable>
                 </div>
-                </Draggable>
               ))}
             </div>
           </div>
