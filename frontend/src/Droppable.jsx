@@ -1,14 +1,19 @@
 import React from 'react';
 import {useDroppable} from '@dnd-kit/core';
 
-export function Droppable( props ) {
+export function Droppable( { id, className, children, data } ) {
     const { setNodeRef } = useDroppable({ 
-      id: props.id
+      id,
+      data,
     });
 
     return (
-      <div ref={setNodeRef} className='course-list-container'>
-        {props.children}
+      <div 
+      ref={setNodeRef} 
+      className={className}
+      id={id}
+      >
+        {children}
       </div>
     );
   }
