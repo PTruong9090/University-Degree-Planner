@@ -33,7 +33,7 @@ h3 {
   display: flex;
   flex-direction: column;
   height: 100%;
-  
+  overflow-y: auto;
   position: relative;
 }
 
@@ -100,4 +100,11 @@ h3 {
 
 .course-list-container {
   flex: 6;
+}
+
+.individual_course-container.overlay {
+  display: inline-block;   /* shrink to fit content */
+  width: auto !important;  /* override any 100% or flex rules */
+  pointer-events: none;    /* so it doesn’t block the drag events */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);  /* optional lift effect */
 }

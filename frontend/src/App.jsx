@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 
 import { Draggable } from './Draggable';
 import { Droppable } from './Droppable';
@@ -7,7 +7,7 @@ import { Droppable } from './Droppable';
 import './App.css'
 
 function App() {
-
+  const [activeItem, setActiveItem] = useState(null)
   const [courseList, setCourseList] = useState([])
   const [courses, setCourses] = useState([])
   const [plan, setPlan] = useState({
@@ -54,85 +54,90 @@ function App() {
     fetchData();
   }, [])
 
+  const handleDragStart = ({active}) => {
+    setActiveItem(active.data.current)
+  };
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    console.log(active)
-    console.log(over)
+    const from = active.data.current
+    const to = over.data.current
 
-    const draggedintoCourse = over.id == 'courses-container'
+    // Sidebar -> Plan
+    if (from.type === 'sidebar' && to.type === 'plan') {
+      // Update plan
+      setPlan(p => ({
+        ...p,
+        [to.year]: {
+          ...p[to.year],
+          [to.quarter]: [...p[to.year][to.quarter], from.course]
+        }
+      }))
 
-    // Dragged 
-    if (draggedintoCourse) {
-      
+      // Update course list
+      setCourses(courses.filter(course => course !== from.course))
     }
 
-    const targetId = over.id
-  
-    // Get year and quarter from id of over
-    const overTemp = targetId.split('-')
-    const overYear = overTemp[0]
-    const overQuarter = overTemp[1]
-
-    // Get data from actively dragging item
-    const activeTemp = active.id.split('-')
-    const activeYear = activeTemp[0]
-    const activeQuarter = activeTemp[1]
-    const activeUUID = activeTemp.slice(2, activeTemp.length).join(" ").replace(/\s/g, '-')
+    // Plan -> Sidebar
+    if (from.type === 'plan' && to.type === 'sidebar') {
+      // Add to sidebar
+      setCourses(prev => {
+        // find original index in the master list
+        const originalIdx = courseList.findIndex(c => c.UUID === from.course.UUID);
+        // make a shallow copy of the current sidebar list
+        const updated = [...prev];
+        // insert at that index
+        updated.splice(originalIdx, 0, from.course);
+        return updated;
+      });
     
-    if (over && !draggedintoCourse) {
-      // Dragging from course list to planner
-      const draggedCourse = courses.find(course => course.UUID == active.id);
 
-      if (draggedCourse) {
-        // Check if course is already in plan
-        const isCourseinPlan = plan[overYear][overQuarter].some(course => course.UUID === draggedCourse.UUID)
-        
-        // Add to plan if not already existing
-        if (!isCourseinPlan) {
-          setPlan((prevPlan) => ({
-            ...prevPlan,
-            [overYear]: {
-              ...prevPlan[overYear],
-              [overQuarter]: [...prevPlan[overYear][overQuarter], draggedCourse]
-            }
-          }))
+      // Remove from plan
+      setPlan(p => ({
+        ...p,
+        [from.year]: {
+          ...p[from.year],
+          [from.quarter]: p[from.year][from.quarter].filter(
+            course => course.UUID !== from.course.UUID
+          )
         }
+      }))
+    }
 
-        // Remove from courses list
-        setCourses(courses.filter(course => course !== draggedCourse))
-
-      } else {
-        // Dragging within the plan
-        const draggedCourseFromPlan = plan[activeYear][activeQuarter].find(
-        (course) => course.UUID === activeUUID
-        );
-        
-        if (draggedCourseFromPlan) {
-          // Remove from old year and quarter
-          const updatedPlan = { ...plan };
-          updatedPlan[activeYear][activeQuarter] = updatedPlan[activeYear][activeQuarter].filter(
-            (course) => course.UUID !== activeUUID
-          );
-
-          // Add to new year and quarter
-          updatedPlan[overYear][overQuarter] = [
-            ...updatedPlan[overYear][overQuarter],
-            draggedCourseFromPlan
-          ];
-
-          setPlan(updatedPlan);
-        
-        }
+    // Plan -> Plan
+    if (from.type==='plan' && to.type==='plan') {
+      // Do nothing if same cell
+      if (from.year === to.year && from.quarter === to.quarter) {
+        return;
       }
-    } else {
-          // implement dragged from planner to sidebar
-          console.log('test')
-        }
+
+      setPlan(p => {
+        const updated = { ...p };
+
+        // update source year
+        updated[from.year] = {
+          ...p[from.year],
+          [from.quarter]: p[from.year][from.quarter]
+                            .filter(c => c.UUID !== from.course.UUID)
+        };
+
+        // update dest year
+        // if same year, this will just merge extra quarter
+        updated[to.year] = {
+          ...updated[to.year],
+          [to.quarter]: [...p[to.year][to.quarter], from.course]
+        };
+
+        return updated;
+      });
+    }
+
+    setActiveItem(null)
   } 
   
   return (
     <main>
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className='main-container'>
           {/* Sidebar */}
           <div className='course-main-container'>
@@ -144,9 +149,18 @@ function App() {
             <input type='text' className='search-bar-container' placeholder='Course...'>
             </input>
             
-            <Droppable className='courses-container' id='courses-container'>
+            <Droppable 
+              className='courses-container' 
+              id='courses-container'
+              data={{ type: 'sidebar' }}
+            >
             {courses.map((course) => (
-                <Draggable className='test' key={course.UUID} id={course.UUID}>
+                <Draggable 
+                  className='test' 
+                  key={course.UUID} 
+                  id={course.UUID}
+                  data={{ type: 'sidebar', course }}
+                >
                 <div className='individual_course-container' key={course.UUID} >
                   {course.course_name}
                 </div>
@@ -179,11 +193,18 @@ function App() {
                           Year {yearNum} – {displayQuarter}
                         </h3>
                         <div className='course-unit-container'>
-                          <Droppable className='course-list-container' id={`${year}-${quarter.toLowerCase()}-courses`} key={`${year}-${quarter.toLowerCase()}-courses`}>
-                            
+                          <Droppable 
+                            className='course-list-container' 
+                            id={`${year}-${quarter.toLowerCase()}-courses`} 
+                            data={{ type: 'plan', year, quarter}}
+                          >
                               {/* loop through array and add course */}
                               {plan[year][quarter].map((course) => (
-                                  <Draggable key={course.UUID} id={`${year}-${quarter}-${course.UUID}`}>
+                                  <Draggable 
+                                    key={course.UUID} 
+                                    id={`${year}-${quarter}-${course.UUID}`}
+                                    data={{ type: 'plan', course, year, quarter}}
+                                  >
                                   <div className="course-item">
                                     {course.course_name}
                                   </div>
@@ -211,6 +232,13 @@ function App() {
             </div>
           </div>
         </div>
+        <DragOverlay>
+          {activeItem ? (
+            <div className="individual_course-container overlay">
+              {activeItem.course.course_name}
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </main>
   )
