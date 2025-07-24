@@ -177,24 +177,24 @@ function App() {
             </div>
 
             <div className='flex-1 p-4'>
-              <div className='grid grid-cols-4 gap-4 h-full'>
+              <div className='grid grid-rows-4 gap-4 h-full'>
               {Object.keys(plan).map((year) => {
                 // yearKey === "year1", "year2", …
                 const yearNum = year.replace('year', '');      // "1", "2", …
                 return (
-                  <div key={year} className="flex h-full flex-1 flex-col">
+                  <div key={year} className="flex h-full flex-1 flex-row w-full">
                     {Object.keys(plan[year]).map((quarter) => {
                       // quarter === "fall", "winter", …
                       const displayQuarter =
                         quarter.charAt(0).toUpperCase() + quarter.slice(1);  // "Fall", "Winter", …
                       return (
-                        <div key={quarter} className='bg-gray-50 border border-gray-200 rounded-lg flex flex-col p-3'>
+                        <div key={quarter} className='bg-gray-50 border border-gray-200 rounded-lg flex flex-col p-3 h-full w-full'>
                           <h3 className='text-sm font-medium mb-s'>
                             Year {yearNum} – {displayQuarter}
                           </h3>
                           <div className='flex-gap-2 flex-1'>
                             <Droppable 
-                              className='flex-1 bg-white border-2 border-dashed border-gray-300 rounded p-2 flex flex-col gap-2 overflow-y-auto min-h-[4rem]' 
+                              className='h-full flex-1 bg-white border-2 border-dashed border-gray-300 rounded p-2 flex flex-col gap-2 overflow-y-auto min-h-[4rem]' 
                               id={`${year}-${quarter.toLowerCase()}-courses`} 
                               data={{ type: 'plan', year, quarter}}
                             >
