@@ -6,6 +6,7 @@ import { Droppable } from './Droppable';
 
 import './App.css'
 
+
 function App() {
   const [activeItem, setActiveItem] = useState(null)
   const [courseList, setCourseList] = useState([])
@@ -136,105 +137,105 @@ function App() {
   } 
   
   return (
-    <main>
+    <main className = "flex justify-center items-start h-screen w-full bg-gray-100 p-6">
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className='main-container'>
+        <div className='flex w-full max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden h-full'>
+          
           {/* Sidebar */}
-          <div className='course-main-container'>
-            <div className='course-title'>
-              <h2>Courses</h2>
-            </div>
-            <input type='text' className='search-bar-container' placeholder='Subject...'>
+          <aside className='w-72 flex-shrink-0 flex flex-col bg-gray-50 border-r border-gray-200 p-4'>
+            <h2 className='text-xl font-semibold mb-4'>Courses</h2>
+            <input type='text' className='mb-3 h-10 px-3 w-full border border-gray-300 rounded-lg focus:outline-none' placeholder='Subject...'>
             </input>
-            <input type='text' className='search-bar-container' placeholder='Course...'>
+            <input type='text' className='mb-4 h-10 px-3 w-full border border-gray-300 rounded-lg focus:outline-none' placeholder='Course...'>
             </input>
             
             <Droppable 
-              className='courses-container' 
+              className='flex flex-col gap-2 overflow-y-scroll flex-1' 
               id='courses-container'
               data={{ type: 'sidebar' }}
             >
             {courses.map((course) => (
                 <Draggable 
-                  className='test' 
                   key={course.UUID} 
                   id={course.UUID}
                   data={{ type: 'sidebar', course }}
                 >
-                <div className='individual_course-container' key={course.UUID} >
+                <div className='bg-white border border-gray-200 rounded-md shadow-sm p-1' key={course.UUID} >
                   {course.course_name}
                 </div>
                 </Draggable>               
               ))}
             </Droppable>
-          </div>
+          </aside>
 
           {/* Plan Table */}
-          <div className='plan-title-container'>
+          <section className='flex-1 flex flex-col'>
             {/* Container for 4-year-plan */}
-            <div className='title-container'>
+            <div className='bg-gray-100 border-t border-gray-200 p-4 border-b'>
               {/* Top bar for title and necessary stuff */}
-              <h2>4 Year Plan</h2>
+              <h2 className='text-xl font-semibold text-center'>4 Year Plan</h2>
             </div>
 
-            <div className='plan-container'>
-            {Object.keys(plan).map((year) => {
-              // yearKey === "year1", "year2", …
-              const yearNum = year.replace('year', '');      // "1", "2", …
-              return (
-                <div key={year} className={`${year}-container`}>
-                  {Object.keys(plan[year]).map((quarter) => {
-                    // quarter === "fall", "winter", …
-                    const displayQuarter =
-                      quarter.charAt(0).toUpperCase() + quarter.slice(1);  // "Fall", "Winter", …
-                    return (
-                      <div key={quarter} className={`${quarter}-container`}>
-                        <h3>
-                          Year {yearNum} – {displayQuarter}
-                        </h3>
-                        <div className='course-unit-container'>
-                          <Droppable 
-                            className='course-list-container' 
-                            id={`${year}-${quarter.toLowerCase()}-courses`} 
-                            data={{ type: 'plan', year, quarter}}
-                          >
-                              {/* loop through array and add course */}
+            <div className='flex-1 p-4'>
+              <div className='grid grid-cols-4 gap-4 h-full'>
+              {Object.keys(plan).map((year) => {
+                // yearKey === "year1", "year2", …
+                const yearNum = year.replace('year', '');      // "1", "2", …
+                return (
+                  <div key={year} className="flex h-full flex-1 flex-col">
+                    {Object.keys(plan[year]).map((quarter) => {
+                      // quarter === "fall", "winter", …
+                      const displayQuarter =
+                        quarter.charAt(0).toUpperCase() + quarter.slice(1);  // "Fall", "Winter", …
+                      return (
+                        <div key={quarter} className='bg-gray-50 border border-gray-200 rounded-lg flex flex-col p-3'>
+                          <h3 className='text-sm font-medium mb-s'>
+                            Year {yearNum} – {displayQuarter}
+                          </h3>
+                          <div className='flex-gap-2 flex-1'>
+                            <Droppable 
+                              className='flex-1 bg-white border-2 border-dashed border-gray-300 rounded p-2 flex flex-col gap-2 overflow-y-auto min-h-[4rem]' 
+                              id={`${year}-${quarter.toLowerCase()}-courses`} 
+                              data={{ type: 'plan', year, quarter}}
+                            >
+                                {/* loop through array and add course */}
+                                {plan[year][quarter].map((course) => (
+                                    <Draggable 
+                                      key={course.UUID} 
+                                      id={`${year}-${quarter}-${course.UUID}`}
+                                      data={{ type: 'plan', course, year, quarter}}
+                                    >
+                                    <div className="bg-white border border-gray-200 rounded-md shadow-sm p-2 cursor-move select-none">
+                                      {course.course_name}
+                                    </div>
+                                  </Draggable>
+                                  ))}
+                              
+                            </Droppable>
+                            <div 
+                              className='w-16 flex-shrink-0 text-right text-sm text-gray-500'
+                              id={`${year}-${quarter.toLowerCase()}-units`}                     
+                            >
                               {plan[year][quarter].map((course) => (
-                                  <Draggable 
-                                    key={course.UUID} 
-                                    id={`${year}-${quarter}-${course.UUID}`}
-                                    data={{ type: 'plan', course, year, quarter}}
-                                  >
-                                  <div className="course-item">
-                                    {course.course_name}
-                                  </div>
-                                </Draggable>
-                                ))}
-                            
-                          </Droppable>
-                          <div 
-                            className='units-container'
-                            id={`${year}-${quarter.toLowerCase()}-units`}                     
-                          >
-                            {plan[year][quarter].map((course) => (
-                                  <div key={course.UUID} className="course-item">
-                                    {course.units}
-                                  </div>
-                                ))}
-                          </div>
-                      </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
+                                    <div key={course.UUID} >
+                                      {course.units}
+                                    </div>
+                                  ))}
+                            </div>
+                        </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+              </div>
             </div>
-          </div>
+          </section>
         </div>
         <DragOverlay>
           {activeItem ? (
-            <div className="individual_course-container overlay">
+            <div className="bg-white border border-gray-200 rounded-md shadow-lg p-2 inline-flex pointer-events-none select-none w-full">
               {activeItem.course.course_name}
             </div>
           ) : null}
