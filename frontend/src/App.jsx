@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-
+import { SubjectSelect } from './select';
 import { Draggable } from './Draggable';
 import { Droppable } from './Droppable';
 
@@ -11,6 +11,7 @@ function App() {
   const [activeItem, setActiveItem] = useState(null)
   const [courseList, setCourseList] = useState([])
   const [courses, setCourses] = useState([])
+  const [subjectFilter, setSubjectFilter] = useState('')
   const [plan, setPlan] = useState({
     'year1': {
       'fall': [],
@@ -46,7 +47,7 @@ function App() {
         const data = await response.json();
         
         setCourses(data.courses)
-        setCourseList(data.courses)
+        setCourseList(data.courses)   
 
       } catch (error) {
         console.error("Error fetching course data:", error)
@@ -134,7 +135,19 @@ function App() {
     }
 
     setActiveItem(null)
-  } 
+  }
+  
+  const subjects = useMemo(() =>
+    Array.from(new Set(courseList.map(c=>c.department)))
+        .sort()
+        .map(d => ({ label: d, value: d })),
+    [courseList]
+  )
+
+  const courseFilter = useMemo(() => 
+    Array.from(new Set(courseList.map(c => c.department === subjectFilter))),
+    [courseList]
+  )
   
   return (
     <main className = "flex justify-center items-start h-screen w-full bg-gray-100 p-6">
@@ -144,8 +157,11 @@ function App() {
           {/* Sidebar */}
           <aside className='w-72 flex-shrink-0 flex flex-col bg-gray-50 border-r border-gray-200 p-4'>
             <h2 className='text-xl font-semibold mb-4'>Courses</h2>
-            <input type='text' className='mb-3 h-10 px-3 w-full border border-gray-300 rounded-lg focus:outline-none' placeholder='Subject...'>
-            </input>
+            <SubjectSelect
+              options={subjects}
+              value={subjectFilter}
+              onChange={setSubjectFilter}
+            />
             <input type='text' className='mb-4 h-10 px-3 w-full border border-gray-300 rounded-lg focus:outline-none' placeholder='Course...'>
             </input>
             
@@ -235,7 +251,7 @@ function App() {
         </div>
         <DragOverlay>
           {activeItem ? (
-            <div className="bg-white border border-gray-200 rounded-md shadow-lg p-2 inline-flex pointer-events-none select-none w-full">
+            <div className="bg-white border border-gray-200 rounded-md shadow-lg p-2 inline-flex pointer-events-none select-none w-full justify-center h-full items-center">
               {activeItem.course.course_name}
             </div>
           ) : null}
