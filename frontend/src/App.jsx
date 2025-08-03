@@ -144,10 +144,10 @@ function App() {
     [courseList]
   )
 
-  const courseFilter = useMemo(() => 
-    Array.from(new Set(courseList.map(c => c.department === subjectFilter))),
-    [courseList]
-  )
+  const filteredCourses = useMemo(() => {
+    if (!subjectFilter) return courseList;
+    return courseList.filter(c => c.department === subjectFilter);
+  }, [courseList, subjectFilter])
   
   return (
     <main className = "flex justify-center items-start h-screen w-full bg-gray-100 p-6">
@@ -170,7 +170,7 @@ function App() {
               id='courses-container'
               data={{ type: 'sidebar' }}
             >
-            {courses.map((course) => (
+            {filteredCourses.map((course) => (
                 <Draggable 
                   key={course.UUID} 
                   id={course.UUID}
