@@ -1,0 +1,42 @@
+import React from "react";
+import { Sidebar } from "../../features/Planner/components/Sidebar";
+import { PlannerGrid } from "../../features/Planner/components/PlannerGrid";
+
+export function AppShell({ plan, setPlan, availableCourses, courseMap, setAvailableCourses}) {
+    return (
+        <div className="flex w-full max-w-7xl h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
+            {/* Sidebar Column */}
+            <Sidebar
+                availableCourses = {availableCourses}
+                courseMap = {courseMap}
+                setAvailableCourses = {setAvailableCourses}
+            />
+
+            {/* Main Planner Area */}
+            <section className="flex-1 flex flex-col">
+                {/* Planner Head: Title and Buttons */}
+                <div className="flex justify-between items-center bg-white p-4 border-b border-gray-200 shadow-sm">
+                    <h2 className="text-xl font-semibold text-gray-800">My 4-Year Plan</h2>
+                    <div className="flex gap-3">
+                        {/* TODO: Add Export PDF JSON Buttons */}
+                    </div>
+                </div>
+
+                {/* Scrollable Planner Grid */}
+                <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
+                    <PlannerGrid 
+                        plan={plan}
+                        courseMap={courseMap}
+                        setPlan={setPlan}
+                    />
+                </div>
+
+                {/* Footer/Warnigs */}
+                <div className="bg-white p-3 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
+                    <span>Last Updated: Today. Please download your PDF before closing on public computers.</span>
+                    {/* TODO: Custom Course Component goes here */}
+                </div>
+            </section>
+        </div>
+    )
+}

@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { Droppable } from './Droppable';
-import { Draggable } from './Draggable';
 import useLocalStorage from './hooks/useLocalStorage'
 import mockCourses from './data/mergedCourses';
+import { AppShell } from './components/layout/AppShell';
+import { CourseCard } from './features/Planner/components/CourseCard';
 
 const initialPlan = {
   'year1': {
@@ -47,10 +47,15 @@ function App() {
   // Make plan persistent
   const [plan, setPlan] = useLocalStorage('ucla-planner-v1', initialPlan)
 
+  // Hold course object for item being dragged
+  const [activeItem, setActiveItem] = useState(null)
+
   // Set the available course list
   const [availableCourses, setAvailableCourses] = useState(() => {
-    mockCourses.map(c => c.course_name)
+    return mockCourses.map(c => c.course_name)
   })
+
+/* ------------------------------------------------------------------------------------------------------------------------- */
 
   const handleDragEnd = (event) => {
     const {active, over} = event
@@ -63,7 +68,7 @@ function App() {
     const to = over.data.current
 
     // Unique course ID
-    const courseID = from.id
+    const courseID = from.courseID
 
     // 1. Sidebar -> Planer (Placing a course)
     if (from.type === 'sidebar' && to.type === 'plan') {
@@ -97,21 +102,61 @@ function App() {
     else if (from.type == 'plan' && to.type === 'plan') {
       
       setPlan(p => {
-        
-      })
+        const sourceList = p[from.year][from.quarter].filter(id => id !== courseID)
+        const destList = [...p[to.year][to.quarter], courseID]
 
+        return {
+          ...p,
+          [from.year]: {
+            ...p[from.year],
+            [from.quarter]: sourceList
+          },
+          [to.year]: {
+            ...p[to.year],
+            [to.quarter]: destList
+          }
+        }
+      })
+      
+      // Clear active item after drop
+      setActiveItem(null)
+    }
+  }
+
+/* ------------------------------------------------------------------------------------------------------------------------- */
+
+  const handleDragStart = ({active}) => {
+      const courseID = active.data.current.courseID;
+      setActiveItem(courseMap[courseID]);
     }
 
-
-  }
+/* ------------------------------------------------------------------------------------------------------------------------- */
   
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      {/* {AppShell will go here} */}
-      <h1>UCLA Planner!</h1>
-      <pre>{JSON.stringify(plan, null, 2)}</pre>
+    <DndContext 
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <AppShell
+        plan={plan}
+        setPlan={setPlan}
+        availableCourses={availableCourses}
+        setAvailableCourses={setAvailableCourses}
+        courseMap={courseMap}
+      />
+
+      <DragOverlay>
+        {activeItem ? (
+          <CourseCard
+            course={activeItem}
+            variant="plan"
+            isDragging={true}
+          />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   )
+
 }
 
 export default App

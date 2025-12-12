@@ -3,21 +3,20 @@ import { useDraggable } from '@dnd-kit/core';
 
 
 export function Draggable({id, data, children, className}) {
-  const {attributes, listeners, setNodeRef, transform} = useDraggable({
+  const {attributes, listeners, setNodeRef, transform, isDragging} = useDraggable({
     id,
     data,
   });
   
   const style = {
-  position: 'relative',
-  transform: transform 
-    ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-    : undefined,
-    zIndex: 1000,
+    transform: transform 
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
+      zIndex: isDragging ? 1000 : 'unset',
   };
   
   return (
-    <button 
+    <div 
       ref={setNodeRef} 
       style={style} 
       className={className}
@@ -25,7 +24,7 @@ export function Draggable({id, data, children, className}) {
       {...attributes}
     >
       {children}
-    </button>
+    </div>
   );
 }
 
