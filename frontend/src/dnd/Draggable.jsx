@@ -12,7 +12,7 @@ export function Draggable({id, data, children, className}) {
     transform: transform 
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
-      zIndex: isDragging ? 1000 : 'unset',
+      zIndex: isDragging ? 50 : 'unset',
   };
   
   return (

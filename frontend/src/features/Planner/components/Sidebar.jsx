@@ -18,12 +18,13 @@ export function Sidebar({ availableCourses, courseMap}) {
     // 2. Apply filtering 
     const filteredCourses = useMemo(() => {
         let list = availableCourses
+        
 
         // Filter by subject
         if (subjectFilter) {
-            list = list.filter(courseID => {
-                courseMap[courseID]?.department === subjectFilter
-            })
+            list = list.filter(courseID => 
+                courseMap[courseID]?.department === subjectFilter     
+            )
         }
 
         // Filter by search term (name or ID)
