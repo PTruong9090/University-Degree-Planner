@@ -12,7 +12,5 @@ createRoot(document.getElementById('root')).render(
 
 /*
 TODO List:
-  - Adding courses passes the size of the box expands the box
   - After dragging from planner to sidebar, its not sorted to the top again
-  - Dropping into separate box in the same year results in duplicates
 */

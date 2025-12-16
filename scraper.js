@@ -7,9 +7,12 @@ const fs = require('fs');
     const page = await context.newPage();
 
     // Go to the page
-    await page.goto("https://catalog.registrar.ucla.edu/browse/Subject%20Areas/COMSCI");
+    await page.goto("https://catalog.registrar.ucla.edu/");
 
-    const course_links = [];
+    const subjects = [];
+    // Fill up subject list
+    
+
 
     while (true) {
         // Wait for the page to load

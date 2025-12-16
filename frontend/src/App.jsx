@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
-import { createPortal } from 'react-dom'
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import useLocalStorage from './hooks/useLocalStorage'
 import mockCourses from './data/mergedCourses';
 import { AppShell } from './components/layout/AppShell';
 import { CourseCard } from './features/Planner/components/CourseCard';
-import { create } from 'domain';
 
 const initialPlan = {
   'year1': {
@@ -99,7 +97,13 @@ function App() {
     // 2. Plan -> Sidebar (Remove a course)
     else if (from.type === 'plan' && to.type === 'sidebar') {
       // Add back to available list
-      setAvailableCourses(prev => [...prev, courseID])
+      setAvailableCourses(prev => {
+        const newList = [...prev, courseID]
+
+        newList.sort()
+
+        return newList
+      })
 
       // Update plan with course removed
       setPlan(p => ({
@@ -116,8 +120,18 @@ function App() {
       setPlan(p => {
         const sourceList = p[from.year][from.quarter].filter(id => id !== courseID)
         const destList = [...p[to.year][to.quarter], courseID]
-        console.log(sourceList)
-        console.log(destList)
+
+
+        if (from.year === to.year) {
+          return {
+            ...p,
+            [from.year]: {
+              ...p[from.year],
+              [from.quarter]: sourceList,
+              [to.quarter]: destList
+            }
+          }
+        }
 
         return {
           ...p,
@@ -130,6 +144,7 @@ function App() {
             [to.quarter]: destList
           }
         }
+        
       })
       
     }
@@ -156,18 +171,16 @@ function App() {
         setAvailableCourses={setAvailableCourses}
         courseMap={courseMap}
       />
-      {createPortal(
-        <DragOverlay>
-          {activeItem ? (
-            <CourseCard
-              course={activeItem}
-              variant="plan"
-              isDragging={true}
-            />
-          ) : null}
-        </DragOverlay>,
-        document.body
-      )}
+
+      <DragOverlay>
+        {activeItem ? (
+          <CourseCard
+            course={activeItem}
+            variant="plan"
+            isDragging={true}
+          />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   )
 
