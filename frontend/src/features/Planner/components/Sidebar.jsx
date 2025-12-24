@@ -1,15 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { Draggable } from '../../../dnd/Draggable';
 import { Droppable } from '../../../dnd/Droppable';
+import { Virtuoso } from 'react-virtuoso'
 import { CourseCard } from './CourseCard';
+
+const ITEM_HEIGHT = 80
 
 export function Sidebar({ availableCourses, courseMap}) {
     const [subjectFilter, setSubjectFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
 
-    // 1. Get list of all departments for filter dropdown
+    // 1. Get list of all subject for filter dropdown
     const subjects = useMemo(() => 
-        Array.from(new Set(Object.values(courseMap).map(c => c.department)))
+        Array.from(new Set(Object.values(courseMap).map(c => c.subject)))
             .sort()
             .map(d => ({ label: d, value: d})),
         [courseMap]
@@ -23,7 +26,7 @@ export function Sidebar({ availableCourses, courseMap}) {
         // Filter by subject
         if (subjectFilter) {
             list = list.filter(courseID => 
-                courseMap[courseID]?.department === subjectFilter     
+                courseMap[courseID]?.subject === subjectFilter     
             )
         }
 
@@ -33,9 +36,9 @@ export function Sidebar({ availableCourses, courseMap}) {
             list = list.filter(courseID => {
                 const course = courseMap[courseID]
                 if (!course) return false
-
+                
                 return (
-                    course.course_name.toLowerCase().includes(lowerSearch) || 
+                    course.course_name?.toLowerCase().includes(lowerSearch) || 
                     courseID.toLowerCase().includes(lowerSearch)
                 )
             })
@@ -82,24 +85,29 @@ export function Sidebar({ availableCourses, courseMap}) {
                         No courses available or match your filters.
                     </p>
                 ) : (
-                    filteredCourses.map((courseID) => {
-                        const course = courseMap[courseID]
-                        if (!course) return null
-                        
-                        return (
-                            <Draggable
-                                key={courseID}
-                                id={courseID}
-                                // Data passed to handleDragEnd when dropped
-                                data={{ type: 'sidebar', courseID }}
-                            >
-                                <CourseCard
-                                    course={course}
-                                    variant='sidebar'
-                                />
-                            </Draggable>
-                        )
-                    })
+                    <Virtuoso
+                        stlye={{ height: '100%', width: '100%' }}
+                        totalCount={filteredCourses.length}
+                        itemContent={(index => {
+                            const courseID = filteredCourses[index]
+                            const course = courseMap[courseID]
+                            if (!course) return null
+                            
+                            return (
+                                <Draggable
+                                    key={courseID}
+                                    id={courseID}
+                                    // Data passed to handleDragEnd when dropped
+                                    data={{ type: 'sidebar', courseID }}
+                                >
+                                    <CourseCard
+                                        course={course}
+                                        variant='sidebar'
+                                    />
+                                </Draggable>
+                            )
+                        })}
+                    />
                 )}
             </Droppable>
         </aside>

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { Tooltip } from "./Tooltip";
 
 export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
+    const ref = useRef(null);
+    const [hovered, setHovered] = useState(false);
+    const [rect, setRect] = useState(null);
 
     // Base styling for all cards
-    let classes = 'bg-white rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
+    let classes = 'bg-white flex h-9 items-center justify-between rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
 
     // Specific styling base on where card is
     if (variant === 'sidebar') {
@@ -24,14 +28,26 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
     }
 
     return (
-        <div className={classes}>
-            <p className="font-semibold text-sm text-gray-800">
-                {/* POSSIBLE ERROR: Might be courseID */}
+        <>
+            <div ref={ref}className={classes} onMouseEnter={() => {
+                if (ref.current) {
+                    setRect(ref.current.getBoundingClientRect())
+                    setHovered(true)
+                }
+            }}
+                onMouseLeave={() => setHovered(false)}
+            >
+                <p className={`font-semibold ${variant === 'plan' ? 'text-sm' : 'text-xs'} text-gray-800`}>
+                    {course.courseID}
+                </p>
+                <p className={'text-xs text-gray-600'}>
+                    {course.units}
+                </p>
+                
+            </div>
+            <Tooltip visible={hovered} rect={rect}>
                 {course.course_name}
-            </p>
-            <p className="text-xs text-gray-600">
-                {course.units} Units
-            </p>
-        </div>
+            </Tooltip>
+        </> 
     )
 }

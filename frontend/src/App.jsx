@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import useLocalStorage from './hooks/useLocalStorage'
-import mockCourses from './data/mergedCourses';
+import mockCourses from './data/course_data';
 import { AppShell } from './components/layout/AppShell';
 import { CourseCard } from './features/Planner/components/CourseCard';
+import { getCoursesInPlan } from './utils/courseInPlan';
 
 const initialPlan = {
   'year1': {
@@ -39,7 +40,7 @@ const initialPlan = {
 function App() {
   const courseMap = useMemo(() => {
     return mockCourses.reduce((map, course) => {
-      map[course.course_name] = course;
+      map[course.courseID] = course;
       return map;
     }, {})
   }, [])
@@ -51,9 +52,14 @@ function App() {
   const [activeItem, setActiveItem] = useState(null)
 
   // Set the available course list
-  const [availableCourses, setAvailableCourses] = useState(() => {
-    return mockCourses.map(c => c.course_name)
-  })
+  const availableCourses = useMemo(() => {
+    const used = getCoursesInPlan(plan)
+
+    return mockCourses
+      .map(c => c.courseID)
+      .filter(id => !used.has(id))
+  }, [plan])
+
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -83,8 +89,6 @@ function App() {
 
     // 1. Sidebar -> Planner (Placing a course)
     if (from.type === 'sidebar' && to.type === 'plan') {
-      setAvailableCourses(prev => prev.filter(id => id !== courseID))
-
       setPlan(p => ({
         ...p,
         [to.year]: {
@@ -96,15 +100,6 @@ function App() {
 
     // 2. Plan -> Sidebar (Remove a course)
     else if (from.type === 'plan' && to.type === 'sidebar') {
-      // Add back to available list
-      setAvailableCourses(prev => {
-        const newList = [...prev, courseID]
-
-        newList.sort()
-
-        return newList
-      })
-
       // Update plan with course removed
       setPlan(p => ({
         ...p,
@@ -118,6 +113,15 @@ function App() {
     // 3. Plan -> Plan (Moving between quarters)
     else if (from.type == 'plan' && to.type === 'plan') {
       setPlan(p => {
+        // If dropping into same quarter, do nothing
+        if (
+          from.year === to.year &&
+          from.quarter === to.quarter
+        ) {
+          return p
+        }
+
+
         const sourceList = p[from.year][from.quarter].filter(id => id !== courseID)
         const destList = [...p[to.year][to.quarter], courseID]
 
@@ -167,8 +171,7 @@ function App() {
       <AppShell
         plan={plan}
         setPlan={setPlan}
-        availableCourses={availableCourses}
-        setAvailableCourses={setAvailableCourses}
+        availableCourses={availableCourses.sort()}
         courseMap={courseMap}
       />
 

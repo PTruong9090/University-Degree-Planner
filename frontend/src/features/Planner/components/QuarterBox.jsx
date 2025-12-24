@@ -11,7 +11,7 @@ export function QuarterBox({ yearKey, quarterKey, plan, courseMap }) {
         return courseIDsInQuarter.reduce((sum, courseID) => {
             // Look up full course object by ID
             const course = courseMap[courseID]
-            return sum + (course?.units || 0);
+            return sum + (parseInt(course?.units[0]) || 0);
         }, 0)
     }, [courseIDsInQuarter, courseMap])
 

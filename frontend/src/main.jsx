@@ -12,5 +12,6 @@ createRoot(document.getElementById('root')).render(
 
 /*
 TODO List:
-  - After dragging from planner to sidebar, its not sorted to the top again
+  - Add pdf 
+  - If courses are in planner and it resets, courses duplicates appear
 */

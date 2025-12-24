@@ -1,14 +1,23 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { QuarterBox } from "./QuarterBox";
+import { exportElementToPDF } from "../../../utils/pdfGenerator";
 
 const yearNames = ['Freshman', 'Sophomore', 'Junior', 'Senior']
 const quarterKeys = ['fall', 'winter', 'spring', 'summer']
 
-export function PlannerGrid({ plan, setPlan, courseMap}) {
-    // Object.keys(plan) will give us the year: ['year1', 'year2',...]
+export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
+    const plannerRef = useRef(null)
+
+    const exportPDF = async () => {
+        await exportElementToPDF(plannerRef.current)
+    }
+
+    useImperativeHandle(ref, () => ({
+        exportPDF
+    }))
 
     return (
-        <div className="space-y-8 p-1">
+        <div ref = {plannerRef} className="space-y-8 p-1">
 
             {/* 1. Column Header Row (Fall, Winter, Spring Summer) */}
             <div className="grid grid-cols-[200px_repeat(3,_2fr)] gap-4 font-bold text-sm text-gray-600 border-b pb-2">
@@ -25,7 +34,7 @@ export function PlannerGrid({ plan, setPlan, courseMap}) {
                     key={yearKey}
                     className="grid grid-cols-[repeat(4,_1fr)] gap-4 items-stretch"
                 >
-
+                    
                     {/* Map over the quarters within the year */}
                     {quarterKeys.map((quarterKey) => (
                         <QuarterBox
@@ -41,4 +50,4 @@ export function PlannerGrid({ plan, setPlan, courseMap}) {
             ))}
         </div>
     )
-}
+})
