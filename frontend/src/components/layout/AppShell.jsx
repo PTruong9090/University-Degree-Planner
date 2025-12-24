@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Sidebar } from "../../features/Planner/components/Sidebar";
 import { PlannerGrid } from "../../features/Planner/components/PlannerGrid";
 
-export function AppShell({ plan, setPlan, availableCourses, courseMap, setAvailableCourses}) {
+export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
     const plannerRef = useRef(null)
 
     return (
@@ -11,7 +11,6 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap, setAvaila
             <Sidebar
                 availableCourses = {availableCourses}
                 courseMap = {courseMap}
-                setAvailableCourses = {setAvailableCourses}
             />
 
             {/* Main Planner Area */}

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import useLocalStorage from './hooks/useLocalStorage'
-import mockCourses from './data/course_data';
 import { AppShell } from './components/layout/AppShell';
 import { CourseCard } from './features/Planner/components/CourseCard';
 import { getCoursesInPlan } from './utils/courseInPlan';
@@ -38,12 +37,21 @@ const initialPlan = {
 
 
 function App() {
+  const [courses, setCourses] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/courses?limit=20000')
+      .then(res => res.json())
+      .then(data => setCourses(data))
+      .catch(err => console.log(err))
+  }, [])
+
   const courseMap = useMemo(() => {
-    return mockCourses.reduce((map, course) => {
+    return courses.reduce((map, course) => {
       map[course.courseID] = course;
       return map;
     }, {})
-  }, [])
+  }, [courses])
 
   // Make plan persistent
   const [plan, setPlan] = useLocalStorage('ucla-planner-v1', initialPlan)
@@ -55,10 +63,10 @@ function App() {
   const availableCourses = useMemo(() => {
     const used = getCoursesInPlan(plan)
 
-    return mockCourses
+    return courses
       .map(c => c.courseID)
       .filter(id => !used.has(id))
-  }, [plan])
+  }, [courses, plan])
 
 
 /* ------------------------------------------------------------------------------------------------------------------------- */

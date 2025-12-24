@@ -4,8 +4,6 @@ import { Droppable } from '../../../dnd/Droppable';
 import { Virtuoso } from 'react-virtuoso'
 import { CourseCard } from './CourseCard';
 
-const ITEM_HEIGHT = 80
-
 export function Sidebar({ availableCourses, courseMap}) {
     const [subjectFilter, setSubjectFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
@@ -80,35 +78,41 @@ export function Sidebar({ availableCourses, courseMap}) {
                 id="courses-container"
                 data={{ type: 'sidebar' }}
             >
-                {filteredCourses.length === 0 ? (
-                    <p className="text-sm text-gray-500 pt-4 text-center">
-                        No courses available or match your filters.
+                {!subjectFilter && !searchTerm? (
+                    <p className="text-sm text-gray-500 pt-2 text-center">
+                        Please select a subject to view courses.
                     </p>
-                ) : (
-                    <Virtuoso
-                        stlye={{ height: '100%', width: '100%' }}
-                        totalCount={filteredCourses.length}
-                        itemContent={(index => {
-                            const courseID = filteredCourses[index]
-                            const course = courseMap[courseID]
-                            if (!course) return null
-                            
-                            return (
-                                <Draggable
-                                    key={courseID}
-                                    id={courseID}
-                                    // Data passed to handleDragEnd when dropped
-                                    data={{ type: 'sidebar', courseID }}
-                                >
-                                    <CourseCard
-                                        course={course}
-                                        variant='sidebar'
-                                    />
-                                </Draggable>
-                            )
-                        })}
-                    />
-                )}
+
+                    ) : filteredCourses.length === 0 ? (
+                        <p className="text-sm text-gray-500 pt-4 text-center">
+                            No courses available or match your filters.
+                        </p>
+                    ) : (
+                        <Virtuoso
+                            style={{ height: '100%', width: '100%' }}
+                            totalCount={filteredCourses.length}
+                            itemContent={(index => {
+                                const courseID = filteredCourses[index]
+                                const course = courseMap[courseID]
+                                if (!course) return null
+                                
+                                return (
+                                    <Draggable
+                                        key={courseID}
+                                        id={courseID}
+                                        // Data passed to handleDragEnd when dropped
+                                        data={{ type: 'sidebar', courseID }}
+                                    >
+                                        <CourseCard
+                                            course={course}
+                                            variant='sidebar'
+                                        />
+                                    </Draggable>
+                                )
+                            })}
+                        />
+                    )
+                }
             </Droppable>
         </aside>
     )
