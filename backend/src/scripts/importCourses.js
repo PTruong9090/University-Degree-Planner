@@ -1,4 +1,4 @@
-import sequelize from "../db/sequelize.js";
+import sequelize from "../config/database.js";
 import Course from "../models/course.model.js";
 import courses from "../data/course_data.js";
 
