@@ -6,9 +6,15 @@ import { sequelize } from './models/index.js';
 
 const app = express()
 
+app.use(cors({
+  origin: 'https://development.phuctruong.dev',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
+}));
+
 // Middleware
 app.use(express.json())
-app.use(cors())
 
 // Router setup
 app.use('/api/courses', courseRouter);

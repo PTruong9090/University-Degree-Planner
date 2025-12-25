@@ -40,7 +40,7 @@ function App() {
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/courses?limit=20000')
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/courses?limit=20000`)
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => console.log(err))

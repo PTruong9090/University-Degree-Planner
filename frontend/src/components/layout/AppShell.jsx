@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Sidebar } from "../../features/Planner/components/Sidebar";
 import { PlannerGrid } from "../../features/Planner/components/PlannerGrid";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
     const plannerRef = useRef(null)
+    const isMobile = useIsMobile()
+    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     return (
         <div className="flex w-full border border-gray-200 max-w-7xl h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
