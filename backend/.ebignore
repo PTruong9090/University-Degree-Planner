@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Dependencies
+node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Editor / OS
+.vscode/
+.DS_Store

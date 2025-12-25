@@ -13,7 +13,7 @@ app.use(cors())
 // Router setup
 app.use('/api/courses', courseRouter);
 
-const PORT = ENV.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 app.get('/health', (req, res) => {
   res.status(200).send('ok');
@@ -38,8 +38,8 @@ app.get("/api/db-test", async (req, res) => {
         console.log('✅ Database synced');
     }
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server started on port ${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (err) {
     console.error('❌ Database connection failed:', err);
