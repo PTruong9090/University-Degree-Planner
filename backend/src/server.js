@@ -33,8 +33,10 @@ app.get("/api/db-test", async (req, res) => {
     await sequelize.authenticate();
     console.log('✅ Database connected');
 
-    await sequelize.sync({ alter: true });
-    console.log('✅ Database synced');
+    if (ENV.NODE_ENV !== "production") {
+        await sequelize.sync({ alter: true });
+        console.log('✅ Database synced');
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 Server started on port ${PORT}`);

@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize'
 import { ENV } from './env.js';
 
+const isProd = ENV.NODE_ENV === "production";
+
 const sequelize = new Sequelize(
   ENV.DB_NAME,
   ENV.DB_USER,
@@ -10,12 +12,12 @@ const sequelize = new Sequelize(
     port: ENV.DB_PORT,
     dialect: 'postgres',
     logging: false,
-    dialectOptions: {
+    dialectOptions: isProd ? {
       ssl: {
         require: true,
         rejectUnauthorized: false
       }
-    }
+    } : {}
   }
 )
 
