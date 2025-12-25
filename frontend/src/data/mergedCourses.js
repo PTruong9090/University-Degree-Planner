@@ -1,0 +1,2886 @@
+  
+const mockCourses = 
+  [
+    {
+      "course_name": "COM SCI 1",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI1"
+    },
+    {
+      "course_name": "COM SCI 19",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI19"
+    },
+    {
+      "course_name": "COM SCI 30",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI30"
+    },
+    {
+      "course_name": "COM SCI 31",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI31"
+    },
+    {
+      "course_name": "COM SCI 32",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI32"
+    },
+    {
+      "course_name": "COM SCI 33",
+      "department": "Computer Science",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI33"
+    },
+    {
+      "course_name": "COM SCI 35L",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI35L"
+    },
+    {
+      "course_name": "COM SCI M51A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM51A"
+    },
+    {
+      "course_name": "COM SCI 97",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI97"
+    },
+    {
+      "course_name": "COM SCI 99",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI99"
+    },
+    {
+      "course_name": "COM SCI 111",
+      "department": "Computer Science",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI111"
+    },
+    {
+      "course_name": "COM SCI 112",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI112"
+    },
+    {
+      "course_name": "COM SCI 117",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI117"
+    },
+    {
+      "course_name": "COM SCI 118",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI118"
+    },
+    {
+      "course_name": "COM SCI M119",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM119"
+    },
+    {
+      "course_name": "COM SCI C121",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC121"
+    },
+    {
+      "course_name": "COM SCI C122",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC122"
+    },
+    {
+      "course_name": "COM SCI C124",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC124"
+    },
+    {
+      "course_name": "COM SCI 130",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI130"
+    },
+    {
+      "course_name": "COM SCI 131",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI131"
+    },
+    {
+      "course_name": "COM SCI 132",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI132"
+    },
+    {
+      "course_name": "COM SCI 133",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI133"
+    },
+    {
+      "course_name": "COM SCI 134",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI134"
+    },
+    {
+      "course_name": "COM SCI 136",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI136"
+    },
+    {
+      "course_name": "COM SCI C137A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC137A"
+    },
+    {
+      "course_name": "COM SCI C137B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC137B"
+    },
+    {
+      "course_name": "COM SCI M138",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM138"
+    },
+    {
+      "course_name": "COM SCI 143",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI143"
+    },
+    {
+      "course_name": "COM SCI 144",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI144"
+    },
+    {
+      "course_name": "COM SCI 145",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI145"
+    },
+    {
+      "course_name": "COM SCI M146",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM146"
+    },
+    {
+      "course_name": "COM SCI M148",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM148"
+    },
+    {
+      "course_name": "COM SCI M151B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM151B"
+    },
+    {
+      "course_name": "COM SCI M152A",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM152A"
+    },
+    {
+      "course_name": "COM SCI 152B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI152B"
+    },
+    {
+      "course_name": "COM SCI 161",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI161"
+    },
+    {
+      "course_name": "COM SCI 162",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI162"
+    },
+    {
+      "course_name": "COM SCI 163",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI163"
+    },
+    {
+      "course_name": "COM SCI 168",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI168"
+    },
+    {
+      "course_name": "COM SCI 170A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI170A"
+    },
+    {
+      "course_name": "COM SCI M171L",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM171L"
+    },
+    {
+      "course_name": "COM SCI 172",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI172"
+    },
+    {
+      "course_name": "COM SCI 174A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI174A"
+    },
+    {
+      "course_name": "COM SCI 174B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI174B"
+    },
+    {
+      "course_name": "COM SCI C174C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC174C"
+    },
+    {
+      "course_name": "COM SCI 180",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI180"
+    },
+    {
+      "course_name": "COM SCI 181",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI181"
+    },
+    {
+      "course_name": "COM SCI M182",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM182"
+    },
+    {
+      "course_name": "COM SCI 183",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI183"
+    },
+    {
+      "course_name": "COM SCI M184",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM184"
+    },
+    {
+      "course_name": "COM SCI CM186",
+      "department": "Computer Science",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCICM186"
+    },
+    {
+      "course_name": "COM SCI CM187",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCICM187"
+    },
+    {
+      "course_name": "COM SCI 188",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI188"
+    },
+    {
+      "course_name": "COM SCI 188SA",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI188SA"
+    },
+    {
+      "course_name": "COM SCI 188SB",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI188SB"
+    },
+    {
+      "course_name": "COM SCI 188SC",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI188SC"
+    },
+    {
+      "course_name": "COM SCI 192",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI192"
+    },
+    {
+      "course_name": "COM SCI M192A",
+      "department": "Computer Science",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM192A"
+    },
+    {
+      "course_name": "COM SCI 194",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI194"
+    },
+    {
+      "course_name": "COM SCI 199",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI199"
+    },
+    {
+      "course_name": "COM SCI 201",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI201"
+    },
+    {
+      "course_name": "COM SCI 202",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI202"
+    },
+    {
+      "course_name": "COM SCI 205",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI205"
+    },
+    {
+      "course_name": "COM SCI 211",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI211"
+    },
+    {
+      "course_name": "COM SCI 212A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI212A"
+    },
+    {
+      "course_name": "COM SCI M213A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM213A"
+    },
+    {
+      "course_name": "COM SCI M213B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM213B"
+    },
+    {
+      "course_name": "COM SCI 214",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI214"
+    },
+    {
+      "course_name": "COM SCI 215",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI215"
+    },
+    {
+      "course_name": "COM SCI 216",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI216"
+    },
+    {
+      "course_name": "COM SCI 217A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI217A"
+    },
+    {
+      "course_name": "COM SCI 217B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI217B"
+    },
+    {
+      "course_name": "COM SCI 218",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI218"
+    },
+    {
+      "course_name": "COM SCI 219",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI219"
+    },
+    {
+      "course_name": "COM SCI C221",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC221"
+    },
+    {
+      "course_name": "COM SCI C222",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC222"
+    },
+    {
+      "course_name": "COM SCI C224",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC224"
+    },
+    {
+      "course_name": "COM SCI 225",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI225"
+    },
+    {
+      "course_name": "COM SCI 226",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI226"
+    },
+    {
+      "course_name": "COM SCI 229S",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI229S"
+    },
+    {
+      "course_name": "COM SCI 230",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI230"
+    },
+    {
+      "course_name": "COM SCI 231",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI231"
+    },
+    {
+      "course_name": "COM SCI 232",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI232"
+    },
+    {
+      "course_name": "COM SCI 233A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI233A"
+    },
+    {
+      "course_name": "COM SCI 233B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI233B"
+    },
+    {
+      "course_name": "COM SCI 234",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI234"
+    },
+    {
+      "course_name": "COM SCI 235",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI235"
+    },
+    {
+      "course_name": "COM SCI 236",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI236"
+    },
+    {
+      "course_name": "COM SCI C237A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC237A"
+    },
+    {
+      "course_name": "COM SCI C237B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC237B"
+    },
+    {
+      "course_name": "COM SCI M238",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM238"
+    },
+    {
+      "course_name": "COM SCI 238B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI238B"
+    },
+    {
+      "course_name": "COM SCI 239",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI239"
+    },
+    {
+      "course_name": "COM SCI 240A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI240A"
+    },
+    {
+      "course_name": "COM SCI 240B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI240B"
+    },
+    {
+      "course_name": "COM SCI 241B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI241B"
+    },
+    {
+      "course_name": "COM SCI 244A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI244A"
+    },
+    {
+      "course_name": "COM SCI 245",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI245"
+    },
+    {
+      "course_name": "COM SCI 246",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI246"
+    },
+    {
+      "course_name": "COM SCI 247",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI247"
+    },
+    {
+      "course_name": "COM SCI 249",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI249"
+    },
+    {
+      "course_name": "COM SCI 251A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI251A"
+    },
+    {
+      "course_name": "COM SCI 251B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI251B"
+    },
+    {
+      "course_name": "COM SCI 252A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI252A"
+    },
+    {
+      "course_name": "COM SCI 256A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI256A"
+    },
+    {
+      "course_name": "COM SCI M258A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM258A"
+    },
+    {
+      "course_name": "COM SCI M258C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM258C"
+    },
+    {
+      "course_name": "COM SCI 258F",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI258F"
+    },
+    {
+      "course_name": "COM SCI 258G",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI258G"
+    },
+    {
+      "course_name": "COM SCI 258H",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI258H"
+    },
+    {
+      "course_name": "COM SCI 259",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI259"
+    },
+    {
+      "course_name": "COM SCI 260",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI260"
+    },
+    {
+      "course_name": "COM SCI 260B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI260B"
+    },
+    {
+      "course_name": "COM SCI 260C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI260C"
+    },
+    {
+      "course_name": "COM SCI 260D",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI260D"
+    },
+    {
+      "course_name": "COM SCI 260R",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI260R"
+    },
+    {
+      "course_name": "COM SCI 261",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI261"
+    },
+    {
+      "course_name": "COM SCI 261A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI261A"
+    },
+    {
+      "course_name": "COM SCI 262A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI262A"
+    },
+    {
+      "course_name": "COM SCI M262C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM262C"
+    },
+    {
+      "course_name": "COM SCI 262Z",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI262Z"
+    },
+    {
+      "course_name": "COM SCI 263",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI263"
+    },
+    {
+      "course_name": "COM SCI 263A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI263A"
+    },
+    {
+      "course_name": "COM SCI 263C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI263C"
+    },
+    {
+      "course_name": "COM SCI 264A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI264A"
+    },
+    {
+      "course_name": "COM SCI 265A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI265A"
+    },
+    {
+      "course_name": "COM SCI M266A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM266A"
+    },
+    {
+      "course_name": "COM SCI M266B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM266B"
+    },
+    {
+      "course_name": "COM SCI 267A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI267A"
+    },
+    {
+      "course_name": "COM SCI M268",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM268"
+    },
+    {
+      "course_name": "COM SCI 268S",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI268S"
+    },
+    {
+      "course_name": "COM SCI 269",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI269"
+    },
+    {
+      "course_name": "COM SCI C274C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIC274C"
+    },
+    {
+      "course_name": "COM SCI 275",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI275"
+    },
+    {
+      "course_name": "COM SCI M276A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM276A"
+    },
+    {
+      "course_name": "COM SCI 280A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280A"
+    },
+    {
+      "course_name": "COM SCI 280AP",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280AP"
+    },
+    {
+      "course_name": "COM SCI 280CO",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280CO"
+    },
+    {
+      "course_name": "COM SCI 280D",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280D"
+    },
+    {
+      "course_name": "COM SCI 280DA",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280DA"
+    },
+    {
+      "course_name": "COM SCI 280DP",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280DP"
+    },
+    {
+      "course_name": "COM SCI 280G",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280G"
+    },
+    {
+      "course_name": "COM SCI 280P",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI280P"
+    },
+    {
+      "course_name": "COM SCI 281A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI281A"
+    },
+    {
+      "course_name": "COM SCI M282A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM282A"
+    },
+    {
+      "course_name": "COM SCI M282B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM282B"
+    },
+    {
+      "course_name": "COM SCI M283A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM283A"
+    },
+    {
+      "course_name": "COM SCI M283B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM283B"
+    },
+    {
+      "course_name": "COM SCI 284A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI284A"
+    },
+    {
+      "course_name": "COM SCI 284C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI284C"
+    },
+    {
+      "course_name": "COM SCI 284P",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI284P"
+    },
+    {
+      "course_name": "COM SCI 285CC",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI285CC"
+    },
+    {
+      "course_name": "COM SCI CM286",
+      "department": "Computer Science",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCICM286"
+    },
+    {
+      "course_name": "COM SCI CM287",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCICM287"
+    },
+    {
+      "course_name": "COM SCI 288S",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI288S"
+    },
+    {
+      "course_name": "COM SCI 289A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289A"
+    },
+    {
+      "course_name": "COM SCI 289CO",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289CO"
+    },
+    {
+      "course_name": "COM SCI 289L",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289L"
+    },
+    {
+      "course_name": "COM SCI 289OA",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289OA"
+    },
+    {
+      "course_name": "COM SCI 289P",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289P"
+    },
+    {
+      "course_name": "COM SCI 289RA",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289RA"
+    },
+    {
+      "course_name": "COM SCI 289SG",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI289SG"
+    },
+    {
+      "course_name": "COM SCI M296A",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM296A"
+    },
+    {
+      "course_name": "COM SCI M296B",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM296B"
+    },
+    {
+      "course_name": "COM SCI M296C",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM296C"
+    },
+    {
+      "course_name": "COM SCI M296D",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCIM296D"
+    },
+    {
+      "course_name": "COM SCI 298",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI298"
+    },
+    {
+      "course_name": "COM SCI 495",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI495"
+    },
+    {
+      "course_name": "COM SCI 495B",
+      "department": "Computer Science",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI495B"
+    },
+    {
+      "course_name": "COM SCI 497D",
+      "department": "Computer Science",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/COMSCI497D"
+    },
+    {
+      "course_name": "MATH 1",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH1"
+    },
+    {
+      "course_name": "MATH 3A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH3A"
+    },
+    {
+      "course_name": "MATH 3B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH3B"
+    },
+    {
+      "course_name": "MATH 3C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH3C"
+    },
+    {
+      "course_name": "MATH 11N",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH11N"
+    },
+    {
+      "course_name": "MATH 19",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH19"
+    },
+    {
+      "course_name": "MATH 31A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH31A"
+    },
+    {
+      "course_name": "MATH 31AL",
+      "department": "Mathematics",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH31AL"
+    },
+    {
+      "course_name": "MATH 31B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH31B"
+    },
+    {
+      "course_name": "MATH 31BH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH31BH"
+    },
+    {
+      "course_name": "MATH 31E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH31E"
+    },
+    {
+      "course_name": "MATH 32A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH32A"
+    },
+    {
+      "course_name": "MATH 32AH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH32AH"
+    },
+    {
+      "course_name": "MATH 32B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH32B"
+    },
+    {
+      "course_name": "MATH 32BH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH32BH"
+    },
+    {
+      "course_name": "MATH M32T",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM32T"
+    },
+    {
+      "course_name": "MATH 33A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH33A"
+    },
+    {
+      "course_name": "MATH 33AH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH33AH"
+    },
+    {
+      "course_name": "MATH 33B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH33B"
+    },
+    {
+      "course_name": "MATH 42",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH42"
+    },
+    {
+      "course_name": "MATH 61",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH61"
+    },
+    {
+      "course_name": "MATH 70",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH70"
+    },
+    {
+      "course_name": "MATH 73XP",
+      "department": "Mathematics",
+      "units": 3,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH73XP"
+    },
+    {
+      "course_name": "MATH 74XP",
+      "department": "Mathematics",
+      "units": 3,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH74XP"
+    },
+    {
+      "course_name": "MATH 75XP",
+      "department": "Mathematics",
+      "units": 3,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH75XP"
+    },
+    {
+      "course_name": "MATH 89",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH89"
+    },
+    {
+      "course_name": "MATH 89HC",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH89HC"
+    },
+    {
+      "course_name": "MATH 94",
+      "department": "Mathematics",
+      "units": 6,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH94"
+    },
+    {
+      "course_name": "MATH 95",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH95"
+    },
+    {
+      "course_name": "MATH 97",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH97"
+    },
+    {
+      "course_name": "MATH 98XA",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH98XA"
+    },
+    {
+      "course_name": "MATH 98XB",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH98XB"
+    },
+    {
+      "course_name": "MATH 99",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH99"
+    },
+    {
+      "course_name": "MATH 100",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH100"
+    },
+    {
+      "course_name": "MATH 101",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH101"
+    },
+    {
+      "course_name": "MATH 103A",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH103A"
+    },
+    {
+      "course_name": "MATH 103B",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH103B"
+    },
+    {
+      "course_name": "MATH 103C",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH103C"
+    },
+    {
+      "course_name": "MATH 105A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH105A"
+    },
+    {
+      "course_name": "MATH 105B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH105B"
+    },
+    {
+      "course_name": "MATH 105C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH105C"
+    },
+    {
+      "course_name": "MATH 106",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH106"
+    },
+    {
+      "course_name": "MATH 110A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH110A"
+    },
+    {
+      "course_name": "MATH 110AH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH110AH"
+    },
+    {
+      "course_name": "MATH 110B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH110B"
+    },
+    {
+      "course_name": "MATH 110BH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH110BH"
+    },
+    {
+      "course_name": "MATH 110C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH110C"
+    },
+    {
+      "course_name": "MATH 111",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH111"
+    },
+    {
+      "course_name": "MATH 114C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH114C"
+    },
+    {
+      "course_name": "MATH 114L",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH114L"
+    },
+    {
+      "course_name": "MATH M114S",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM114S"
+    },
+    {
+      "course_name": "MATH 115A",
+      "department": "Mathematics",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH115A"
+    },
+    {
+      "course_name": "MATH 115AH",
+      "department": "Mathematics",
+      "units": 5,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH115AH"
+    },
+    {
+      "course_name": "MATH 115B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH115B"
+    },
+    {
+      "course_name": "MATH 116",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH116"
+    },
+    {
+      "course_name": "MATH 117",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH117"
+    },
+    {
+      "course_name": "MATH 118",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH118"
+    },
+    {
+      "course_name": "MATH 120A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH120A"
+    },
+    {
+      "course_name": "MATH 120B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH120B"
+    },
+    {
+      "course_name": "MATH 121",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH121"
+    },
+    {
+      "course_name": "MATH 123",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH123"
+    },
+    {
+      "course_name": "MATH 131A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH131A"
+    },
+    {
+      "course_name": "MATH 131AH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH131AH"
+    },
+    {
+      "course_name": "MATH 131B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH131B"
+    },
+    {
+      "course_name": "MATH 131BH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH131BH"
+    },
+    {
+      "course_name": "MATH 131C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH131C"
+    },
+    {
+      "course_name": "MATH 132",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH132"
+    },
+    {
+      "course_name": "MATH 132H",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH132H"
+    },
+    {
+      "course_name": "MATH 133",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH133"
+    },
+    {
+      "course_name": "MATH 134",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH134"
+    },
+    {
+      "course_name": "MATH 135",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH135"
+    },
+    {
+      "course_name": "MATH 136",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH136"
+    },
+    {
+      "course_name": "MATH 142",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH142"
+    },
+    {
+      "course_name": "MATH 146",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH146"
+    },
+    {
+      "course_name": "MATH M148",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM148"
+    },
+    {
+      "course_name": "MATH 151A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH151A"
+    },
+    {
+      "course_name": "MATH 151AH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH151AH"
+    },
+    {
+      "course_name": "MATH 151B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH151B"
+    },
+    {
+      "course_name": "MATH 151BH",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH151BH"
+    },
+    {
+      "course_name": "MATH 155",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH155"
+    },
+    {
+      "course_name": "MATH 156",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH156"
+    },
+    {
+      "course_name": "MATH 164",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH164"
+    },
+    {
+      "course_name": "MATH 167",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH167"
+    },
+    {
+      "course_name": "MATH 168",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH168"
+    },
+    {
+      "course_name": "MATH 170A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH170A"
+    },
+    {
+      "course_name": "MATH 170B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH170B"
+    },
+    {
+      "course_name": "MATH 170E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH170E"
+    },
+    {
+      "course_name": "MATH 170S",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH170S"
+    },
+    {
+      "course_name": "MATH 171",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH171"
+    },
+    {
+      "course_name": "MATH 174E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH174E"
+    },
+    {
+      "course_name": "MATH 177",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH177"
+    },
+    {
+      "course_name": "MATH 178A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH178A"
+    },
+    {
+      "course_name": "MATH 178B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH178B"
+    },
+    {
+      "course_name": "MATH 178C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH178C"
+    },
+    {
+      "course_name": "MATH 179",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH179"
+    },
+    {
+      "course_name": "MATH 180",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH180"
+    },
+    {
+      "course_name": "MATH 182",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH182"
+    },
+    {
+      "course_name": "MATH 184",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH184"
+    },
+    {
+      "course_name": "MATH 188SA",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH188SA"
+    },
+    {
+      "course_name": "MATH 188SB",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH188SB"
+    },
+    {
+      "course_name": "MATH 188SC",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH188SC"
+    },
+    {
+      "course_name": "MATH 189",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH189"
+    },
+    {
+      "course_name": "MATH 189HC",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH189HC"
+    },
+    {
+      "course_name": "MATH 190A",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190A"
+    },
+    {
+      "course_name": "MATH 190B",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190B"
+    },
+    {
+      "course_name": "MATH 190C",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190C"
+    },
+    {
+      "course_name": "MATH 190D",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190D"
+    },
+    {
+      "course_name": "MATH 190E",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190E"
+    },
+    {
+      "course_name": "MATH 190F",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190F"
+    },
+    {
+      "course_name": "MATH 190G",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190G"
+    },
+    {
+      "course_name": "MATH 190H",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190H"
+    },
+    {
+      "course_name": "MATH 190I",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190I"
+    },
+    {
+      "course_name": "MATH 190J",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190J"
+    },
+    {
+      "course_name": "MATH 190K",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190K"
+    },
+    {
+      "course_name": "MATH 190L",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190L"
+    },
+    {
+      "course_name": "MATH 190M",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190M"
+    },
+    {
+      "course_name": "MATH 190N",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190N"
+    },
+    {
+      "course_name": "MATH 190O",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH190O"
+    },
+    {
+      "course_name": "MATH 191",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH191"
+    },
+    {
+      "course_name": "MATH 191H",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH191H"
+    },
+    {
+      "course_name": "MATH M192A",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM192A"
+    },
+    {
+      "course_name": "MATH 192B",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH192B"
+    },
+    {
+      "course_name": "MATH 195",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH195"
+    },
+    {
+      "course_name": "MATH 197",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH197"
+    },
+    {
+      "course_name": "MATH 199",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH199"
+    },
+    {
+      "course_name": "MATH 201A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH201A"
+    },
+    {
+      "course_name": "MATH 201B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH201B"
+    },
+    {
+      "course_name": "MATH 201C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH201C"
+    },
+    {
+      "course_name": "MATH 202A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH202A"
+    },
+    {
+      "course_name": "MATH 202B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH202B"
+    },
+    {
+      "course_name": "MATH 203",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH203"
+    },
+    {
+      "course_name": "MATH 204",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH204"
+    },
+    {
+      "course_name": "MATH 205A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH205A"
+    },
+    {
+      "course_name": "MATH 205B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH205B"
+    },
+    {
+      "course_name": "MATH 205C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH205C"
+    },
+    {
+      "course_name": "MATH 206A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH206A"
+    },
+    {
+      "course_name": "MATH 206B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH206B"
+    },
+    {
+      "course_name": "MATH 207A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH207A"
+    },
+    {
+      "course_name": "MATH 207B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH207B"
+    },
+    {
+      "course_name": "MATH 207C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH207C"
+    },
+    {
+      "course_name": "MATH M208A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM208A"
+    },
+    {
+      "course_name": "MATH M208B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM208B"
+    },
+    {
+      "course_name": "MATH M209A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM209A"
+    },
+    {
+      "course_name": "MATH M209B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM209B"
+    },
+    {
+      "course_name": "MATH 210A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH210A"
+    },
+    {
+      "course_name": "MATH 210B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH210B"
+    },
+    {
+      "course_name": "MATH 210C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH210C"
+    },
+    {
+      "course_name": "MATH 211",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH211"
+    },
+    {
+      "course_name": "MATH 212A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH212A"
+    },
+    {
+      "course_name": "MATH 212B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH212B"
+    },
+    {
+      "course_name": "MATH 213A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH213A"
+    },
+    {
+      "course_name": "MATH 213B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH213B"
+    },
+    {
+      "course_name": "MATH 214A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH214A"
+    },
+    {
+      "course_name": "MATH 214B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH214B"
+    },
+    {
+      "course_name": "MATH 215A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH215A"
+    },
+    {
+      "course_name": "MATH 215B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH215B"
+    },
+    {
+      "course_name": "MATH 216A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH216A"
+    },
+    {
+      "course_name": "MATH 216B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH216B"
+    },
+    {
+      "course_name": "MATH 216C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH216C"
+    },
+    {
+      "course_name": "MATH M217",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM217"
+    },
+    {
+      "course_name": "MATH 218A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH218A"
+    },
+    {
+      "course_name": "MATH 218B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH218B"
+    },
+    {
+      "course_name": "MATH 218C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH218C"
+    },
+    {
+      "course_name": "MATH 220A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH220A"
+    },
+    {
+      "course_name": "MATH 220B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH220B"
+    },
+    {
+      "course_name": "MATH 220C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH220C"
+    },
+    {
+      "course_name": "MATH 222A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH222A"
+    },
+    {
+      "course_name": "MATH 222B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH222B"
+    },
+    {
+      "course_name": "MATH 223C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH223C"
+    },
+    {
+      "course_name": "MATH 223D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH223D"
+    },
+    {
+      "course_name": "MATH 223M",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH223M"
+    },
+    {
+      "course_name": "MATH 223S",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH223S"
+    },
+    {
+      "course_name": "MATH 225A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH225A"
+    },
+    {
+      "course_name": "MATH 225B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH225B"
+    },
+    {
+      "course_name": "MATH 225C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH225C"
+    },
+    {
+      "course_name": "MATH 226A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH226A"
+    },
+    {
+      "course_name": "MATH 226B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH226B"
+    },
+    {
+      "course_name": "MATH 226C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH226C"
+    },
+    {
+      "course_name": "MATH 227A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH227A"
+    },
+    {
+      "course_name": "MATH 227B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH227B"
+    },
+    {
+      "course_name": "MATH 229A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH229A"
+    },
+    {
+      "course_name": "MATH 229B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH229B"
+    },
+    {
+      "course_name": "MATH 229C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH229C"
+    },
+    {
+      "course_name": "MATH 233",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH233"
+    },
+    {
+      "course_name": "MATH 234",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH234"
+    },
+    {
+      "course_name": "MATH 235",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH235"
+    },
+    {
+      "course_name": "MATH 236",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH236"
+    },
+    {
+      "course_name": "MATH 237",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH237"
+    },
+    {
+      "course_name": "MATH 238A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH238A"
+    },
+    {
+      "course_name": "MATH 238B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH238B"
+    },
+    {
+      "course_name": "MATH 240",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH240"
+    },
+    {
+      "course_name": "MATH 245A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH245A"
+    },
+    {
+      "course_name": "MATH 245B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH245B"
+    },
+    {
+      "course_name": "MATH 245C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH245C"
+    },
+    {
+      "course_name": "MATH 246A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH246A"
+    },
+    {
+      "course_name": "MATH 246B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH246B"
+    },
+    {
+      "course_name": "MATH 246C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH246C"
+    },
+    {
+      "course_name": "MATH 247A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH247A"
+    },
+    {
+      "course_name": "MATH 247B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH247B"
+    },
+    {
+      "course_name": "MATH 250A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH250A"
+    },
+    {
+      "course_name": "MATH 250B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH250B"
+    },
+    {
+      "course_name": "MATH 250C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH250C"
+    },
+    {
+      "course_name": "MATH 251A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH251A"
+    },
+    {
+      "course_name": "MATH 251B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH251B"
+    },
+    {
+      "course_name": "MATH 251C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH251C"
+    },
+    {
+      "course_name": "MATH 252A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH252A"
+    },
+    {
+      "course_name": "MATH 252B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH252B"
+    },
+    {
+      "course_name": "MATH 253A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH253A"
+    },
+    {
+      "course_name": "MATH 253B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH253B"
+    },
+    {
+      "course_name": "MATH 254A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH254A"
+    },
+    {
+      "course_name": "MATH 254B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH254B"
+    },
+    {
+      "course_name": "MATH 255A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH255A"
+    },
+    {
+      "course_name": "MATH 255B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH255B"
+    },
+    {
+      "course_name": "MATH 255C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH255C"
+    },
+    {
+      "course_name": "MATH 256A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH256A"
+    },
+    {
+      "course_name": "MATH 256B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH256B"
+    },
+    {
+      "course_name": "MATH 259A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH259A"
+    },
+    {
+      "course_name": "MATH 259B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH259B"
+    },
+    {
+      "course_name": "MATH 260",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH260"
+    },
+    {
+      "course_name": "MATH 261",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH261"
+    },
+    {
+      "course_name": "MATH 264",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH264"
+    },
+    {
+      "course_name": "MATH 265A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH265A"
+    },
+    {
+      "course_name": "MATH 265B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH265B"
+    },
+    {
+      "course_name": "MATH 266A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH266A"
+    },
+    {
+      "course_name": "MATH 266B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH266B"
+    },
+    {
+      "course_name": "MATH 266C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH266C"
+    },
+    {
+      "course_name": "MATH 266D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH266D"
+    },
+    {
+      "course_name": "MATH 266E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH266E"
+    },
+    {
+      "course_name": "MATH M268A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM268A"
+    },
+    {
+      "course_name": "MATH M268B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATHM268B"
+    },
+    {
+      "course_name": "MATH 268C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH268C"
+    },
+    {
+      "course_name": "MATH 269A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH269A"
+    },
+    {
+      "course_name": "MATH 269B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH269B"
+    },
+    {
+      "course_name": "MATH 269C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH269C"
+    },
+    {
+      "course_name": "MATH 270A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270A"
+    },
+    {
+      "course_name": "MATH 270B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270B"
+    },
+    {
+      "course_name": "MATH 270C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270C"
+    },
+    {
+      "course_name": "MATH 270D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270D"
+    },
+    {
+      "course_name": "MATH 270E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270E"
+    },
+    {
+      "course_name": "MATH 270F",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH270F"
+    },
+    {
+      "course_name": "MATH 271A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH271A"
+    },
+    {
+      "course_name": "MATH 271B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH271B"
+    },
+    {
+      "course_name": "MATH 271C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH271C"
+    },
+    {
+      "course_name": "MATH 271D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH271D"
+    },
+    {
+      "course_name": "MATH 272A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH272A"
+    },
+    {
+      "course_name": "MATH 272B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH272B"
+    },
+    {
+      "course_name": "MATH 272C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH272C"
+    },
+    {
+      "course_name": "MATH 272D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH272D"
+    },
+    {
+      "course_name": "MATH 273A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH273A"
+    },
+    {
+      "course_name": "MATH 273B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH273B"
+    },
+    {
+      "course_name": "MATH 273C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH273C"
+    },
+    {
+      "course_name": "MATH 274A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH274A"
+    },
+    {
+      "course_name": "MATH 274B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH274B"
+    },
+    {
+      "course_name": "MATH 274C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH274C"
+    },
+    {
+      "course_name": "MATH 275A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH275A"
+    },
+    {
+      "course_name": "MATH 275B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH275B"
+    },
+    {
+      "course_name": "MATH 275C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH275C"
+    },
+    {
+      "course_name": "MATH 275D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH275D"
+    },
+    {
+      "course_name": "MATH 275E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH275E"
+    },
+    {
+      "course_name": "MATH 276",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH276"
+    },
+    {
+      "course_name": "MATH 280",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH280"
+    },
+    {
+      "course_name": "MATH 285A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285A"
+    },
+    {
+      "course_name": "MATH 285B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285B"
+    },
+    {
+      "course_name": "MATH 285C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285C"
+    },
+    {
+      "course_name": "MATH 285D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285D"
+    },
+    {
+      "course_name": "MATH 285E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285E"
+    },
+    {
+      "course_name": "MATH 285F",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285F"
+    },
+    {
+      "course_name": "MATH 285G",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285G"
+    },
+    {
+      "course_name": "MATH 285H",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285H"
+    },
+    {
+      "course_name": "MATH 285I",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285I"
+    },
+    {
+      "course_name": "MATH 285J",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285J"
+    },
+    {
+      "course_name": "MATH 285K",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285K"
+    },
+    {
+      "course_name": "MATH 285L",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285L"
+    },
+    {
+      "course_name": "MATH 285N",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285N"
+    },
+    {
+      "course_name": "MATH 285P",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH285P"
+    },
+    {
+      "course_name": "MATH 290A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290A"
+    },
+    {
+      "course_name": "MATH 290B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290B"
+    },
+    {
+      "course_name": "MATH 290C",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290C"
+    },
+    {
+      "course_name": "MATH 290D",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290D"
+    },
+    {
+      "course_name": "MATH 290E",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290E"
+    },
+    {
+      "course_name": "MATH 290F",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290F"
+    },
+    {
+      "course_name": "MATH 290G",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290G"
+    },
+    {
+      "course_name": "MATH 290H",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290H"
+    },
+    {
+      "course_name": "MATH 290I",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290I"
+    },
+    {
+      "course_name": "MATH 290J",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290J"
+    },
+    {
+      "course_name": "MATH 290K",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290K"
+    },
+    {
+      "course_name": "MATH 290L",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290L"
+    },
+    {
+      "course_name": "MATH 290M",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290M"
+    },
+    {
+      "course_name": "MATH 290N",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290N"
+    },
+    {
+      "course_name": "MATH 290O",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH290O"
+    },
+    {
+      "course_name": "MATH 296A",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296A"
+    },
+    {
+      "course_name": "MATH 296B",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296B"
+    },
+    {
+      "course_name": "MATH 296C",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296C"
+    },
+    {
+      "course_name": "MATH 296D",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296D"
+    },
+    {
+      "course_name": "MATH 296E",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296E"
+    },
+    {
+      "course_name": "MATH 296F",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296F"
+    },
+    {
+      "course_name": "MATH 296G",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296G"
+    },
+    {
+      "course_name": "MATH 296H",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296H"
+    },
+    {
+      "course_name": "MATH 296I",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296I"
+    },
+    {
+      "course_name": "MATH 296J",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296J"
+    },
+    {
+      "course_name": "MATH 296K",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296K"
+    },
+    {
+      "course_name": "MATH 296L",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296L"
+    },
+    {
+      "course_name": "MATH 296M",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296M"
+    },
+    {
+      "course_name": "MATH 296N",
+      "department": "Mathematics",
+      "units": 1,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH296N"
+    },
+    {
+      "course_name": "MATH 370A",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH370A"
+    },
+    {
+      "course_name": "MATH 370B",
+      "department": "Mathematics",
+      "units": 4,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH370B"
+    },
+    {
+      "course_name": "MATH 495",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH495"
+    },
+    {
+      "course_name": "MATH 495B",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH495B"
+    },
+    {
+      "course_name": "MATH 501",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH501"
+    },
+    {
+      "course_name": "MATH 596",
+      "department": "Mathematics",
+      "units": 2,
+      "link": "https://catalog.registrar.ucla.edu/course/2024/MATH596"
+    }
+  ];
+
+export default mockCourses;

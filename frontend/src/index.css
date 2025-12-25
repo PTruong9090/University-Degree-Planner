@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#root {
+  /* This forces the root div to take up the full width and height of the body */
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
