@@ -45,7 +45,7 @@ export function Sidebar({ availableCourses, courseMap}) {
     }, [availableCourses, subjectFilter, searchTerm, courseMap])
 
     return (
-        <aside className="w-80 flex-shrink-0 flex flex-col bg-gray-50 border-r border-gray-200 p-4">
+        <aside className="hidden md:flex w-80 flex-shrink-0 flex flex-col bg-gray-50 border-r border-gray-200 p-4">
             {/* Sidebar Header: Filters */}
             <div className="flex flex-col gap-3 pb-4 border-b border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-800">Course Catalog</h2>

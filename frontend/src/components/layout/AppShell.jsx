@@ -7,6 +7,7 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
 
     return (
         <div className="flex w-full border border-gray-200 max-w-7xl h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
+            
             {/* Sidebar Column */}
             <Sidebar
                 availableCourses = {availableCourses}
