@@ -4,6 +4,7 @@ import useLocalStorage from './hooks/useLocalStorage'
 import { AppShell } from './components/layout/AppShell';
 import { CourseCard } from './features/Planner/components/CourseCard';
 import { getCoursesInPlan } from './utils/courseInPlan';
+import { NavBar } from './features/Planner/components/NavBar';
 
 const initialPlan = {
   'year1': {
@@ -37,7 +38,13 @@ const initialPlan = {
 
 
 function App() {
-  const [courses, setCourses] = useState([])
+  const [courses, setCourses] = useState([{
+            "subject": "Digital Humanities",
+            "course_name": "Introduction to Digital Humanities",
+            "courseID": "DGT HUM 101",
+            "units": "4 units",
+            "link": "https://catalog.registrar.ucla.edu/course/2025/DGTHUM101"
+        },])
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_BASE_URL}/api/courses?limit=20000`)
@@ -176,12 +183,20 @@ function App() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <AppShell
-        plan={plan}
-        setPlan={setPlan}
-        availableCourses={availableCourses.sort()}
-        courseMap={courseMap}
-      />
+      <div className="flex flex-col min-h-screen min-w-screen bg-gray-100">
+
+        <NavBar />
+        
+        <div className="flex-1 flex justify-center p-4">
+          <AppShell
+            plan={plan}
+            setPlan={setPlan}
+            availableCourses={availableCourses.sort()}
+            courseMap={courseMap}
+          />
+        </div>
+
+      </div>
 
       <DragOverlay>
         {activeItem ? (

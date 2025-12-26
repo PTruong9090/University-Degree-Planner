@@ -13,4 +13,5 @@ createRoot(document.getElementById('root')).render(
 /*
 TODO List: 
   - optimize for phone screens
+  - add login authentication 
 */
