@@ -38,13 +38,7 @@ const initialPlan = {
 
 
 function App() {
-  const [courses, setCourses] = useState([{
-            "subject": "Digital Humanities",
-            "course_name": "Introduction to Digital Humanities",
-            "courseID": "DGT HUM 101",
-            "units": "4 units",
-            "link": "https://catalog.registrar.ucla.edu/course/2025/DGTHUM101"
-        },])
+  const [courses, setCourses] = useState([])
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_BASE_URL}/api/courses?limit=20000`)

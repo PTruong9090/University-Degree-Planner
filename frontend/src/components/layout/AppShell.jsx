@@ -7,7 +7,6 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
 
     return (
         <div className="flex w-full border border-gray-200 max-w-7xl h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden">
-            
             {/* Sidebar Column */}
             <Sidebar
                 availableCourses = {availableCourses}
@@ -17,10 +16,10 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
             {/* Main Planner Area */}
             <section className="flex-1 flex flex-col">
                 {/* Planner Head: Title and Buttons */}
-                <div className="flex relative items-center bg-gray-50 p-4 border-b border-gray-200 shadow-xs">
-                    <h2 className="text-2xl absolute left-1/2 -translate-x-1/2 font-bold text-gray-800 ml-auto">4-Year Plan</h2>
-                    <div className="ml-auto">
-                        <button onClick={() => plannerRef.current?.exportPDF()} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Export PDF</button>
+                <div className="flex flex-col md:flex-row relative items-center bg-gray-50 p-4 border-b border-gray-200 shadow-xs">
+                    <h2 className="md:text-2xl text-xl md:absolute md:left-1/2 md:-translate-x-1/2 font-bold text-gray-800 md:ml-auto">4-Year Plan</h2>
+                    <div className="md:ml-auto">
+                        <button onClick={() => plannerRef.current?.exportPDF()} className="hidden md:inline-flex px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Export PDF</button>
                     </div>
                 </div>
 
@@ -35,8 +34,9 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
                 </div>
 
                 {/* Footer/Warnings */}
-                <div className="bg-white p-3 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
-                    <span>Last Updated: Today. Please download your PDF before closing on public computers.</span>
+                <div className="bg-white p-3 border-t border-gray-200 text-xs text-gray-500 flex justify-center md:justify-between">
+                    <span className="hidden md:block">Last Updated: Today. Please download your PDF before closing on public computers.</span>
+                    <span className="md:hidden">For best experience, use a computer.</span>
                     {/* TODO: Custom Course Component goes here */}
                 </div>
             </section>
