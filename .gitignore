@@ -21,3 +21,7 @@ ucla_courses.json
 comsci_courses.json
 
 backend/.env
+backend/.env.production
+
+frontend/.env
+frontend/.env.production
