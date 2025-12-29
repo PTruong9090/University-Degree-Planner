@@ -4,9 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "seed:dev": "cross-env NODE_ENV=development node src/scripts/importCourses.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/server.js",
-    "start": "node ./src/server.js"
+    "dev": "cross-env NODE_ENV=development node ./src/server.js",
+    "start": "cross-env NODE_ENV=production node ./src/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
   },
   "description": "",
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "sequelize-cli": "^6.6.2"
   }
 }

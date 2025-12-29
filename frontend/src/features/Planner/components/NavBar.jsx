@@ -3,7 +3,7 @@ import React from "react";
 
 export function NavBar() {
     return (
-        <header className="h-14 border-b shadow-sm border-gray-200 bg-white">
+        <header className="print:hidden h-14 border-b shadow-sm border-gray-200 bg-white">
             <nav 
                 className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between"
                 aria-label="Primary"

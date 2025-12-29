@@ -10,7 +10,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
     const [activeYearIndex, setActiveYearIndex] = useState(0)
 
     const exportPDF = async () => {
-        await exportElementToPDF(plannerRef.current)
+        window.print()
     }
 
     useImperativeHandle(ref, () => ({
@@ -18,10 +18,10 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
     }))
 
     return (
-        <div ref = {plannerRef} className="space-y-8 p-1">
+        <div ref = {plannerRef} className="space-y-8">
 
             {/* Mobile year cycler */}
-            <div className="md:hidden flex justify-center">
+            <div className="md:hidden print:hidden flex justify-center">
                 <button 
                     onClick={() => 
                         setActiveYearIndex((i) => (i + 1) % yearNames.length)
@@ -34,7 +34,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
             </div>
 
             {/* 1. Column Header Row (Fall, Winter, Spring Summer) */}
-            <div className="hidden md:grid grid-cols-4 gap-4 font-bold text-sm text-gray-600 border-b pb-2">
+            <div className="hidden md:grid print:grid grid-cols-4 gap-4 font-bold text-sm text-gray-600 border-b pb-2">
                 {/* Placeholder to align with Year Label Column */}
                 <div className="text-center">Fall</div>
                 <div className="text-center">Winter</div>
@@ -43,7 +43,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
             </div>
 
             {/* Mobile: single year */}
-            <div className="md:hidden">
+            <div className="md:hidden print:hidden">
                 <div className="grid grid-cols-1 gap-4">
                     {/* Display quarter box for that year*/}
                     {quarterKeys.map((quarterKey) => (
@@ -60,11 +60,11 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
             </div>
 
             {/* 2. Map over years to create schedule rows */}
-            <div className="hidden md:block space-y-8">
+            <div className="hidden md:block print:block space-y-6">
                 {Object.keys(plan).map((yearKey, index) => (
                     <div
                         key={yearKey}
-                        className="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch"
+                        className="grid grid-cols-1 md:grid-cols-4 print:grid-cols-4 gap-4"
                     >
                         {/* Map over the quarters within the year */}
                         {quarterKeys.map((quarterKey) => (

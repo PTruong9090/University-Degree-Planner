@@ -1,6 +1,9 @@
 import sequelize from "../config/database.js";
 import Course from "../models/course.model.js";
 import courses from "../data/course_data.js";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env.development" });
 
 await sequelize.authenticate();
 
