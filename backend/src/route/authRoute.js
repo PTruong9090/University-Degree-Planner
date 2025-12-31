@@ -1,8 +1,13 @@
-const { signup } = require('../controller/authController');
+// Route handlers for signup/login live in the auth controller.
+import { signup, login } from '../controller/authController';
+// Express router groups auth endpoints under a single router instance.
+import express from 'express';
 
-const router = require('express').Router();
+const router = express.Router();
 
-router.route('/signup').post(signup)
+// Accept POST /api/auth/signup for account creation.
+router.route('/signup').post(signup);
+// Accept POST /api/auth/login for user authentication.
+router.route('/login').post(login)
 
-
-module.exports = router;
+export default router;
