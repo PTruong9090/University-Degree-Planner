@@ -8,6 +8,11 @@ export function Sidebar({ availableCourses, courseMap}) {
     const [subjectFilter, setSubjectFilter] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
 
+    const collator = useMemo(
+        () => new Intl.Collator('en', { numeric: true, sensitivity: 'base' }),
+        []
+    )
+
     // 1. Get list of all subject for filter dropdown
     const subjects = useMemo(() => 
         Array.from(new Set(Object.values(courseMap).map(c => c.subject)))
@@ -41,7 +46,7 @@ export function Sidebar({ availableCourses, courseMap}) {
                 )
             })
         }
-        return list
+        return [...list].sort((a, b) => collator.compare(a, b))
     }, [availableCourses, subjectFilter, searchTerm, courseMap])
 
     return (
