@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { ENV } from './config/env.js';
 import courseRouter from './route/courseRoute.js';
+import authRouter from './route/authRoute.js'; //added the auth router 
 import { sequelize } from './models/index.js';
 
 const app = express()
@@ -23,6 +24,8 @@ app.use(express.json())
 
 // Router setup
 app.use('/api/courses', courseRouter);
+app.use('/api/auth', authRouter);
+
 
 const PORT = ENV.PORT || 3000
 
