@@ -35,6 +35,11 @@ export function NavBar() {
                             PLANNER
                         </button>
                     </a>
+                    <a href='/login'>
+                        <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover: bg-gray-100">
+                            Login/Signup
+                        </button>
+                    </a>
 
                    {/* TODO: Change based on authentication */}
                     <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
