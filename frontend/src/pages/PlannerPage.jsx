@@ -180,7 +180,7 @@ function PlannerPage() {
     >
       <div className="flex flex-col min-h-screen min-w-screen bg-gray-100">
 
-        <NavBar />
+
         
         <div className="flex-1 flex justify-center p-4">
           <AppShell
