@@ -178,7 +178,7 @@ function PlannerPage() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col min-h-screen min-w-screen bg-gray-100">
+      <div className="flex flex-col h-full w-full bg-gray-100">
         
         <div className="flex-1 flex justify-center p-4">
           <AppShell

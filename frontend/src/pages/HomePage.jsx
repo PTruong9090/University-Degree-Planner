@@ -1,10 +1,9 @@
 
-
 export default function HomePage() {
     return (
-        <div className="min-h-screen min-w-screen bg-gradient-to-r from-white to-blue-200 flex flex-col justify-center">
+        <div className="h-full w-full bg-gradient-to-r from-white to-blue-200 flex flex-col justify-center">
                 {/* Introduction */}
-                <section className="container mx-auto px-4 py-12 md:py-24 flex flex-row md:flex-col items-center gap-12">
+                <section className="container mx-auto px-4 py-12 md:py-24 flex flex-col md:flex-row items-center gap-12">
 
                     <div className="flex-1 text-center md:text-left space-y-6">
                         <header className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">Your UCLA Journey, <br/>
@@ -23,38 +22,44 @@ export default function HomePage() {
                 </section>
 
                 {/* Information */}
-                <section className="flex-1 flex-col p-4">
-                    <div>
-                        <a>
+                <section className="mx-auto px-4 py-12 md:py-24 flex-1 flex-col p-4 bg-white py-20 px-4 rounded-lg shadow-md">
+                    <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                        </a>
-                        <header> Free & Accessible </header>
-                        <p>Free & accessible tool designed to help students plan their journey</p>
-                    </div>
+                        <div className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition bg-slate-50">
+                            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                                
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2">Free & Accessible</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                A completely free tool designed to help students plan their journey without paywalls.
+                            </p>
+                        </div>
 
-                    <div>
-                        <a>
+                        {/* Card 2 */}
+                        <div className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition bg-slate-50">
+                            <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                                
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2">Simplified Planning</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                Plan your entire 4-year schedule effortlessly. We handle the prerequisites for you.
+                            </p>
+                        </div>
 
-                        </a>
-                        <header> Simplified Planning </header>
-                        <p>Plan your entire 4-year schedule effortlessly, for free. Build by students, for students.</p>
-                    </div>
-
-                    <div>
-                        <a>
-
-                        </a>
-                        <header> Student-Focused </header>
-                        <p>Student-focused to help you prioritize your academic goals.</p>
+                        {/* Card 3 */}
+                        <div className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition bg-slate-50">
+                            <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+                                
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2">Student-Focused</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                Prioritize your academic goals with a tool built specifically for the UCLA experience.
+                            </p>
+                        </div>
+                        
                     </div>
 
                 </section>
-
-                {/* Footer */}
-                <div className="flex-1 flex-col border p-4">
-
-                </div>
-
 
         </div>
     )
