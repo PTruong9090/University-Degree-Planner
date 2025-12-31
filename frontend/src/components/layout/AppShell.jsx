@@ -6,7 +6,7 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
     const plannerRef = useRef(null)
 
     return (
-        <div className="flex w-full border border-gray-200 max-w-7xl h-[90vh] print:h-auto print:max-w-none bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div className="flex w-full border border-gray-200 max-w-7xl h-[90vh] print:h-auto print:max-w-none bg-white rounded-xl shadow-xl overflow-hidden">
             {/* Sidebar Column */}
             <Sidebar
                 availableCourses = {availableCourses}

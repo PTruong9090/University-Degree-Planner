@@ -7,7 +7,7 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
     const [rect, setRect] = useState(null);
 
     // Base styling for all cards
-    let classes = 'bg-white flex h-9 items-center justify-between rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
+    let classes = 'bg-white flex h-12 items-center justify-between rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
 
     // Specific styling base on where card is
     if (variant === 'sidebar') {
@@ -37,17 +37,24 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
             }}
                 onMouseLeave={() => setHovered(false)}
             >
-                <p className={`font-semibold ${variant === 'plan' ? 'text-sm' : 'text-xs'} text-gray-800`}>
-                    {course.courseID}
-                </p>
-                <p className={'text-xs text-gray-600'}>
+                { variant === 'plan' ? (
+                    <p className={`font-semibold text-xs text-gray-800`}>
+                        {course.courseID}
+                    </p>
+                 ) : (
+                    <p className={`font-semibold text-sm text-gray-800`}>
+                        {`${course.courseID}: ${course.course_name}`}
+                    </p>
+                )}
+
+                <p className={'text-xs text-gray-600 text-center'}>
                     {course.units}
                 </p>
                 
             </div>
-            <Tooltip visible={hovered} rect={rect}>
+            {/* <Tooltip visible={hovered} rect={rect}>
                 {course.course_name}
-            </Tooltip>
+            </Tooltip> */}
         </> 
     )
 }
