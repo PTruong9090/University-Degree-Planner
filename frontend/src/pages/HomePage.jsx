@@ -1,4 +1,5 @@
 
+
 export default function HomePage() {
     return (
         <div className="h-full w-full bg-gradient-to-r from-white to-blue-200 flex flex-col justify-center">
@@ -60,6 +61,7 @@ export default function HomePage() {
                     </div>
 
                 </section>
+
 
         </div>
     )
