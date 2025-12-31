@@ -3,7 +3,7 @@ import React from "react";
 
 export function NavBar() {
     return (
-        <header className="print:hidden h-14 border-b shadow-sm border-gray-200 bg-white">
+        <header className="sticky top-0 z-50 print:hidden h-14 border-b shadow-sm border-gray-200 bg-white">
             <nav 
                 className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between"
                 aria-label="Primary"
@@ -21,18 +21,26 @@ export function NavBar() {
                         </span>
                     </div>
                 </a>
-{/* 
-                Buttons
-                <div className="flex items-center gap-4">
-                   <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
-                        My Courses
-                    </button>
 
-                   TODO: Change based on authentication
-                   <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
-                        Login/Signup
+                {/* Buttons */}
+                <div className="flex items-center gap-4">
+                    <a href='/'>
+                        <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
+                            HOME
+                        </button>
+                    </a>
+
+                    <a href='/planner'>
+                        <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
+                            PLANNER
+                        </button>
+                    </a>
+
+                   {/* TODO: Change based on authentication */}
+                    <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
+                        CONTACT
                     </button>
-                </div> */}
+                </div> 
 
             </nav>
         </header>
