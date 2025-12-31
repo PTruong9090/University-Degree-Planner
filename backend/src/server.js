@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
 import courseRouter from './route/courseRoute.js';
 import authRouter from './route/authRoute.js'; //added the auth router 
 import { sequelize } from './models/index.js';
 
 const app = express()
+app.use(cookieParser());
 
 const allowedOrigins =
   ENV.NODE_ENV === "production"

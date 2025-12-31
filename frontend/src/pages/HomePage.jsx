@@ -12,11 +12,11 @@ export default function HomePage() {
                             </header>
                         <p className="text-lg text-slate-600 max-w-lg mx-auto md:mx-0">
                             Plan your entire 4 year schedule effortlessly, for free. <br/>
-                            Build by students, for students. <br/>
+                            Built by students, for students. <br/>
                         </p>
                         <a href="/planner">
                             <button className="bg-blue-600 text-white border border-slate-200 rounded-xl font-bold px-8 py-3 hover:bg-blue-700 shadow-lg transition hover:shadow-blue-600/25">
-                                Starting Planning!
+                                Start Planning!
                             </button>
                         </a>
                     </div>

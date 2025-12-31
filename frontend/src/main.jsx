@@ -13,10 +13,10 @@ createRoot(document.getElementById('root')).render(
 
 /*
 TODO List: 
-  - create a landing page
+  - create user model
+  - add contact us 
   - create a coursepage for each course
     - displays course information
-  - fix print not showing boxes correctly
   - add login authentication 
     - auth0
   - add reset planner button
