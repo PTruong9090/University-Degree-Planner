@@ -3,7 +3,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
 import courseRouter from './route/courseRoute.js';
-import authRouter from './route/authRoute.js'; //added the auth router 
+import authRouter from './route/authRoute.js';
+import contactRouter from './route/contactRoute.js';
 import { sequelize } from './models/index.js';
 
 const app = express()
@@ -27,6 +28,7 @@ app.use(express.json())
 // Router setup
 app.use('/api/courses', courseRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/contact', contactRouter)
 
 
 const PORT = ENV.PORT || 3000

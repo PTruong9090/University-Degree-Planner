@@ -91,7 +91,7 @@ planbear/
 │   └── server.js
 │
 └── README.md
-
+```
 
 ---
 
@@ -111,7 +111,7 @@ npm run dev
 ```
 
 Runs on:
-http:localhost:5173
+`http:localhost:5173`
 
 ### 3️⃣ Backend setup
 ```bash
@@ -121,10 +121,10 @@ npm run dev
 ```
 
 Runs on:
-http:localhost:3000
+`http:localhost:3000`
 
 ### ⚙️ Environment Variables
-Create a .env file in the backend directory:
+Create a `.env` file in the backend directory:
 
 ```bash
 PORT=3000

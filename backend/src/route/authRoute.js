@@ -2,7 +2,6 @@
 import { signup, login } from '../controller/authController.js';
 // Express router groups auth endpoints under a single router instance.
 import express from 'express';
-import { requireAuth } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
