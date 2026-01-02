@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import the CSS file that styles this login page
 import '../styles/login.css';
-import { NavBar } from '../features/Planner/components/NavBar';
 
 // Main LoginPage component function
 function LoginPage() {
@@ -212,7 +211,7 @@ function LoginPage() {
     };
 
     return (
-        <>  <NavBar />
+        <> 
             <div className="login-page">
                 <div className="container">
                 <div className="header">
@@ -347,3 +346,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
