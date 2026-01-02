@@ -1,0 +1,205 @@
+/* Login Page Styles */
+
+/* Main outer container for the entire login page */
+.login-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #ffffff 0%, #bfdbfe 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+/* White card container that holds the form */
+.login-page .container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+}
+
+/* Header section containing title and subtitle */
+.login-page .header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+/* Main title (h1) with emoji */
+.login-page .header h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* Subtitle text below h1 */
+.login-page .header p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Container that holds the form (signup or login) */
+.login-page .form-container {
+    position: relative;
+}
+
+/* The form element itself */
+.login-page .form {
+    display: block;
+}
+
+/* Each input field group (label + input + error message) */
+.login-page .form-group {
+    margin-bottom: 20px;
+}
+
+/* Label text above each input field */
+.login-page .form-group label {
+    display: block;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* All input fields (text, email, password) */
+.login-page .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+/* Input field when user clicks/focuses on it */
+.login-page .form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* Input field when there's a validation error */
+.login-page .form-group input.error {
+    border-color: #e74c3c;
+}
+
+/* Error message text below input fields */
+.login-page .error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+/* Error message when it should be visible */
+.login-page .error-message.show {
+    display: block;
+}
+
+/* Success message text */
+.login-page .success-message {
+    color: #27ae60;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: none;
+    text-align: center;
+}
+
+/* Success message when it should be visible */
+.login-page .success-message.show {
+    display: block;
+}
+
+/* Password strength indicator */
+.login-page .password-strength {
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    font-weight: 500;
+}
+
+.login-page .password-strength.weak {
+    color: #e74c3c;
+}
+
+.login-page .password-strength.medium {
+    color: #f39c12;
+}
+
+.login-page .password-strength.strong {
+    color: #27ae60;
+}
+
+/* Submit button */
+.login-page .btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #75b1b9 0%, #5a9aa3 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-top: 10px;
+}
+
+/* Button when user hovers mouse over it */
+.login-page .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(117, 177, 185, 0.4);
+}
+
+/* Button when user clicks it */
+.login-page .btn:active {
+    transform: translateY(0);
+}
+
+/* Text at bottom to switch between login/signup forms */
+.login-page .switch-form {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Clickable link to switch forms */
+.login-page .switch-form a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Link when user hovers over it */
+.login-page .switch-form a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 480px) {
+    .login-page {
+        padding: 10px;
+    }
+    
+    .login-page .container {
+        padding: 30px 20px;
+    }
+    
+    .login-page .header h1 {
+        font-size: 24px;
+    }
+}
