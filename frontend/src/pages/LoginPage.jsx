@@ -212,8 +212,7 @@ function LoginPage() {
     };
 
     return (
-        <>
-            <NavBar />
+        <>  <NavBar />
             <div className="login-page">
                 <div className="container">
                 <div className="header">
