@@ -214,7 +214,7 @@ function LoginPage() {
         <> 
             <div className="login-page">
                 <div className="container">
-                <div className="header">
+                <div className="header font-semibold">
                     <h1>🎓 UCLA Bear Planner</h1>
                     <p>Plan your academic journey</p>
                 </div>

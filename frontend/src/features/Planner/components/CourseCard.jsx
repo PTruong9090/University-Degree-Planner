@@ -7,19 +7,19 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
     const [rect, setRect] = useState(null);
 
     // Base styling for all cards
-    let classes = 'bg-white flex h-12 items-center justify-between rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
+    let classes = 'bg-white flex items-center justify-between rounded-md shadow-sm p-2 select-none transition-all duration-100 ease-in-out'
 
     // Specific styling base on where card is
     if (variant === 'sidebar') {
-        classes += " border border-gray-300 hover:border-blue-500 cursor-grab"
+        classes += " border border-gray-300 h-15 hover:border-blue-500 cursor-grab"
 
     } else if (variant === 'plan') {
-        classes += ' border-l-4 border-ucla-blue bg-blue-50 cursor-move'
+        classes += 'border-l-4 border-ucla-blue h-10 bg-blue-50 cursor-move'
     }
 
     // Styling for item being dragged
     if (isDragging) {
-        classes += ' opacity-70 scale-[1.02] shadow-xl border-dashed'
+        classes += ' opacity-70 scale-[1.02] h-15 shadow-xl border-dashed'
     }
 
     // Fallback for missing course
@@ -42,7 +42,7 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
                         {course.courseID}
                     </p>
                  ) : (
-                    <p className={`font-semibold text-sm text-gray-800`}>
+                    <p className={`font-semibold text-xs text-gray-800`}>
                         {`${course.courseID}: ${course.course_name}`}
                     </p>
                 )}
@@ -52,9 +52,9 @@ export function CourseCard({ course, variant = 'sidebar', isDragging = false}) {
                 </p>
                 
             </div>
-            {/* <Tooltip visible={hovered} rect={rect}>
+            <Tooltip visible={hovered} rect={rect}>
                 {course.course_name}
-            </Tooltip> */}
+            </Tooltip>
         </> 
     )
 }

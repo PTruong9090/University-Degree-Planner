@@ -13,9 +13,9 @@ createRoot(document.getElementById('root')).render(
 
 /*
 TODO List: 
-  - change course card fonts
   - create a coursepage for each course
     - displays course information
   - add reset planner button
   - print course format cut off when printing
+  - update production database with users
 */

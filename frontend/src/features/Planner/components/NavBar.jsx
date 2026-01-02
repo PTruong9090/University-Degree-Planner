@@ -40,15 +40,16 @@ export function NavBar() {
                             </button>
                         </a>
 
-                        {/*<a href='/login'>
-                            <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
-                                LOGIN/SIGNUP
-                            </button>
-                        </a>*/}
-
                         <button onClick={() => setIsOpen(true)} className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
                             CONTACT
                         </button>
+
+                        <a href='/login'>
+                            <button className="bg-blue-600 ml-1 text-white px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-blue-700">
+                                LOGIN/SIGNUP
+                            </button>
+                        </a>
+
                     </div> 
                 </nav>
             </header>
