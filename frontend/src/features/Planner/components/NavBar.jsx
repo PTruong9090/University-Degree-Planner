@@ -27,7 +27,7 @@ export function NavBar() {
                     </a>
 
                     {/* Buttons */}
-                    <div className="flex items-center gap-4">
+                    <div className="hidden md:block flex items-center gap-4">
                         <a href='/'>
                             <button className="px-3 py-1.5 text-sm text-gray-800 rounded-md font-semibold hover:bg-gray-100">
                                 HOME

@@ -31,7 +31,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/contact', contactRouter)
 
 
-const PORT = ENV.PORT || 3000
+const PORT = ENV.PORT || 8080
 
 app.get('/health', (req, res) => {
   res.status(200).send('ok');

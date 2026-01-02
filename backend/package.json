@@ -7,7 +7,7 @@
     "seed:dev": "cross-env NODE_ENV=development node src/scripts/importCourses.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development node ./src/server.js",
-    "start": "cross-env NODE_ENV=production node ./src/server.js"
+    "start": "node ./src/server.js"
   },
   "author": "",
   "license": "ISC",

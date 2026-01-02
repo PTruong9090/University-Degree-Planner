@@ -13,11 +13,9 @@ createRoot(document.getElementById('root')).render(
 
 /*
 TODO List: 
-  - create user model
-  - add contact us 
+  - change course card fonts
   - create a coursepage for each course
     - displays course information
-  - add login authentication 
-    - auth0
   - add reset planner button
+  - print course format cut off when printing
 */

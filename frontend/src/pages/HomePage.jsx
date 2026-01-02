@@ -23,7 +23,7 @@ export default function HomePage() {
                 </section>
 
                 {/* Information */}
-                <section className="mx-15 px-4 mb-10 py-1 md:py-15 flex-1 flex-col p-4 bg-white py-20 px-4 rounded-xl shadow-md">
+                <section className="mx-10 md:mx-20 px-5 mb-10 md:py-10 flex-1 flex-col bg-white py-5 rounded-xl shadow-md">
                     <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
                         <div className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition bg-slate-50">
