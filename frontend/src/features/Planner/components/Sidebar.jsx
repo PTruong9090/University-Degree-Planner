@@ -50,14 +50,22 @@ export function Sidebar({ availableCourses, courseMap}) {
     }, [availableCourses, subjectFilter, searchTerm, courseMap])
 
     return (
-        <aside className="hidden md:flex w-80 flex-shrink-0 flex flex-col bg-gray-50 border-r border-gray-200 p-4">
+        <aside className="hidden md:flex w-80 flex-shrink-0 flex-col border-r border-slate-200 bg-slate-50 p-4">
             {/* Sidebar Header: Filters */}
-            <div className="flex flex-col gap-3 pb-4 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-800">Course Catalog</h2>
+            <div className="flex flex-col gap-3 border-b border-slate-200 pb-4">
+                <div className="flex items-end justify-between gap-3">
+                    <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Catalog</p>
+                        <h2 className="text-2xl font-bold text-slate-900">Course Catalog</h2>
+                    </div>
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm">
+                        {filteredCourses.length} results
+                    </span>
+                </div>
 
                 {/* TODO: SubjectSelect component goes here */}
                 <select
-                    className="h-10 px-3 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    className="h-10 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
                     value={subjectFilter}
                     onChange={(e) => setSubjectFilter(e.target.value)}
                 >
@@ -69,7 +77,7 @@ export function Sidebar({ availableCourses, courseMap}) {
 
                 <input
                     type='text'
-                    className="h-10 px-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="h-10 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
                     placeholder="Search by course name or ID..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -79,45 +87,54 @@ export function Sidebar({ availableCourses, courseMap}) {
             {/* Course List: Droppable Area */}
             <Droppable
                 // Make entire sidebar a drop zone for returning courses
-                className="flex flex-col gap-2 overflow-y-auto flex-1 pt-4"
+                className={({ isOver }) => `flex flex-1 flex-col gap-2 overflow-y-auto rounded-2xl pt-4 transition-colors ${isOver ? 'bg-blue-50/80' : ''}`}
                 id="courses-container"
                 data={{ type: 'sidebar' }}
             >
-                {!subjectFilter && !searchTerm? (
-                    <p className="text-sm text-gray-500 pt-2 text-center">
-                        Please select a subject to view courses.
-                    </p>
+                {({ isOver }) => (
+                    <>
+                        {isOver ? (
+                            <div className="mb-3 rounded-xl border border-dashed border-blue-300 bg-white px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+                                Drop here to return a course
+                            </div>
+                        ) : null}
+                        {!subjectFilter && !searchTerm? (
+                            <p className="pt-2 text-center text-sm text-slate-500">
+                                Select a subject or search to start browsing courses.
+                            </p>
 
-                    ) : filteredCourses.length === 0 ? (
-                        <p className="text-sm text-gray-500 pt-4 text-center">
-                            No courses available or match your filters.
-                        </p>
-                    ) : (
-                        <Virtuoso
-                            style={{ height: '100%', width: '100%' }}
-                            totalCount={filteredCourses.length}
-                            itemContent={(index => {
-                                const courseID = filteredCourses[index]
-                                const course = courseMap[courseID]
-                                if (!course) return null
-                                
-                                return (
-                                    <Draggable
-                                        key={courseID}
-                                        id={courseID}
-                                        // Data passed to handleDragEnd when dropped
-                                        data={{ type: 'sidebar', courseID }}
-                                    >
-                                        <CourseCard
-                                            course={course}
-                                            variant='sidebar'
-                                        />
-                                    </Draggable>
-                                )
-                            })}
-                        />
-                    )
-                }
+                            ) : filteredCourses.length === 0 ? (
+                                <p className="pt-4 text-center text-sm text-slate-500">
+                                    No courses match your current filters.
+                                </p>
+                            ) : (
+                                <Virtuoso
+                                    style={{ height: '100%', width: '100%' }}
+                                    totalCount={filteredCourses.length}
+                                    itemContent={(index => {
+                                        const courseID = filteredCourses[index]
+                                        const course = courseMap[courseID]
+                                        if (!course) return null
+                                        
+                                        return (
+                                            <Draggable
+                                                key={courseID}
+                                                id={courseID}
+                                                // Data passed to handleDragEnd when dropped
+                                                data={{ type: 'sidebar', courseID }}
+                                            >
+                                                <CourseCard
+                                                    course={course}
+                                                    variant='sidebar'
+                                                />
+                                            </Draggable>
+                                        )
+                                    })}
+                                />
+                            )
+                        }
+                    </>
+                )}
             </Droppable>
         </aside>
     )

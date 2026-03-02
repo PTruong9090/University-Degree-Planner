@@ -11,7 +11,7 @@ export function Draggable({id, data, children, className}) {
   return (
     <div 
       ref={setNodeRef} 
-      className={`mb-2 ${isDragging? "opacity-20" : "opacity0199"}`}
+      className={`mb-2 ${isDragging ? "opacity-20" : "opacity-100"} ${className ?? ""}`}
       {...listeners} 
       {...attributes}
     >

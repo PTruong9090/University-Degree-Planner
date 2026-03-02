@@ -5,6 +5,7 @@ import { AppShell } from '../components/layout/AppShell';
 import { CourseCard } from '../features/Planner/components/CourseCard';
 import { getCoursesInPlan } from '../utils/courseInPlan';
 import { NavBar } from '../features/Planner/components/NavBar';
+import { Footer } from '../features/Planner/components/Footer.jsx';
 import { fetchCourses } from '../api/courseApi.js'
 
 
@@ -178,6 +179,7 @@ function PlannerPage() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      <NavBar/>
       <div className="flex flex-col h-full w-full bg-gray-100">
         
         <div className="flex-1 flex justify-center p-4">
@@ -188,7 +190,7 @@ function PlannerPage() {
             courseMap={courseMap}
           />
         </div>
-
+        <Footer/>
       </div>
 
       <DragOverlay>
@@ -202,7 +204,6 @@ function PlannerPage() {
       </DragOverlay>
     </DndContext>
   )
-
 }
 
 export default PlannerPage

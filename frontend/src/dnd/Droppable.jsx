@@ -2,18 +2,25 @@ import React from 'react';
 import {useDroppable} from '@dnd-kit/core';
 
 export function Droppable( { id, className, children, data } ) {
-    const { setNodeRef } = useDroppable({ 
+    const { setNodeRef, isOver } = useDroppable({ 
       id,
       data,
     });
 
+    const resolvedClassName =
+      typeof className === 'function' ? className({ isOver }) : className;
+
+    const resolvedChildren =
+      typeof children === 'function' ? children({ isOver }) : children;
+
     return (
       <div 
       ref={setNodeRef} 
-      className={className}
+      className={resolvedClassName}
       id={id}
+      data-over={isOver ? 'true' : 'false'}
       >
-        {children}
+        {resolvedChildren}
       </div>
     );
   }
