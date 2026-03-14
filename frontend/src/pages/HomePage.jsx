@@ -38,7 +38,7 @@ const HomePage = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="mt-10 grid gap-4 text-sm text-slate-600 sm:grid-cols-3">
+              {/* <div className="mt-10 grid gap-4 text-sm text-slate-600 sm:grid-cols-3">
                 <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
                   <p className="text-2xl font-bold text-slate-900">4 years</p>
                   <p className="mt-1">Mapped semester by semester.</p>
@@ -51,7 +51,7 @@ const HomePage = () => {
                   <p className="text-2xl font-bold text-slate-900">0 clutter</p>
                   <p className="mt-1">A focused layout built for fast updates.</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex items-center">
@@ -74,7 +74,7 @@ const HomePage = () => {
                 <div className="mt-6 space-y-4">
                   <div className="rounded-2xl bg-slate-50 p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <p className="font-semibold text-slate-800">Fall Quarter</p>
+                      <p className="font-semibold text-slate-800">Winter Quarter</p>
                       <span className="text-xs font-semibold text-blue-600">15 units</span>
                     </div>
                     <div className="space-y-2">
@@ -106,7 +106,7 @@ const HomePage = () => {
           <div className="mb-10 max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-600">Why it feels like PlanBear</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
-              Clean structure, obvious actions, and zero generic landing-page filler.
+              Clean structure and simple to use
             </h2>
           </div>
 
@@ -120,16 +120,16 @@ const HomePage = () => {
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">02</p>
-              <h3 className="mt-4 text-xl font-bold text-slate-900">Fast visual scanning</h3>
+              <h3 className="mt-4 text-xl font-bold text-slate-900">Track class enrollments</h3>
               <p className="mt-3 text-sm leading-7 text-slate-600">
-                White cards, soft borders, and clear blue accents make priorities obvious without visual noise.
+                Keep track of available seats and get alerted when a spot opens up.
               </p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">03</p>
-              <h3 className="mt-4 text-xl font-bold text-slate-900">Built for decisions</h3>
+              <h3 className="mt-4 text-xl font-bold text-slate-900">Save your plan</h3>
               <p className="mt-3 text-sm leading-7 text-slate-600">
-                The homepage now points straight into planning instead of feeling like a stock template.
+                Export and save your PDF without having to create an account.
               </p>
             </div>
           </div>
