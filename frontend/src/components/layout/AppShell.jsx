@@ -1,14 +1,44 @@
 import React, { useRef } from "react";
 import { Sidebar } from "../../features/Planner/components/Sidebar";
 import { PlannerGrid } from "../../features/Planner/components/PlannerGrid";
-import { Footer } from "../../features/Planner/components/Footer";
 
-export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
+export function AppShell({ plannerState }) {
     const plannerRef = useRef(null)
+    const {
+        activePlanId,
+        activePlanName,
+        activeYearIndex,
+        courseMap,
+        createPlan,
+        deletePlan,
+        filteredCourses,
+        plan,
+        planSummaries,
+        renamePlan,
+        searchTerm,
+        selectPlan,
+        setActiveYearIndex,
+        setSearchTerm,
+        setSubjectFilter,
+        subjectFilter,
+        subjects,
+    } = plannerState
 
     const getUnitValue = (units) => {
         const match = String(Array.isArray(units) ? units.join(' ') : units ?? '').match(/\d+/)
         return match ? Number(match[0]) : 0
+    }
+
+    const handleRenamePlan = () => {
+        const nextName = window.prompt('Rename plan', activePlanName)
+        if (nextName === null) return
+        renamePlan(activePlanId, nextName)
+    }
+
+    const handleDeletePlan = () => {
+        const confirmed = window.confirm(`Delete "${activePlanName}"?`)
+        if (!confirmed) return
+        deletePlan(activePlanId)
     }
 
     const scheduledCourses = Object.values(plan).reduce((sum, year) => {
@@ -27,8 +57,13 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
         <div className="flex w-full max-w-7xl h-[90vh] print:h-auto print:max-w-none overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
             {/* Sidebar Column */}
             <Sidebar
-                availableCourses = {availableCourses}
-                courseMap = {courseMap}
+                courseMap={courseMap}
+                filteredCourses={filteredCourses}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                setSubjectFilter={setSubjectFilter}
+                subjectFilter={subjectFilter}
+                subjects={subjects}
             />
 
             {/* Main Planner Area */}
@@ -38,7 +73,45 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">PlanBear Planner</p>
-                            <h2 className="mt-1 text-xl font-black text-slate-900 md:text-3xl">4-Year Plan</h2>
+                            <h2 className="mt-1 text-xl font-black text-slate-900 md:text-3xl">{activePlanName}</h2>
+                        </div>
+
+                        <div className="grid gap-3 md:min-w-[360px] md:max-w-[440px] md:flex-1">
+                            <div className="flex flex-col gap-2 sm:flex-row">
+                                <select
+                                    className="h-11 flex-1 rounded-xl border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                                    value={activePlanId}
+                                    onChange={(event) => selectPlan(event.target.value)}
+                                >
+                                    {planSummaries.map((planSummary) => (
+                                        <option key={planSummary.id} value={planSummary.id}>
+                                            {planSummary.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    onClick={createPlan}
+                                    className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
+                                >
+                                    New Plan
+                                </button>
+                            </div>
+
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={handleRenamePlan}
+                                    className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
+                                >
+                                    Rename
+                                </button>
+                                <button
+                                    onClick={handleDeletePlan}
+                                    disabled={planSummaries.length <= 1}
+                                    className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 md:flex md:items-center">
@@ -61,9 +134,11 @@ export function AppShell({ plan, setPlan, availableCourses, courseMap}) {
                 <div className="flex-1 overflow-y-auto bg-slate-50 p-4 print:h-auto print:overflow-visible md:p-6">
                     <PlannerGrid 
                         ref={plannerRef}
+                        activeYearIndex={activeYearIndex}
                         plan={plan}
+                        planName={activePlanName}
                         courseMap={courseMap}
-                        setPlan={setPlan}
+                        setActiveYearIndex={setActiveYearIndex}
                     />
                 </div>
 

@@ -1,54 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { Draggable } from '../../../dnd/Draggable';
 import { Droppable } from '../../../dnd/Droppable';
 import { Virtuoso } from 'react-virtuoso'
 import { CourseCard } from './CourseCard';
 
-export function Sidebar({ availableCourses, courseMap}) {
-    const [subjectFilter, setSubjectFilter] = useState('')
-    const [searchTerm, setSearchTerm] = useState('')
-
-    const collator = useMemo(
-        () => new Intl.Collator('en', { numeric: true, sensitivity: 'base' }),
-        []
-    )
-
-    // 1. Get list of all subject for filter dropdown
-    const subjects = useMemo(() => 
-        Array.from(new Set(Object.values(courseMap).map(c => c.subject)))
-            .sort()
-            .map(d => ({ label: d, value: d})),
-        [courseMap]
-    )
-
-    // 2. Apply filtering 
-    const filteredCourses = useMemo(() => {
-        let list = availableCourses
-        
-
-        // Filter by subject
-        if (subjectFilter) {
-            list = list.filter(courseID => 
-                courseMap[courseID]?.subject === subjectFilter     
-            )
-        }
-
-        // Filter by search term (name or ID)
-        if (searchTerm) {
-            const lowerSearch = searchTerm.toLowerCase()
-            list = list.filter(courseID => {
-                const course = courseMap[courseID]
-                if (!course) return false
-                
-                return (
-                    course.course_name?.toLowerCase().includes(lowerSearch) || 
-                    courseID.toLowerCase().includes(lowerSearch)
-                )
-            })
-        }
-        return [...list].sort((a, b) => collator.compare(a, b))
-    }, [availableCourses, subjectFilter, searchTerm, courseMap])
-
+export function Sidebar({ courseMap, filteredCourses, searchTerm, setSearchTerm, setSubjectFilter, subjectFilter, subjects }) {
     return (
         <aside className="hidden md:flex w-80 flex-shrink-0 flex-col border-r border-slate-200 bg-slate-50 p-4">
             {/* Sidebar Header: Filters */}

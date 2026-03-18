@@ -1,13 +1,19 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import jsPDF from "jspdf";
 import { QuarterBox } from "./QuarterBox";
 
 const yearNames = ['Freshman', 'Sophomore', 'Junior', 'Senior']
 const quarterKeys = ['fall', 'winter', 'spring', 'summer']
 
-export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
-    const [activeYearIndex, setActiveYearIndex] = useState(0)
+function getPlanFileName(planName) {
+    return `${planName || '4-year-plan'}`
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || '4-year-plan'
+}
 
+export const PlannerGrid = forwardRef(({ activeYearIndex, plan, planName, setActiveYearIndex, courseMap}, ref) => {
     const exportPDF = async () => {
         const pdf = new jsPDF("l", "mm", "a4")
         const pageWidth = pdf.internal.pageSize.getWidth()
@@ -36,7 +42,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
         pdf.setFont("helvetica", "bold")
         pdf.setFontSize(16)
         pdf.setTextColor(15, 23, 42)
-        pdf.text("4-Year Plan", margin, 14)
+        pdf.text(planName || "4-Year Plan", margin, 14)
 
         pdf.setFont("helvetica", "normal")
         pdf.setFontSize(8)
@@ -95,7 +101,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
             })
         })
 
-        pdf.save("4-year-plan.pdf")
+        pdf.save(`${getPlanFileName(planName)}.pdf`)
     }
 
     useImperativeHandle(ref, () => ({
@@ -138,7 +144,6 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
                             yearKey={`year${activeYearIndex + 1}`}
                             quarterKey={quarterKey}
                             plan={plan}
-                            setPlan={setPlan}
                             courseMap={courseMap}
                         />
                     ))}
@@ -147,7 +152,7 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
 
             {/* 2. Map over years to create schedule rows */}
             <div className="hidden md:block print:block space-y-6">
-                {Object.keys(plan).map((yearKey, index) => (
+                {Object.keys(plan).map((yearKey) => (
                     <div
                         key={yearKey}
                         className="grid grid-cols-4 gap-4 print:grid-cols-4"
@@ -160,7 +165,6 @@ export const PlannerGrid = forwardRef(({ plan, setPlan, courseMap}, ref) => {
                                 yearKey={yearKey}
                                 quarterKey={quarterKey}
                                 plan={plan}
-                                setPlan={setPlan}
                                 courseMap={courseMap}
                             />
                         ))}
