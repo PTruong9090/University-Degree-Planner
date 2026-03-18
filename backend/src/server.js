@@ -5,6 +5,7 @@ import { ENV } from './config/env.js';
 import courseRouter from './route/courseRoute.js';
 import authRouter from './route/authRoute.js';
 import contactRouter from './route/contactRoute.js';
+import plannerRouter from './route/plannerRoute.js';
 import { sequelize } from './models/index.js';
 
 const app = express()
@@ -19,7 +20,7 @@ app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
+  credentials: true
 }));
 
 // Middleware
@@ -29,6 +30,7 @@ app.use(express.json())
 app.use('/api/courses', courseRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/contact', contactRouter)
+app.use('/api/planners', plannerRouter)
 
 
 const PORT = ENV.PORT || 8080

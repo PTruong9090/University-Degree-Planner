@@ -1,7 +1,14 @@
 import bcrypt from 'bcryptjs'; // encrypts passwords so if database hypothetically gets breached it would be encrypted W security
 import jwt from 'jsonwebtoken'; // saves a token so we dont need to go through the database for every call ICL i dont understand this code much... 
 import User from '../models/user.model.js'
-import { where, Op } from 'sequelize';
+import { Op } from 'sequelize';
+
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
+};
 
 // Sign up controller
 export const signup = async (req, res, next) => {
@@ -103,16 +110,12 @@ export const login = async (req, res, next) => {
             { expiresIn: '24h' }
         );
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
-            });
+        res.cookie('token', token, COOKIE_OPTIONS);
 
         res.status(200).json({
             status: 'Success',
             message: 'Login successful',
+            token,
             user: {
                 id: user.id,
                 email: user.email,
@@ -126,5 +129,43 @@ export const login = async (req, res, next) => {
             message: 'Server error during login'
         });
     }
+};
+
+export const me = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id, {
+            attributes: ['id', 'email', 'username', 'createdAt', 'updatedAt']
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                status: 'Error',
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            user
+        });
+    } catch (error) {
+        console.error('Me error:', error);
+        res.status(500).json({
+            status: 'Error',
+            message: 'Server error while loading user'
+        });
+    }
+};
+
+export const logout = async (req, res) => {
+    res.clearCookie('token', {
+        ...COOKIE_OPTIONS,
+        maxAge: undefined,
+    });
+
+    res.status(200).json({
+        status: 'Success',
+        message: 'Logout successful'
+    });
 };
 
