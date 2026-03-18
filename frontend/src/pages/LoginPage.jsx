@@ -1,349 +1,370 @@
-// Import React and the useState hook for managing component state
 import React, { useState } from 'react';
-// Import useNavigate hook from React Router for programmatic navigation
-import { useNavigate } from 'react-router-dom';
-// Import the CSS file that styles this login page
-import '../styles/login.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { login, signup } from '../api/authApi';
+import { Button } from '../components/ui/Button';
+import { Footer } from '../features/Planner/components/Footer';
+import { NavBar } from '../features/Planner/components/NavBar';
 
-// Main LoginPage component function
-function LoginPage() {
-    // Initialize navigate function to redirect users after successful login
+function getPasswordStrength(password) {
+    if (password.length === 0) {
+        return { text: '', tone: '' };
+    }
+
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+    if (score <= 2) {
+        return { text: 'Weak password', tone: 'text-rose-600' };
+    }
+    if (score <= 4) {
+        return { text: 'Medium password', tone: 'text-amber-600' };
+    }
+
+    return { text: 'Strong password', tone: 'text-emerald-600' };
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function getInputClassName(hasError) {
+    return `h-12 w-full rounded-2xl border bg-white px-4 text-sm text-slate-900 outline-none transition focus:ring-4 ${
+        hasError
+            ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-100'
+            : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
+    }`;
+}
+
+function LoginPage({ initialMode = 'login' }) {
     const navigate = useNavigate();
-    
-    // State to toggle between login (true) and signup (false) forms
-    const [isLogin, setIsLogin] = useState(false);
-    
-    // State object to store all form input values
+    const [isLogin, setIsLogin] = useState(initialMode === 'login');
     const [formData, setFormData] = useState({
-        email: '',           // User's email address (signup only)
-        username: '',        // User's chosen username
-        password: '',        // User's password
-        passwordConfirm: ''  // Password confirmation field (signup only)
+        email: '',
+        username: '',
+        password: '',
+        passwordConfirm: '',
     });
-    
-    // State object to store validation error messages for each field
     const [errors, setErrors] = useState({});
-    
-    // State string to display success messages (e.g., "Account created successfully!")
     const [successMessage, setSuccessMessage] = useState('');
-    
-    // State object to track password strength with display text and CSS class
-    const [passwordStrength, setPasswordStrength] = useState({ text: '', className: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Get API base URL from environment variable, or use localhost:3000 as fallback
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+    const passwordStrength = getPasswordStrength(formData.password);
 
-    // Function to evaluate password strength and return feedback
-    const checkPasswordStrength = (password) => {
-        // If password is empty, return no feedback
-        if (password.length === 0) {
-            return { text: '', className: '' };
-        }
-
-        // Initialize score counter (max score is 6)
-        let score = 0;
-        // Add 1 point if password is at least 8 characters
-        if (password.length >= 8) score++;
-        // Add 1 more point if password is at least 12 characters
-        if (password.length >= 12) score++;
-        // Add 1 point if password contains lowercase letters
-        if (/[a-z]/.test(password)) score++;
-        // Add 1 point if password contains uppercase letters
-        if (/[A-Z]/.test(password)) score++;
-        // Add 1 point if password contains numbers
-        if (/[0-9]/.test(password)) score++;
-        // Add 1 point if password contains special characters
-        if (/[^a-zA-Z0-9]/.test(password)) score++;
-
-        // Score 0-2: Weak password (red text)
-        if (score <= 2) {
-            return { text: 'Weak password', className: 'weak' };
-        // Score 3-4: Medium password (orange text)
-        } else if (score <= 4) {
-            return { text: 'Medium password', className: 'medium' };
-        // Score 5-6: Strong password (green text)
-        } else {
-            return { text: 'Strong password', className: 'strong' };
-        }
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
-    // Function to validate email format using regex pattern
-    const isValidEmail = (email) => {
-        // Regex: anything + @ + anything + . + anything (no spaces or multiple @)
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // Return true if email matches the pattern, false otherwise
-        return emailRegex.test(email);
-    };
-
-    // Function that runs every time user types in any input field
-    const handleChange = (e) => {
-        // Destructure the input's name and current value from the event
-        const { name, value } = e.target;
-        // Update formData by keeping all previous values and updating only the changed field
-        setFormData(prev => ({ ...prev, [name]: value }));
-        // Clear any error message for this field as user corrects it
-        setErrors(prev => ({ ...prev, [name]: '' }));
-
-        // If user is typing in password field during signup, update strength indicator in real-time
-        if (name === 'password' && !isLogin) {
-            setPasswordStrength(checkPasswordStrength(value));
-        }
-    };
-
-    // Async function to handle signup form submission
-    const handleSignup = async (e) => {
-        // Prevent default form submission behavior (page reload)
-        e.preventDefault();
-        // Clear any previous error messages
+    const handleSignup = async (event) => {
+        event.preventDefault();
         setErrors({});
-        // Clear any previous success messages
         setSuccessMessage('');
 
-        // Create empty object to collect validation errors
-        const newErrors = {};
+        const nextErrors = {};
 
-        // Validate email format using our isValidEmail function
         if (!isValidEmail(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+            nextErrors.email = 'Please enter a valid email address.';
         }
-        // Validate username is at least 3 characters long
-        if (formData.username.length < 3) {
-            newErrors.username = 'Username must be at least 3 characters';
+        if (formData.username.trim().length < 3) {
+            nextErrors.username = 'Username must be at least 3 characters.';
         }
-        // Validate password is at least 8 characters long
         if (formData.password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters';
+            nextErrors.password = 'Password must be at least 8 characters.';
         }
-        // Validate that password and confirm password fields match
         if (formData.password !== formData.passwordConfirm) {
-            newErrors.passwordConfirm = 'Passwords do not match';
+            nextErrors.passwordConfirm = 'Passwords do not match.';
         }
 
-        // If any validation errors exist, display them and stop submission
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
+        if (Object.keys(nextErrors).length > 0) {
+            setErrors(nextErrors);
             return;
         }
 
-        // Try to send signup request to backend API
         try {
-            // Send POST request to signup endpoint with user data
-            const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
-                method: 'POST',  // HTTP POST method for creating new resources
-                headers: { 'Content-Type': 'application/json' },  // Tell server we're sending JSON
-                body: JSON.stringify({  // Convert JavaScript object to JSON string
-                    email: formData.email,
-                    username: formData.username,
-                    password: formData.password
-                })
+            setIsSubmitting(true);
+            await signup({
+                email: formData.email,
+                username: formData.username.trim(),
+                password: formData.password,
             });
 
-            // Parse the JSON response from the server
-            const data = await response.json();
-
-            // If response status is 200-299 (success)
-            if (response.ok) {
-                // Display success message to user
-                setSuccessMessage('Account created successfully! Please log in.');
-                // After 1.5 seconds, switch to login form and clear sensitive fields
-                setTimeout(() => {
-                    setIsLogin(true);  // Switch to login form
-                    // Clear email, password, and confirm password but keep username
-                    setFormData(prev => ({ ...prev, email: '', password: '', passwordConfirm: '' }));
-                }, 1500);
-            } else {
-                // If server returns error, display the error message
-                setErrors({ email: data.message || 'Registration failed' });
-            }
+            setSuccessMessage('Account created successfully. You can log in now.');
+            setTimeout(() => {
+                setIsLogin(true);
+                setFormData((prev) => ({
+                    ...prev,
+                    email: '',
+                    password: '',
+                    passwordConfirm: '',
+                }));
+            }, 1200);
         } catch (error) {
-            // If network request fails (server down, no internet, etc.)
-            console.error('Registration error:', error);
-            setErrors({ email: 'Unable to connect to server. Please try again later.' });
+            setErrors({ email: error.message || 'Unable to create account right now.' });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const handleLogin = async (event) => {
+        event.preventDefault();
         setErrors({});
         setSuccessMessage('');
 
-        const newErrors = {};
-
-        if (formData.username.length === 0) {
-            newErrors.username = 'Please enter your username';
+        const nextErrors = {};
+        if (!formData.username.trim()) {
+            nextErrors.username = 'Please enter your username.';
         }
-        if (formData.password.length === 0) {
-            newErrors.password = 'Please enter your password';
+        if (!formData.password) {
+            nextErrors.password = 'Please enter your password.';
         }
 
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
+        if (Object.keys(nextErrors).length > 0) {
+            setErrors(nextErrors);
             return;
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password
-                })
+            setIsSubmitting(true);
+            const data = await login({
+                username: formData.username.trim(),
+                password: formData.password,
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
+            if (data?.user) {
                 localStorage.setItem('user', JSON.stringify(data.user));
-                setSuccessMessage('Login successful! Redirecting...');
-
+                setSuccessMessage('Login successful. Redirecting to your planner...');
                 setTimeout(() => {
                     navigate('/planner');
-                }, 1500);
-            } else {
-                setErrors({ username: data.message || 'Login failed' });
+                }, 1000);
             }
         } catch (error) {
-            console.error('Login error:', error);
-            setErrors({ username: 'Unable to connect to server. Please try again later.' });
+            setErrors({ username: error.message || 'Unable to log in right now.' });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <> 
-            <div className="login-page">
-                <div className="container">
-                <div className="header font-semibold">
-                    <h1>🎓 UCLA Bear Planner</h1>
-                    <p>Plan your academic journey</p>
+        <div className="min-h-screen bg-slate-50 text-slate-900">
+            <NavBar />
+
+            <main className="relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(148,163,184,0.22),_transparent_34%)]" />
+
+                <div className="relative mx-auto grid min-h-[calc(100vh-180px)] max-w-7xl gap-10 px-4 py-12 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-20">
+                    <section className="flex flex-col justify-center">
+                        <span className="mb-5 inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-700">
+                            PlanBear account access
+                        </span>
+                        <h1 className="max-w-2xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">
+                            Save your roadmap across devices and keep every plan in one place.
+                        </h1>
+                        <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
+                            Sign in to sync planners to your account, or create one now so your course plans stop living in a single browser.
+                        </p>
+
+                        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">01</p>
+                                <p className="mt-3 text-lg font-bold text-slate-900">Multiple plans</p>
+                                <p className="mt-2 text-sm leading-6 text-slate-600">Keep alternate schedules, graduation paths, and backup quarter options.</p>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">02</p>
+                                <p className="mt-3 text-lg font-bold text-slate-900">Cloud-backed</p>
+                                <p className="mt-2 text-sm leading-6 text-slate-600">Pick up the same planner from another laptop without rebuilding it from scratch.</p>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">03</p>
+                                <p className="mt-3 text-lg font-bold text-slate-900">Fast planning</p>
+                                <p className="mt-2 text-sm leading-6 text-slate-600">Same clean planner, now with account access when you need it.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="flex items-center justify-center">
+                        <div className="w-full max-w-xl rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.10)] md:p-8">
+                            <div className="flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
+                                        <img src="/logo.svg" alt="PlanBear logo" className="h-9 w-9" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">PlanBear.io</p>
+                                        <h2 className="text-2xl font-black text-slate-900">
+                                            {isLogin ? 'Welcome back' : 'Create your account'}
+                                        </h2>
+                                    </div>
+                                </div>
+                                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isLogin ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                                    {isLogin ? 'Login' : 'Signup'}
+                                </span>
+                            </div>
+
+                            <div className="mt-6 inline-flex rounded-2xl border border-slate-200 bg-slate-50 p-1">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsLogin(true);
+                                        setErrors({});
+                                        setSuccessMessage('');
+                                    }}
+                                    className={`rounded-2xl px-5 py-2 text-sm font-semibold transition-colors ${
+                                        isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                                    }`}
+                                >
+                                    Log In
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsLogin(false);
+                                        setErrors({});
+                                        setSuccessMessage('');
+                                    }}
+                                    className={`rounded-2xl px-5 py-2 text-sm font-semibold transition-colors ${
+                                        !isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                                    }`}
+                                >
+                                    Sign Up
+                                </button>
+                            </div>
+
+                            <form onSubmit={isLogin ? handleLogin : handleSignup} className="mt-6 space-y-5">
+                                {!isLogin ? (
+                                    <div>
+                                        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-700">
+                                            Email address
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            placeholder="you@ucla.edu"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className={getInputClassName(Boolean(errors.email))}
+                                            required
+                                        />
+                                        {errors.email ? (
+                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.email}</p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+
+                                <div>
+                                    <label htmlFor="username" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        Username
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        placeholder={isLogin ? 'Enter your username' : 'Choose a username'}
+                                        value={formData.username}
+                                        onChange={handleChange}
+                                        className={getInputClassName(Boolean(errors.username))}
+                                        required
+                                    />
+                                    {errors.username ? (
+                                        <p className="mt-2 text-sm font-medium text-rose-600">{errors.username}</p>
+                                    ) : null}
+                                </div>
+
+                                <div>
+                                    <label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder={isLogin ? 'Enter your password' : 'Create a password'}
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className={getInputClassName(Boolean(errors.password))}
+                                        required
+                                    />
+                                    {!isLogin && passwordStrength.text ? (
+                                        <p className={`mt-2 text-sm font-semibold ${passwordStrength.tone}`}>
+                                            {passwordStrength.text}
+                                        </p>
+                                    ) : null}
+                                    {errors.password ? (
+                                        <p className="mt-2 text-sm font-medium text-rose-600">{errors.password}</p>
+                                    ) : null}
+                                </div>
+
+                                {!isLogin ? (
+                                    <div>
+                                        <label htmlFor="passwordConfirm" className="mb-2 block text-sm font-semibold text-slate-700">
+                                            Confirm password
+                                        </label>
+                                        <input
+                                            type="password"
+                                            id="passwordConfirm"
+                                            name="passwordConfirm"
+                                            placeholder="Re-enter your password"
+                                            value={formData.passwordConfirm}
+                                            onChange={handleChange}
+                                            className={getInputClassName(Boolean(errors.passwordConfirm))}
+                                            required
+                                        />
+                                        {errors.passwordConfirm ? (
+                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.passwordConfirm}</p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+
+                                {successMessage ? (
+                                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                                        {successMessage}
+                                    </div>
+                                ) : null}
+
+                                <Button
+                                    type="submit"
+                                    size="lg"
+                                    disabled={isSubmitting}
+                                    className="h-12 w-full rounded-2xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
+                                >
+                                    {isSubmitting
+                                        ? (isLogin ? 'Logging in...' : 'Creating account...')
+                                        : (isLogin ? 'Log In' : 'Create Account')}
+                                </Button>
+                            </form>
+
+                            <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 text-sm text-slate-500">
+                                <p>
+                                    {isLogin ? "Don't have an account yet?" : 'Already have an account?'}
+                                </p>
+                                <Link
+                                    to={isLogin ? '/signup' : '/login'}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        setIsLogin((prev) => !prev);
+                                        setErrors({});
+                                        setSuccessMessage('');
+                                    }}
+                                    className="font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                                >
+                                    {isLogin ? 'Create one' : 'Log in'}
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
                 </div>
+            </main>
 
-                <div className="form-container">
-                    {!isLogin ? (
-                        <form onSubmit={handleSignup} className="form active">
-                            <div className="form-group">
-                                <label htmlFor="email">Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="Enter your email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className={errors.email ? 'error' : ''}
-                                    required
-                                />
-                                {errors.email && <span className="error-message show">{errors.email}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="username">Username</label>
-                                <input
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Choose a username"
-                                    value={formData.username}
-                                    onChange={handleChange}
-                                    className={errors.username ? 'error' : ''}
-                                    required
-                                />
-                                {errors.username && <span className="error-message show">{errors.username}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Create a password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={errors.password ? 'error' : ''}
-                                    required
-                                />
-                                {passwordStrength.text && (
-                                    <span className={`password-strength ${passwordStrength.className}`}>
-                                        {passwordStrength.text}
-                                    </span>
-                                )}
-                                {errors.password && <span className="error-message show">{errors.password}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="passwordConfirm">Confirm Password</label>
-                                <input
-                                    type="password"
-                                    id="passwordConfirm"
-                                    name="passwordConfirm"
-                                    placeholder="Re-enter your password"
-                                    value={formData.passwordConfirm}
-                                    onChange={handleChange}
-                                    className={errors.passwordConfirm ? 'error' : ''}
-                                    required
-                                />
-                                {errors.passwordConfirm && <span className="error-message show">{errors.passwordConfirm}</span>}
-                            </div>
-
-                            {successMessage && <span className="success-message show">{successMessage}</span>}
-
-                            <button type="submit" className="btn">Create Account</button>
-
-                            <div className="switch-form">
-                                Already have an account?{' '}
-                                <a onClick={() => setIsLogin(true)}>Log In</a>
-                            </div>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleLogin} className="form active">
-                            <div className="form-group">
-                                <label htmlFor="loginUsername">Username</label>
-                                <input
-                                    type="text"
-                                    id="loginUsername"
-                                    name="username"
-                                    placeholder="Enter your username"
-                                    value={formData.username}
-                                    onChange={handleChange}
-                                    className={errors.username ? 'error' : ''}
-                                    required
-                                />
-                                {errors.username && <span className="error-message show">{errors.username}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="loginPassword">Password</label>
-                                <input
-                                    type="password"
-                                    id="loginPassword"
-                                    name="password"
-                                    placeholder="Enter your password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={errors.password ? 'error' : ''}
-                                    required
-                                />
-                                {errors.password && <span className="error-message show">{errors.password}</span>}
-                            </div>
-
-                            {successMessage && <span className="success-message show">{successMessage}</span>}
-
-                            <button type="submit" className="btn">Log In</button>
-
-                            <div className="switch-form">
-                                Don't have an account?{' '}
-                                <a onClick={() => setIsLogin(false)}>Sign Up</a>
-                            </div>
-                        </form>
-                    )}
-                </div>
-                </div>
-            </div>
-        </>
+            <Footer />
+        </div>
     );
 }
 
 export default LoginPage;
-
