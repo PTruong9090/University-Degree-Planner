@@ -12,23 +12,36 @@ const User = sequelize.define(
         username: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
+            validate: {
+                notEmpty: true,
+                len: [3, 50],
+            }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
             validate: {
-                isEmail: true
+                isEmail: true,
+                notEmpty: true,
             }
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                notEmpty: true,
+            }
         },
     },
     {
-            tableName: "users",
-            timestamps: true,
+        tableName: "users",
+        timestamps: true,
+        indexes: [
+            { unique: true, fields: ["email"] },
+            { unique: true, fields: ["username"] },
+        ],
     }
 )
 
