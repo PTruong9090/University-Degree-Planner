@@ -11,13 +11,21 @@ import { sequelize } from './models/index.js';
 const app = express()
 app.use(cookieParser());
 
-const allowedOrigins =
-  ENV.NODE_ENV === "production"
-    ? ["https://planbear.io"]
-    : ["http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = new Set([
+  "https://planbear.io",
+  "http://localhost:5173",
+  "http://localhost:3000",
+]);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

@@ -12,6 +12,8 @@ export function AppShell({ plannerState }) {
         createPlan,
         deletePlan,
         filteredCourses,
+        error,
+        isGuestMode,
         plan,
         planSummaries,
         renamePlan,
@@ -74,6 +76,14 @@ export function AppShell({ plannerState }) {
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">PlanBear Planner</p>
                             <h2 className="mt-1 text-xl font-black text-slate-900 md:text-3xl">{activePlanName}</h2>
+                            {isGuestMode ? (
+                                <p className="mt-2 text-sm font-medium text-amber-700">
+                                    Guest mode: this plan is saved in local storage on this device.
+                                </p>
+                            ) : null}
+                            {error ? (
+                                <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
+                            ) : null}
                         </div>
 
                         <div className="grid gap-3 md:min-w-[360px] md:max-w-[440px] md:flex-1">

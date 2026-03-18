@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
-import useLocalStorage from '../../../hooks/useLocalStorage'
 import { fetchCourses } from '../../../api/courseApi'
+import {
+  createPlanner as createPlannerRequest,
+  deletePlanner as deletePlannerRequest,
+  fetchPlanners,
+  updatePlanner as updatePlannerRequest,
+} from '../../../api/plannerApi'
 import { getCoursesInPlan } from '../../../utils/courseInPlan'
+
+const LOCAL_STORAGE_KEY = 'ucla-planner-guest-v1'
 
 function createEmptyPlan() {
   return {
@@ -32,242 +39,313 @@ function createEmptyPlan() {
   }
 }
 
-function createPlanId() {
-  return `plan-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+function normalizePlannerRecord(planner, fallbackIndex = 0) {
+  return {
+    id: planner.id,
+    name: planner.name?.trim() || 'Untitled Plan',
+    plan: planner.planData ?? createEmptyPlan(),
+    position: Number.isInteger(planner.position) ? planner.position : fallbackIndex,
+  }
 }
 
-function createPlanRecord(name = 'My Plan') {
-  const id = createPlanId()
+function createLocalPlanner(name = 'My Plan', index = 0) {
   return {
-    id,
+    id: `local-plan-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     name,
     plan: createEmptyPlan(),
+    position: index,
   }
 }
 
-function createInitialPlannerStore() {
-  const initialPlan = createPlanRecord('My Plan')
+function parseLocalPlannerStore() {
+  try {
+    const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (!raw) {
+      const initialPlanner = createLocalPlanner('My Plan', 0)
+      return {
+        activePlanId: initialPlanner.id,
+        planners: [initialPlanner],
+      }
+    }
 
-  return {
-    activePlanId: initialPlan.id,
-    planOrder: [initialPlan.id],
-    plansById: {
-      [initialPlan.id]: initialPlan,
-    },
-  }
-}
+    const parsed = JSON.parse(raw)
+    const planners = Array.isArray(parsed?.planners)
+      ? parsed.planners.map((planner, index) => ({
+          id: planner.id ?? `local-plan-${index}`,
+          name: planner.name?.trim() || 'Untitled Plan',
+          plan: planner.plan ?? createEmptyPlan(),
+          position: Number.isInteger(planner.position) ? planner.position : index,
+        }))
+      : []
 
-function isLegacySinglePlan(value) {
-  return Boolean(
-    value &&
-      typeof value === 'object' &&
-      value.year1 &&
-      value.year2 &&
-      value.year3 &&
-      value.year4
-  )
-}
-
-function isPlannerStore(value) {
-  return Boolean(
-    value &&
-      typeof value === 'object' &&
-      typeof value.activePlanId === 'string' &&
-      Array.isArray(value.planOrder) &&
-      value.plansById &&
-      typeof value.plansById === 'object'
-  )
-}
-
-function normalizePlannerStore(value) {
-  if (isPlannerStore(value)) {
-    const planOrder = value.planOrder.filter((planId) => value.plansById[planId])
-    const firstPlanId = planOrder[0]
-
-    if (planOrder.length === 0 || !firstPlanId) {
-      return createInitialPlannerStore()
+    if (planners.length === 0) {
+      const initialPlanner = createLocalPlanner('My Plan', 0)
+      return {
+        activePlanId: initialPlanner.id,
+        planners: [initialPlanner],
+      }
     }
 
     return {
-      activePlanId: value.plansById[value.activePlanId] ? value.activePlanId : firstPlanId,
-      planOrder,
-      plansById: planOrder.reduce((plans, planId) => {
-        const currentPlan = value.plansById[planId]
-        plans[planId] = {
-          id: currentPlan.id ?? planId,
-          name: currentPlan.name?.trim() || 'Untitled Plan',
-          plan: currentPlan.plan ?? createEmptyPlan(),
-        }
-        return plans
-      }, {}),
+      activePlanId:
+        planners.find((planner) => planner.id === parsed?.activePlanId)?.id ?? planners[0].id,
+      planners: planners.sort((a, b) => a.position - b.position),
     }
-  }
-
-  if (isLegacySinglePlan(value)) {
-    const migratedPlan = createPlanRecord('My Plan')
-    migratedPlan.plan = value
-
+  } catch (error) {
+    console.error(error)
+    const initialPlanner = createLocalPlanner('My Plan', 0)
     return {
-      activePlanId: migratedPlan.id,
-      planOrder: [migratedPlan.id],
-      plansById: {
-        [migratedPlan.id]: migratedPlan,
-      },
+      activePlanId: initialPlanner.id,
+      planners: [initialPlanner],
     }
   }
-
-  return createInitialPlannerStore()
 }
 
 export function usePlannerState() {
   const [courses, setCourses] = useState([])
-  const [plannerStore, setPlannerStore] = useLocalStorage('ucla-planner-v1', createInitialPlannerStore())
+  const [planners, setPlanners] = useState([])
+  const [activePlanId, setActivePlanId] = useState(null)
   const [activeItem, setActiveItem] = useState(null)
   const [subjectFilter, setSubjectFilter] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [activeYearIndex, setActiveYearIndex] = useState(0)
-
-  const normalizedPlannerStore = useMemo(() => normalizePlannerStore(plannerStore), [plannerStore])
-
-  useEffect(() => {
-    if (!isPlannerStore(plannerStore)) {
-      setPlannerStore(normalizedPlannerStore)
-    }
-  }, [normalizedPlannerStore, plannerStore, setPlannerStore])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [storageMode, setStorageMode] = useState('remote')
 
   useEffect(() => {
     fetchCourses()
       .then((data) => setCourses(data))
-      .catch((error) => console.log(error))
+      .catch((fetchError) => console.log(fetchError))
   }, [])
 
-  const activePlanRecord =
-    normalizedPlannerStore.plansById[normalizedPlannerStore.activePlanId] ??
-    normalizedPlannerStore.plansById[normalizedPlannerStore.planOrder[0]]
+  useEffect(() => {
+    let isMounted = true
 
-  const activePlanId = activePlanRecord.id
-  const activePlanName = activePlanRecord.name
+    const loadPlanners = async () => {
+      setIsLoading(true)
+      setError('')
+      setStorageMode('remote')
+
+      try {
+        const data = await fetchPlanners()
+        if (!isMounted) return
+
+        let nextPlanners = (data.planners ?? []).map(normalizePlannerRecord)
+
+        if (nextPlanners.length === 0) {
+          const created = await createPlannerRequest({
+            name: 'My Plan',
+            planData: createEmptyPlan(),
+            position: 0,
+          })
+
+          if (!isMounted) return
+          nextPlanners = [normalizePlannerRecord(created.planner)]
+        }
+
+        nextPlanners.sort((a, b) => a.position - b.position)
+        setPlanners(nextPlanners)
+        setActivePlanId((currentId) =>
+          currentId && nextPlanners.some((planner) => planner.id === currentId)
+            ? currentId
+            : nextPlanners[0].id
+        )
+      } catch (loadError) {
+        if (!isMounted) return
+
+        const localStore = parseLocalPlannerStore()
+        setPlanners(localStore.planners)
+        setActivePlanId(localStore.activePlanId)
+        setStorageMode('local')
+        setError(
+          loadError.status === 401
+            ? 'Guest mode: plans are saving to this browser only.'
+            : 'Offline mode: plans are saving to this browser only.'
+        )
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadPlanners()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (storageMode !== 'local' || planners.length === 0) return
+
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify({
+        activePlanId,
+        planners,
+      })
+    )
+  }, [activePlanId, planners, storageMode])
+
+  const activePlanRecord =
+    planners.find((planner) => planner.id === activePlanId) ??
+    planners[0] ?? {
+      id: '',
+      name: 'My Plan',
+      plan: createEmptyPlan(),
+      position: 0,
+    }
+
   const plan = activePlanRecord.plan
+  const activePlanName = activePlanRecord.name
 
   const planSummaries = useMemo(
     () =>
-      normalizedPlannerStore.planOrder.map((planId) => ({
-        id: planId,
-        name: normalizedPlannerStore.plansById[planId]?.name ?? 'Untitled Plan',
+      planners.map((planner) => ({
+        id: planner.id,
+        name: planner.name,
       })),
-    [normalizedPlannerStore]
+    [planners]
   )
 
-  const updateActivePlan = (updater) => {
-    setPlannerStore((currentStore) => {
-      const normalizedStore = normalizePlannerStore(currentStore)
-      const currentPlanRecord =
-        normalizedStore.plansById[normalizedStore.activePlanId] ??
-        normalizedStore.plansById[normalizedStore.planOrder[0]]
-
-      return {
-        ...normalizedStore,
-        plansById: {
-          ...normalizedStore.plansById,
-          [currentPlanRecord.id]: {
-            ...currentPlanRecord,
-            plan: updater(currentPlanRecord.plan),
-          },
-        },
-      }
-    })
+  const persistPlanner = async (plannerId, payload) => {
+    const data = await updatePlannerRequest(plannerId, payload)
+    return normalizePlannerRecord(data.planner)
   }
 
-  const createPlan = () => {
-    const nextPlan = createPlanRecord(`Plan ${normalizedPlannerStore.planOrder.length + 1}`)
+  const replacePlanner = (updatedPlanner) => {
+    setPlanners((currentPlanners) =>
+      currentPlanners
+        .map((planner) => (planner.id === updatedPlanner.id ? updatedPlanner : planner))
+        .sort((a, b) => a.position - b.position)
+    )
+  }
 
-    setPlannerStore((currentStore) => {
-      const normalizedStore = normalizePlannerStore(currentStore)
+  const createPlan = async () => {
+    const nextPosition = planners.length
 
-      return {
-        activePlanId: nextPlan.id,
-        planOrder: [...normalizedStore.planOrder, nextPlan.id],
-        plansById: {
-          ...normalizedStore.plansById,
-          [nextPlan.id]: nextPlan,
-        },
-      }
-    })
+    if (storageMode === 'local') {
+      const nextPlanner = createLocalPlanner(`Plan ${nextPosition + 1}`, nextPosition)
+      setPlanners((currentPlanners) => [...currentPlanners, nextPlanner].sort((a, b) => a.position - b.position))
+      setActivePlanId(nextPlanner.id)
+      setActiveYearIndex(0)
+      setActiveItem(null)
+      setError('Guest mode: plans are saving to this browser only.')
+      return
+    }
 
-    setActiveYearIndex(0)
-    setActiveItem(null)
+    try {
+      const data = await createPlannerRequest({
+        name: `Plan ${nextPosition + 1}`,
+        planData: createEmptyPlan(),
+        position: nextPosition,
+      })
+
+      const nextPlanner = normalizePlannerRecord(data.planner, nextPosition)
+      setPlanners((currentPlanners) => [...currentPlanners, nextPlanner].sort((a, b) => a.position - b.position))
+      setActivePlanId(nextPlanner.id)
+      setActiveYearIndex(0)
+      setActiveItem(null)
+      setError('')
+    } catch (createError) {
+      setError(createError.message || 'Unable to create planner.')
+    }
   }
 
   const selectPlan = (planId) => {
-    if (!normalizedPlannerStore.plansById[planId]) return
-    setPlannerStore((currentStore) => {
-      const normalizedStore = normalizePlannerStore(currentStore)
-      if (!normalizedStore.plansById[planId]) {
-        return normalizedStore
-      }
-
-      return {
-        ...normalizedStore,
-        activePlanId: planId,
-      }
-    })
+    if (!planners.some((planner) => planner.id === planId)) return
+    setActivePlanId(planId)
     setActiveYearIndex(0)
     setActiveItem(null)
   }
 
-  const renamePlan = (planId, name) => {
+  const renamePlan = async (planId, name) => {
     const trimmedName = name.trim()
     if (!trimmedName) return false
 
-    setPlannerStore((currentStore) => {
-      const normalizedStore = normalizePlannerStore(currentStore)
-      const planRecord = normalizedStore.plansById[planId]
-      if (!planRecord) {
-        return normalizedStore
-      }
+    if (storageMode === 'local') {
+      setPlanners((currentPlanners) =>
+        currentPlanners.map((planner) =>
+          planner.id === planId ? { ...planner, name: trimmedName } : planner
+        )
+      )
+      setError('Guest mode: plans are saving to this browser only.')
+      return true
+    }
 
-      return {
-        ...normalizedStore,
-        plansById: {
-          ...normalizedStore.plansById,
-          [planId]: {
-            ...planRecord,
-            name: trimmedName,
-          },
-        },
-      }
-    })
-
-    return true
+    try {
+      const updatedPlanner = await persistPlanner(planId, { name: trimmedName })
+      replacePlanner(updatedPlanner)
+      setError('')
+      return true
+    } catch (renameError) {
+      setError(renameError.message || 'Unable to rename planner.')
+      return false
+    }
   }
 
-  const deletePlan = (planId) => {
-    if (normalizedPlannerStore.planOrder.length <= 1) {
+  const deletePlan = async (planId) => {
+    if (planners.length <= 1) {
       return false
     }
 
-    setPlannerStore((currentStore) => {
-      const normalizedStore = normalizePlannerStore(currentStore)
-      if (!normalizedStore.plansById[planId] || normalizedStore.planOrder.length <= 1) {
-        return normalizedStore
-      }
+    if (storageMode === 'local') {
+      setPlanners((currentPlanners) => {
+        const nextPlanners = currentPlanners.filter((planner) => planner.id !== planId)
+        if (activePlanId === planId && nextPlanners.length > 0) {
+          setActivePlanId(nextPlanners[0].id)
+        }
+        return nextPlanners
+      })
+      setActiveYearIndex(0)
+      setActiveItem(null)
+      setError('Guest mode: plans are saving to this browser only.')
+      return true
+    }
 
-      const nextPlanOrder = normalizedStore.planOrder.filter((id) => id !== planId)
-      const { [planId]: _removedPlan, ...remainingPlans } = normalizedStore.plansById
+    try {
+      await deletePlannerRequest(planId)
 
-      return {
-        activePlanId:
-          normalizedStore.activePlanId === planId
-            ? nextPlanOrder[0]
-            : normalizedStore.activePlanId,
-        planOrder: nextPlanOrder,
-        plansById: remainingPlans,
-      }
-    })
+      setPlanners((currentPlanners) => {
+        const nextPlanners = currentPlanners.filter((planner) => planner.id !== planId)
+        if (activePlanId === planId && nextPlanners.length > 0) {
+          setActivePlanId(nextPlanners[0].id)
+        }
+        return nextPlanners
+      })
 
-    setActiveYearIndex(0)
-    setActiveItem(null)
-    return true
+      setActiveYearIndex(0)
+      setActiveItem(null)
+      setError('')
+      return true
+    } catch (deleteError) {
+      setError(deleteError.message || 'Unable to delete planner.')
+      return false
+    }
+  }
+
+  const updateActivePlan = async (updater) => {
+    if (!activePlanRecord.id) return
+
+    const nextPlan = updater(activePlanRecord.plan)
+    const optimisticPlanner = { ...activePlanRecord, plan: nextPlan }
+    replacePlanner(optimisticPlanner)
+
+    if (storageMode === 'local') {
+      setError('Guest mode: plans are saving to this browser only.')
+      return
+    }
+
+    try {
+      const persistedPlanner = await persistPlanner(activePlanRecord.id, { planData: nextPlan })
+      replacePlanner(persistedPlanner)
+      setError('')
+    } catch (updateError) {
+      replacePlanner(activePlanRecord)
+      setError(updateError.message || 'Unable to save planner changes.')
+    }
   }
 
   const courseMap = useMemo(() => {
@@ -343,7 +421,7 @@ export function usePlannerState() {
     }
 
     if (from.type === 'sidebar' && to.type === 'plan') {
-      updateActivePlan((currentPlan) => ({
+      void updateActivePlan((currentPlan) => ({
         ...currentPlan,
         [to.year]: {
           ...currentPlan[to.year],
@@ -354,7 +432,7 @@ export function usePlannerState() {
     }
 
     if (from.type === 'plan' && to.type === 'sidebar') {
-      updateActivePlan((currentPlan) => ({
+      void updateActivePlan((currentPlan) => ({
         ...currentPlan,
         [from.year]: {
           ...currentPlan[from.year],
@@ -365,7 +443,7 @@ export function usePlannerState() {
     }
 
     if (from.type === 'plan' && to.type === 'plan') {
-      updateActivePlan((currentPlan) => {
+      void updateActivePlan((currentPlan) => {
         if (from.year === to.year && from.quarter === to.quarter) {
           return currentPlan
         }
@@ -401,15 +479,18 @@ export function usePlannerState() {
 
   return {
     activeItem,
-    activePlanId,
+    activePlanId: activePlanRecord.id,
     activePlanName,
     activeYearIndex,
     courseMap,
     createPlan,
     deletePlan,
+    error,
     filteredCourses,
     handleDragEnd,
     handleDragStart,
+    isLoading,
+    isGuestMode: storageMode === 'local',
     plan,
     planSummaries,
     renamePlan,

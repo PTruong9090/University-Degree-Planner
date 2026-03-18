@@ -8,6 +8,18 @@ import { usePlannerState } from '../features/Planner/hooks/usePlannerState';
 
 function PlannerPage() {
   const plannerState = usePlannerState()
+
+  if (plannerState.isLoading) {
+    return (
+      <>
+        <NavBar />
+        <div className="flex min-h-[70vh] items-center justify-center bg-gray-100 px-4 text-slate-600">
+          Loading planners...
+        </div>
+        <Footer />
+      </>
+    )
+  }
   
   return (
     <DndContext 
