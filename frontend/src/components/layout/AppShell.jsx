@@ -72,8 +72,8 @@ export function AppShell({ plannerState }) {
             <section className="flex-1 flex flex-col">
                 {/* Planner Head: Title and Buttons */}
                 <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-4 backdrop-blur md:px-6">
-                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                        <div>
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                        <div className="flex flex-col w-60">
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">PlanBear Planner</p>
                             <h2 className="mt-1 text-xl font-black text-slate-900 md:text-3xl">{activePlanName}</h2>
                             {isGuestMode ? (
@@ -81,9 +81,9 @@ export function AppShell({ plannerState }) {
                                     Guest mode: this plan is saved in local storage on this device.
                                 </p>
                             ) : null}
-                            {error ? (
+                            {/* {error ? (
                                 <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
-                            ) : null}
+                            ) : null} */}
                         </div>
 
                         <div className="grid gap-3 md:min-w-[360px] md:max-w-[440px] md:flex-1">
@@ -125,14 +125,14 @@ export function AppShell({ plannerState }) {
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 md:flex md:items-center">
-                            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center shadow-sm">
+                            {/* <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center shadow-sm">
                                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Courses</p>
                                 <p className="mt-1 text-lg font-bold text-slate-900">{scheduledCourses}</p>
                             </div>
                             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center shadow-sm">
                                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Units</p>
                                 <p className="mt-1 text-lg font-bold text-slate-900">{scheduledUnits}</p>
-                            </div>
+                            </div> */}
                             <button onClick={() => plannerRef.current?.exportPDF()} className="col-span-2 hidden md:inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors hover:bg-blue-700 print:hidden md:col-span-1">
                                 Export PDF
                             </button>
