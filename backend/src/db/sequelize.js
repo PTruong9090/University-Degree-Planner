@@ -1,20 +1,18 @@
-import { Sequelize } from "sequelize";
-import { ENV } from "../config/env.js";
+import { Sequelize } from 'sequelize'
+import { ENV } from './env.js';
 
 new Sequelize(
-  ENV.DB_NAME,
-  ENV.DB_USER,
-  ENV.DB_PASSWORD,
+  ENV.DATABASE_URL,
   {
-    host: ENV.DB_HOST,
-    port: ENV.DB_PORT,
     dialect: 'postgres',
+    protocol: 'postgres',
     logging: false,
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false,
-      },
-    },
+        rejectUnauthorized: false
+      }
+    }
   }
 )
+

@@ -15,6 +15,7 @@ const allowedOrigins = new Set([
   "https://planbear.io",
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://api.planbear.io",
 ]);
 
 app.use(cors({
@@ -41,7 +42,7 @@ app.use('/api/contact', contactRouter)
 app.use('/api/planners', plannerRouter)
 
 
-const PORT = ENV.PORT || 8080
+const PORT = ENV.PORT || 3000
 
 app.get('/health', (req, res) => {
   res.status(200).send('ok');
