@@ -5,6 +5,13 @@ import { Button } from '../components/ui/Button';
 import { Footer } from '../features/Planner/components/Footer';
 import { NavBar } from '../features/Planner/components/NavBar';
 
+const STUDENT_YEAR_OPTIONS = [
+    { value: 'freshman', label: 'Freshman' },
+    { value: 'sophomore', label: 'Sophomore' },
+    { value: 'junior', label: 'Junior' },
+    { value: 'senior', label: 'Senior' },
+];
+
 function getPasswordStrength(password) {
     if (password.length === 0) {
         return { text: '', tone: '' };
@@ -48,6 +55,7 @@ function LoginPage({ initialMode = 'login' }) {
         username: '',
         password: '',
         passwordConfirm: '',
+        studentYear: 'freshman',
     });
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
@@ -80,6 +88,9 @@ function LoginPage({ initialMode = 'login' }) {
         if (formData.password !== formData.passwordConfirm) {
             nextErrors.passwordConfirm = 'Passwords do not match.';
         }
+        if (!STUDENT_YEAR_OPTIONS.some((option) => option.value === formData.studentYear)) {
+            nextErrors.studentYear = 'Please choose your current year.';
+        }
 
         if (Object.keys(nextErrors).length > 0) {
             setErrors(nextErrors);
@@ -92,6 +103,7 @@ function LoginPage({ initialMode = 'login' }) {
                 email: formData.email,
                 username: formData.username.trim(),
                 password: formData.password,
+                studentYear: formData.studentYear,
             });
 
             setSuccessMessage('Account created successfully. You can log in now.');
@@ -102,6 +114,7 @@ function LoginPage({ initialMode = 'login' }) {
                     email: '',
                     password: '',
                     passwordConfirm: '',
+                    studentYear: prev.studentYear,
                 }));
             }, 1200);
         } catch (error) {
@@ -254,6 +267,31 @@ function LoginPage({ initialMode = 'login' }) {
                                         />
                                         {errors.email ? (
                                             <p className="mt-2 text-sm font-medium text-rose-600">{errors.email}</p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+
+                                {!isLogin ? (
+                                    <div>
+                                        <label htmlFor="studentYear" className="mb-2 block text-sm font-semibold text-slate-700">
+                                            Current year
+                                        </label>
+                                        <select
+                                            id="studentYear"
+                                            name="studentYear"
+                                            value={formData.studentYear}
+                                            onChange={handleChange}
+                                            className={getInputClassName(Boolean(errors.studentYear))}
+                                            required
+                                        >
+                                            {STUDENT_YEAR_OPTIONS.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.studentYear ? (
+                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.studentYear}</p>
                                         ) : null}
                                     </div>
                                 ) : null}

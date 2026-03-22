@@ -34,6 +34,11 @@ const User = sequelize.define(
                 notEmpty: true,
             }
         },
+        studentYear: {
+            type: DataTypes.ENUM('freshman', 'sophomore', 'junior', 'senior'),
+            allowNull: false,
+            defaultValue: 'freshman',
+        },
     },
     {
         tableName: "users",
