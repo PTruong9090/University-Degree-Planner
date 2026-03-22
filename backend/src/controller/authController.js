@@ -13,13 +13,22 @@ const COOKIE_OPTIONS = {
 // Sign up controller
 export const signup = async (req, res, next) => {
     try {
-        const { email, username, password } = req.body;
+        const { email, username, password, studentYear } = req.body;
+        const normalizedStudentYear = String(studentYear ?? '').trim().toLowerCase();
+        const allowedStudentYears = ['freshman', 'sophomore', 'junior', 'senior'];
 
         // Validation
-        if (!email || !username || !password) {
+        if (!email || !username || !password || !normalizedStudentYear) {
             return res.status(400).json({
                 status: 'Error',
-                message: 'Please provide email, username, and password'
+                message: 'Please provide email, username, password, and student year'
+            });
+        }
+
+        if (!allowedStudentYears.includes(normalizedStudentYear)) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Student year must be freshman, sophomore, junior, or senior'
             });
         }
 
@@ -48,7 +57,8 @@ export const signup = async (req, res, next) => {
         const newUser = await User.create({
             email,
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            studentYear: normalizedStudentYear
         })
 
         res.status(201).json({
@@ -57,7 +67,8 @@ export const signup = async (req, res, next) => {
             user: {
                 id: newUser.id,
                 email: newUser.email,
-                username: newUser.username
+                username: newUser.username,
+                studentYear: newUser.studentYear
             }
         });
     } catch (error) {
@@ -115,11 +126,11 @@ export const login = async (req, res, next) => {
         res.status(200).json({
             status: 'Success',
             message: 'Login successful',
-            token,
             user: {
                 id: user.id,
                 email: user.email,
-                username: user.username
+                username: user.username,
+                studentYear: user.studentYear
             }
         });
     } catch (error) {
@@ -134,7 +145,7 @@ export const login = async (req, res, next) => {
 export const me = async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id, {
-            attributes: ['id', 'email', 'username', 'createdAt', 'updatedAt']
+            attributes: ['id', 'email', 'username', 'studentYear', 'createdAt', 'updatedAt']
         });
 
         if (!user) {

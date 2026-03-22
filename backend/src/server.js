@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import { ENV } from './config/env.js';
 import courseRouter from './route/courseRoute.js';
 import authRouter from './route/authRoute.js';
@@ -10,6 +11,7 @@ import { sequelize } from './models/index.js';
 
 const app = express()
 app.use(cookieParser());
+app.use(helmet());
 
 const allowedOrigins = new Set([
   "https://planbear.io",
@@ -33,7 +35,7 @@ app.use(cors({
 }));
 
 // Middleware
-app.use(express.json())
+app.use(express.json({ limit: '100kb' }))
 
 // Router setup
 app.use('/api/courses', courseRouter);
