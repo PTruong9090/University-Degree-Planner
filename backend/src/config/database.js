@@ -4,13 +4,10 @@ import { ENV } from './env.js';
 const isRDS = ENV.DB_HOST && !ENV.DB_HOST.includes('localhost');
 
 const sequelize = new Sequelize(
-  ENV.DB_NAME,
-  ENV.DB_USER,
-  ENV.DB_PASSWORD,
+  ENV.DATABASE_URL,
   {
-    host: ENV.DB_HOST,
-    port: ENV.DB_PORT,
     dialect: 'postgres',
+    protocol: 'postgres',
     logging: false,
     dialectOptions: isRDS ? {
       ssl: {

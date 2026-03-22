@@ -1,146 +1,197 @@
-# 🐻 PlanBear
+# PlanBear
 
-**PlanBear** is a modern, web-based **university degree planner** that helps students explore courses, build multi-year academic plans, and optionally save them across devices.
+PlanBear is a web-based university degree planner for building and managing multi-year academic plans.
 
-Users can start planning **without creating an account**, then sign up later to persist and sync their plans.
+It supports two planning modes:
 
----
+- Guest mode: plans are saved in browser `localStorage`
+- Account mode: plans are saved through the backend and tied to a user account
 
-## ✨ Features
+The current app is focused on UCLA-style quarter planning, course browsing, drag-and-drop scheduling, and PDF export.
 
-### ✅ Available Now
-- 📚 Browse and search university courses  
-- 🧩 Build a flexible 4-year academic plan  
-- 💾 Save plans locally using `localStorage`  
-- 📄 Export plans to PDF  
-- 📱 Responsive, mobile-friendly UI  
-- 🔐 Secure authentication (JWT + HTTP-only cookies)
+## Features
 
-### 🚧 Planned
-- ☁️ Cloud-saved plans for logged-in users  
-- 🔄 Cross-device plan syncing  
-- 👤 User profiles & dashboards  
-- 📌 Multiple saved plans per user  
-- 🧠 Prerequisite validation & smart warnings  
+- Browse and search course data
+- Build a 4-year plan with drag-and-drop scheduling
+- Create and manage multiple plans
+- Use the planner without logging in
+- Save guest plans locally in the browser
+- Save authenticated plans through the backend
+- Export a plan to PDF
+- Responsive UI for desktop and mobile
 
----
-
-## 🧱 Tech Stack
+## Stack
 
 ### Frontend
+
 - React
 - Vite
 - Tailwind CSS
-- Headless UI
+- React Router
+- `@dnd-kit/core`
+- jsPDF
 
 ### Backend
+
 - Node.js
 - Express
-- Sequelize ORM
+- Sequelize
 - PostgreSQL
-- JWT Authentication
-- bcrypt
+- JWT auth with HTTP-only cookies
 
-### Infrastructure
-- AWS (RDS, Elastic Beanstalk)
-- PostgreSQL
-- HTTPS
-- Environment-based configuration
-
----
-
-## 🔐 Authentication Model
-
-PlanBear uses a **progressive authentication model**.
-
-### Guests can:
-- Browse courses
-- Build and edit plans
-- Save plans locally in the browser
-
-### Logged-in users can:
-- Save plans to the database
-- Access plans across devices
-- Manage account data
-
-### Security details:
-- JWTs stored in **HTTP-only cookies**
-- Middleware-based route protection
-- Public routes remain accessible to guests
-- Protected routes require authentication
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```text
-planbear/
-├── frontend/
-│   ├── components/
-│   ├── features/
-│   ├── hooks/
-│   ├── pages/
-│   └── utils/
-│
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middlewares/
-│   ├── config/
-│   └── server.js
-│
-└── README.md
+University Degree Planner/
+|-- frontend/
+|   |-- src/
+|   |   |-- api/
+|   |   |-- components/
+|   |   |-- features/
+|   |   |-- hooks/
+|   |   |-- pages/
+|   |   `-- utils/
+|
+|-- backend/
+|   |-- src/
+|   |   |-- config/
+|   |   |-- controller/
+|   |   |-- db/
+|   |   |-- middlewares/
+|   |   |-- models/
+|   |   |-- route/
+|   |   `-- scripts/
+|   `-- migrations/
+|
+`-- README.md
 ```
 
----
+## Local Development
 
-## 🚀 Getting Started (Local Development)
+### 1. Install dependencies
 
-### 1️⃣ Clone the repository
+From the repo root:
+
 ```bash
-git clone https://github.com/your-username/planbear.git
-cd planbear
+npm install
 ```
 
-### 2️⃣ Frontend setup
+Then install app dependencies in each package:
+
 ```bash
 cd frontend
 npm install
-npm run dev
+
+cd ../backend
+npm install
 ```
 
-Runs on:
-`http:localhost:5173`
+### 2. Configure environment variables
 
-### 3️⃣ Backend setup
+Frontend:
+
+- `frontend/.env.development`
+- `frontend/.env.production`
+
+Typical frontend variable:
+
+```bash
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+Backend:
+
+- `backend/.env.development`
+- `backend/.env`
+
+Typical backend development variables:
+
+```bash
+NODE_ENV=development
+PORT=3000
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+SECRET_KEY=your_secret
+```
+
+Important:
+
+- Use `npm run dev` in the backend for local development
+
+### 3. Start the backend
+
 ```bash
 cd backend
-npm install
 npm run dev
 ```
 
-Runs on:
-`http:localhost:3000`
+Backend runs on:
 
-### ⚙️ Environment Variables
-Create a `.env` file in the backend directory:
-
-```bash
-PORT=3000
-DATABASE_URL=postgresql://user:password@localhost:5432/planbear
-JWT_SECRET=your-super-secret-key
-NODE_ENV=development
+```text
+http://localhost:3000
 ```
 
-### 📡 API Overview
+### 4. Start the frontend
+
 ```bash
-GET    /api/courses
-POST   /api/auth/signup
-POST   /api/auth/login
+cd frontend
+npm run dev
 ```
 
-## 👥 Contributors
+Frontend runs on:
 
-- **Phuc Truong** — Creator & Lead Developer  
-- **Jordan Nguyen** — Project Partner & Core Developer
+```text
+http://localhost:5173
+```
+
+## Authentication and Planner Behavior
+
+### Guest users
+
+- Can open the planner immediately
+- Can create and edit multiple plans
+- Plans are saved to browser `localStorage`
+
+### Logged-in users
+
+- Can sign up and log in
+- Planner data is loaded from the backend
+- Plans are stored per user through the planner API
+
+If planner auth fails, the frontend falls back to guest mode instead of blocking access.
+
+## Current API Surface
+
+### Auth
+
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+
+### Planners
+
+- `GET /api/planners`
+- `POST /api/planners`
+- `GET /api/planners/:id`
+- `PUT /api/planners/:id`
+- `DELETE /api/planners/:id`
+
+### Courses
+
+- `GET /api/courses`
+
+## Notes
+
+- The frontend uses cookie-based auth for authenticated planner requests
+- Public course browsing does not require login
+- PDF export is generated client-side
+- The backend currently syncs models automatically in non-production mode
+
+## Contributors
+
+- Phuc Truong
+- Jordan Nguyen

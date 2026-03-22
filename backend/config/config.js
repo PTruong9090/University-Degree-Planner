@@ -14,6 +14,7 @@ export default {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
+    db_url: process.env.DATABASE_URL,
     dialect: "postgres",
   },
 
@@ -21,6 +22,7 @@ export default {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    db_url: process.env.DATABASE_URL,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "postgres",
