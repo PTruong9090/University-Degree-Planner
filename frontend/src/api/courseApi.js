@@ -1,15 +1,18 @@
 import { apiFetch } from './http'
 
+// Course cache
 const COURSE_CACHE_TTL_MS = 1000 * 60 * 30
 const COURSE_CACHE_PREFIX = 'planbear-course-cache'
 
-let memoryCourseCache = new Map()
-let inFlightCourseRequests = new Map()
+let memoryCourseCache = new Map()       // In-memory cache
+let inFlightCourseRequests = new Map()  // In-flight requests (prevents duplicate requests)
 
+// Get key for current stash
 function getCacheKey(limit) {
     return `${COURSE_CACHE_PREFIX}:${limit}`
 }
 
+// Get data from session cache
 function readSessionCache(limit) {
     if (typeof window === 'undefined') return null
 
@@ -20,6 +23,7 @@ function readSessionCache(limit) {
         const parsed = JSON.parse(raw)
         if (!parsed?.timestamp || !Array.isArray(parsed?.data)) return null
 
+        // Remove data if TTL expires
         if (Date.now() - parsed.timestamp > COURSE_CACHE_TTL_MS) {
             window.sessionStorage.removeItem(getCacheKey(limit))
             return null
@@ -31,6 +35,7 @@ function readSessionCache(limit) {
     }
 }
 
+// Store data into session cache
 function writeSessionCache(limit, data) {
     if (typeof window === 'undefined') return
 
@@ -47,13 +52,16 @@ function writeSessionCache(limit, data) {
     }
 }
 
+// Fetch courses data
 export async function fetchCourses(limit = 20000, options = {}) {
     const { forceRefresh = false } = options
 
+    // Check in-memory cache
     if (!forceRefresh && memoryCourseCache.has(limit)) {
         return memoryCourseCache.get(limit)
     }
 
+    // Check session cache
     if (!forceRefresh) {
         const sessionCachedCourses = readSessionCache(limit)
         if (sessionCachedCourses) {
@@ -62,10 +70,12 @@ export async function fetchCourses(limit = 20000, options = {}) {
         }
     }
 
+    // Check in-flight requests
     if (!forceRefresh && inFlightCourseRequests.has(limit)) {
         return inFlightCourseRequests.get(limit)
     }
 
+    // Fetch courses from API
     const request = apiFetch(`/api/courses?limit=${limit}`, {
         includeCredentials: false,
     }).then((data) => {
@@ -78,6 +88,7 @@ export async function fetchCourses(limit = 20000, options = {}) {
         throw error
     })
 
+    // Prevent multiple same requests
     inFlightCourseRequests.set(limit, request)
     return request
 }

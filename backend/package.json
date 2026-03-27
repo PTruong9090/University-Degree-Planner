@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "seed:dev": "cross-env NODE_ENV=development node src/scripts/importCourses.js",
+    "poll:offerings": "cross-env NODE_ENV=development node src/scripts/pollTrackedOfferings.js --dry-run",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development node ./src/server.js",
     "start": "node ./src/server.js"

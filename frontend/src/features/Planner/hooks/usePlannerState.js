@@ -113,6 +113,7 @@ export function usePlannerState() {
   const [error, setError] = useState('')
   const [storageMode, setStorageMode] = useState('remote')
 
+  // Fetch and set data
   useEffect(() => {
     fetchCourses()
       .then((data) => setCourses(data))
@@ -133,6 +134,7 @@ export function usePlannerState() {
 
         let nextPlanners = (data.planners ?? []).map(normalizePlannerRecord)
 
+        // Create default plan if none exist
         if (nextPlanners.length === 0) {
           const created = await createPlannerRequest({
             name: 'My Plan',
@@ -177,6 +179,7 @@ export function usePlannerState() {
     }
   }, [])
 
+  // Save local planners (guest/local mode)
   useEffect(() => {
     if (storageMode !== 'local' || planners.length === 0) return
 
@@ -210,6 +213,7 @@ export function usePlannerState() {
     [planners]
   )
 
+  // Updates planner on backend
   const persistPlanner = async (plannerId, payload) => {
     const data = await updatePlannerRequest(plannerId, payload)
     return normalizePlannerRecord(data.planner)
@@ -348,6 +352,7 @@ export function usePlannerState() {
     }
   }
 
+  // Map course information to ID
   const courseMap = useMemo(() => {
     return courses.reduce((map, course) => {
       map[course.courseID] = course
@@ -355,6 +360,7 @@ export function usePlannerState() {
     }, {})
   }, [courses])
 
+  // Removed placed course from sidebar
   const availableCourses = useMemo(() => {
     const used = getCoursesInPlan(plan)
 
@@ -363,6 +369,7 @@ export function usePlannerState() {
       .filter((courseID) => !used.has(courseID))
   }, [courses, plan])
 
+  // Changes numeric sorting for course ID
   const collator = useMemo(
     () => new Intl.Collator('en', { numeric: true, sensitivity: 'base' }),
     []

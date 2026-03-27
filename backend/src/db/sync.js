@@ -1,5 +1,5 @@
 import sequelize from "./sequelize.js";
-import "../models/course.model.js"
+import "../models/index.js";
 
 await sequelize.authenticate()
 await sequelize.sync()

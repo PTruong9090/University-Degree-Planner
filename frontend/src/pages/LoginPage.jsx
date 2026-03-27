@@ -5,6 +5,7 @@ import { Button } from '../components/ui/Button';
 import { Footer } from '../features/Planner/components/Footer';
 import { NavBar } from '../features/Planner/components/NavBar';
 
+// Allowed years for signup
 const STUDENT_YEAR_OPTIONS = [
     { value: 'freshman', label: 'Freshman' },
     { value: 'sophomore', label: 'Sophomore' },
@@ -92,6 +93,7 @@ function LoginPage({ initialMode = 'login' }) {
             nextErrors.studentYear = 'Please choose your current year.';
         }
 
+        // Check all fields for errors
         if (Object.keys(nextErrors).length > 0) {
             setErrors(nextErrors);
             return;

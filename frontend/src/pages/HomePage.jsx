@@ -7,9 +7,9 @@ import { Button } from '../components/ui/Button';
 import { NavBar } from '../features/Planner/components/NavBar';
 import { Footer } from '../features/Planner/components/Footer';
 
-const YEAR_KEYS = ['year1', 'year2', 'year3', 'year4'];
-const LOCAL_STORAGE_KEY = 'ucla-planner-guest-v1';
-const STUDENT_YEAR_TO_PLAN_YEAR = {
+const YEAR_KEYS = ['year1', 'year2', 'year3', 'year4'];   // Planner year keys
+const LOCAL_STORAGE_KEY = 'ucla-planner-guest-v1';        // Guest planner storage key
+const STUDENT_YEAR_TO_PLAN_YEAR = {                       // User year -> planner year
   freshman: 'year1',
   sophomore: 'year2',
   junior: 'year3',
@@ -25,11 +25,14 @@ const getCurrentQuarterKey = (date = new Date()) => {
   return 'fall';
 };
 
+// Normalize quarter label for display
 const formatQuarterLabel = (quarterKey) =>
   quarterKey.charAt(0).toUpperCase() + quarterKey.slice(1);
 
+// Normalize year label for display
 const formatYearLabel = (yearKey) => yearKey.replace('year', 'Year ');
 
+// Parse for unit value
 const getUnitValue = (units) => {
   const match = String(Array.isArray(units) ? units.join(' ') : units ?? '').match(/\d+/);
   return match ? Number(match[0]) : 0;
@@ -41,6 +44,7 @@ const createEmptyPlan = () => ({
   year3: { fall: [], winter: [], spring: [], summer: [] },
   year4: { fall: [], winter: [], spring: [], summer: [] },
 });
+
 
 const parseLocalPlannerStore = () => {
   try {
@@ -69,7 +73,7 @@ const parseLocalPlannerStore = () => {
 };
 
 const HomePage = () => {
-  const [roadmapPreview, setRoadmapPreview] = useState({
+  const [roadmapPreview, setRoadmapPreview] = useState({    // Homepage planner preview
     isLoading: true,
     yearKey: 'year1',
     quarterKey: getCurrentQuarterKey(),
@@ -81,6 +85,7 @@ const HomePage = () => {
   useEffect(() => {
     let isMounted = true;
 
+    // Load preview planner from backend
     const loadRoadmapPreview = async () => {
       const quarterKey = getCurrentQuarterKey();
 
@@ -100,16 +105,25 @@ const HomePage = () => {
         let planData = createEmptyPlan();
 
         try {
+          // Grab planner from backend
           const plannerData = await fetchPlanners();
           if (!isMounted) return;
 
+          // Sort by position
           const planners = Array.isArray(plannerData?.planners) ? plannerData.planners : [];
           const primaryPlanner = planners
             .slice()
             .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))[0];
+          
+          // Use empty plan if primary planner exists
           planData = primaryPlanner?.planData ?? createEmptyPlan();
+
+          // Not logged in
         } catch (plannerError) {
+          // Grab planner from local storage
           const localStore = parseLocalPlannerStore();
+
+          // Use active local planner || first local planner || empty plan
           const activePlanner =
             localStore.planners.find((planner) => planner.id === localStore.activePlanId) ??
             localStore.planners[0];
@@ -117,15 +131,19 @@ const HomePage = () => {
           planData = activePlanner?.plan ?? createEmptyPlan();
         }
 
+        // Decide preview year
         const signedInYearKey =
           STUDENT_YEAR_TO_PLAN_YEAR[currentUserData?.user?.studentYear] ?? null;
         const yearKey =
           signedInYearKey && YEAR_KEYS.includes(signedInYearKey) ? signedInYearKey : 'year1';
+        
+        // Create course lookup table
         const courseMap = courses.reduce((map, course) => {
           map[course.courseID] = course;
           return map;
         }, {});
         const quarterCourseIds = planData[yearKey]?.[quarterKey] ?? [];
+
 
         setRoadmapPreview({
           isLoading: false,
@@ -164,10 +182,12 @@ const HomePage = () => {
       }
     };
 
+    // Attach event listeners to update roadmap
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleFocus);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    // Remove listeners when unmounted
     return () => {
       isMounted = false;
       window.removeEventListener('focus', handleFocus);
@@ -176,6 +196,7 @@ const HomePage = () => {
     };
   }, []);
 
+  // Update when roadmap quarterkey changes
   const roadmapHeading = useMemo(() => {
     return `${formatQuarterLabel(roadmapPreview.quarterKey)} ${new Date().getFullYear()}`;
   }, [roadmapPreview.quarterKey]);
