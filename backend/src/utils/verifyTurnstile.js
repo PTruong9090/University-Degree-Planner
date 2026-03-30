@@ -2,7 +2,6 @@ import fetch from "node-fetch"
 
 export async function verifyTurnstile(token, ip) {
     const secret = process.env.TURNSTILE_SECRET_KEY
-    console.log(token, ip)
 
     try {
         const response = await fetch(

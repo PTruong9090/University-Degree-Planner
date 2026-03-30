@@ -99,8 +99,8 @@ export function ContactUs( { isOpen, onClose }) {
                     <div className='text-right mt-4'>
                         <button 
                             onClick={handleSubmit} 
-                            disabled={loading} 
-                            className='text-center font-semibold px-5 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600'
+                            disabled={!token || loading} 
+                            className={`text-center font-semibold px-5 py-2 bg-blue-500 text-white rounded-lg text-sm ${!token ? 'bg-gray-400 text-gray-200 cursor-not-allowed opacity-70' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
                         >
                             {loading ? 'Sending...' : 'Send'}
                         </button>
