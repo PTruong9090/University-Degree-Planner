@@ -1,15 +1,24 @@
 import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import React, { useState } from 'react'
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { Turnstile } from '@marsidev/react-turnstile'
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 
 export function ContactUs( { isOpen, onClose }) {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
+    const [token, setToken] = useState(null)
 
     async function handleSubmit() {
         if (!message.trim()) return
+
+        if (!token) {
+            alert("Please complete the captcha")
+            return
+        }
 
         setLoading(true)
 
@@ -17,18 +26,23 @@ export function ContactUs( { isOpen, onClose }) {
             const res = await fetch(`${BASE_URL}/api/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, message }),
+                body: JSON.stringify({ email, message, turnstileToken: token }),
             })
 
-            if (!res.ok) throw new Error('Failed')
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}))
+                throw new Error(errorData.error || 'Failed')
+            }
 
             setEmail('')
             setMessage('')
+            setToken(null)
             onClose()
             alert('Message sent!')
 
         } catch (error) {
-            alert('Failed to send message')
+            console.error('Contact form submission failed:', error)
+            alert(error.message || 'Failed to send message')
         } finally {
             setLoading(false)
         }
@@ -63,6 +77,24 @@ export function ContactUs( { isOpen, onClose }) {
                             id="email" 
                             className='text-sm border border-gray-300 rounded-lg p-2 mt-2'/>
                     </div>
+
+                    <br/>
+
+                    {!TURNSTILE_SITE_KEY ? (
+                        <p className='text-sm text-red-600'>
+                            Turnstile is not configured. Add `VITE_TURNSTILE_SITE_KEY` to the frontend environment.
+                        </p>
+                    ) : (
+                        <Turnstile
+                            siteKey='0x4AAAAAACxvnb11qhzoX1q9'
+                            onSuccess={(newToken) => setToken(newToken)}
+                            onExpire={() => setToken(null)}
+                            onError={(errorCode) => {
+                                console.error('Turnstile failed to load:', errorCode)
+                            }}
+                            onTimeout={() => setToken(null)}
+                        />
+                    )}
 
                     <div className='text-right mt-4'>
                         <button 

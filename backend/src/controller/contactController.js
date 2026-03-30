@@ -1,8 +1,22 @@
 import express from 'express'
 import { transporter } from '../config/mailer.js'
+import { verifyTurnstile } from '../utils/verifyTurnstile.js'
 
 export const sendEmail = async (req, res) => {
-    const { email, message } = req.body
+    const { email, message, turnstileToken } = req.body
+
+    if (!turnstileToken) {
+        return res.status(400).json({ error: 'Turnstile token is required' })
+    }
+
+    // Verify turnstile token
+    const isValid = await verifyTurnstile(turnstileToken, req.ip)
+    if (!isValid.success) {
+        return res.status(400).json({
+            error: 'Turnstile validation failed',
+            details: isValid["error-codes"] || [],
+        })
+    }
 
     if (!message) {
         return res.status(400).json({ error: 'Message is required' })

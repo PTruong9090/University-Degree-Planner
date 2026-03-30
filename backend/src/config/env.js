@@ -12,4 +12,6 @@ export const ENV = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DATABASE_URL: process.env.DATABASE_URL,
   SECRET_KEY: process.env.SECRET_KEY,
+  TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
+
 };
