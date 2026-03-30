@@ -1,4 +1,5 @@
 // Route handlers for signup/login live in the auth controller.
+import { requestPasswordReset, resetPassword } from '../../../frontend/src/api/authApi.js';
 import { signup, login, logout, me } from '../controller/authController.js';
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { authRateLimiter } from '../middlewares/security.middleware.js';
@@ -13,5 +14,7 @@ router.route('/signup').post(authRateLimiter, signup);
 router.route('/login').post(authRateLimiter, login)
 router.route('/me').get(requireAuth, me)
 router.route('/logout').post(requireAuth, logout)
+router.route('/forgot-password').post(authRateLimiter, requestPasswordReset)
+router.route('/reset-password').post(authRateLimiter, resetPassword)
 
 export default router;

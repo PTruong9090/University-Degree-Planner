@@ -211,3 +211,11 @@ export const logout = async (req, res) => {
     });
 };
 
+export const requestPasswordReset = async (req, res) => {
+    const { email } = req.body
+}
+
+
+export const resetPassword = async (req, res) => {
+    const { token, password } = req.body
+}
