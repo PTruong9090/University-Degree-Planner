@@ -19,7 +19,6 @@ export async function verifyTurnstile(token, ip) {
         })
 
         const data = await response.json()
-        console.log("Turnstile response:", data)
         return data
 
     } catch (error) {

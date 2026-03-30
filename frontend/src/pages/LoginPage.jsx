@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login, signup } from '../api/authApi';
 import { Button } from '../components/ui/Button';
 import { Footer } from '../features/Planner/components/Footer';
 import { NavBar } from '../features/Planner/components/NavBar';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 // Allowed years for signup
 const STUDENT_YEAR_OPTIONS = [
@@ -61,6 +62,8 @@ function LoginPage({ initialMode = 'login' }) {
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [token, setToken] = useState(null);
+    const turnstileRef = useRef(null);
 
     const passwordStrength = getPasswordStrength(formData.password);
 
@@ -99,6 +102,11 @@ function LoginPage({ initialMode = 'login' }) {
             return;
         }
 
+        if (!token) {
+            setErrors({ captcha: "Please complete the captcha." })
+            return;
+        }
+
         try {
             setIsSubmitting(true);
             await signup({
@@ -106,6 +114,7 @@ function LoginPage({ initialMode = 'login' }) {
                 username: formData.username.trim(),
                 password: formData.password,
                 studentYear: formData.studentYear,
+                turnstileToken: token,
             });
 
             setSuccessMessage('Account created successfully. You can log in now.');
@@ -123,6 +132,8 @@ function LoginPage({ initialMode = 'login' }) {
             setErrors({ email: error.message || 'Unable to create account right now.' });
         } finally {
             setIsSubmitting(false);
+            setToken(null);
+            turnstileRef.current?.reset();
         }
     };
 
@@ -144,11 +155,17 @@ function LoginPage({ initialMode = 'login' }) {
             return;
         }
 
+        if (!token) {
+            setErrors({ captcha: "Please complete the captcha." })
+            return;
+        }
+
         try {
             setIsSubmitting(true);
             const data = await login({
                 username: formData.username.trim(),
                 password: formData.password,
+                turnstileToken: token,
             });
 
             if (data?.user) {
@@ -162,6 +179,8 @@ function LoginPage({ initialMode = 'login' }) {
             setErrors({ username: error.message || 'Unable to log in right now.' });
         } finally {
             setIsSubmitting(false);
+            setToken(null);
+            turnstileRef.current?.reset();
         }
     };
 
@@ -339,6 +358,16 @@ function LoginPage({ initialMode = 'login' }) {
                                     {errors.password ? (
                                         <p className="mt-2 text-sm font-medium text-rose-600">{errors.password}</p>
                                     ) : null}
+                                    {isLogin ? (
+                                        <div className="mt-3 flex justify-end">
+                                            <Link
+                                                to="/forgot-password"
+                                                className="text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                                            >
+                                                Forgot password?
+                                            </Link>
+                                        </div>
+                                    ) : null}
                                 </div>
 
                                 {!isLogin ? (
@@ -368,10 +397,17 @@ function LoginPage({ initialMode = 'login' }) {
                                     </div>
                                 ) : null}
 
+                                <Turnstile
+                                ref={turnstileRef}
+                                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                                onSuccess={(newToken) => setToken(newToken)}
+                                onExpire={() => setToken(null)}
+                            />
+
                                 <Button
                                     type="submit"
                                     size="lg"
-                                    disabled={isSubmitting}
+                                    disabled={!token || isSubmitting}
                                     className="h-12 w-full rounded-2xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
                                 >
                                     {isSubmitting

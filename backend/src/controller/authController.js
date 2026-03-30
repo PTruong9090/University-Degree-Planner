@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'; // encrypts passwords so if database hypothetical
 import jwt from 'jsonwebtoken'; // saves a token so we dont need to go through the database for every call ICL i dont understand this code much... 
 import User from '../models/user.model.js'
 import { Op } from 'sequelize';
+import { verifyTurnstile } from '../utils/verifyTurnstile.js';
 
 const COOKIE_OPTIONS = {
     httpOnly: true,
@@ -13,9 +14,16 @@ const COOKIE_OPTIONS = {
 // Sign up controller
 export const signup = async (req, res, next) => {
     try {
-        const { email, username, password, studentYear } = req.body;
+        const { email, username, password, studentYear, turnstileToken } = req.body;
         const normalizedStudentYear = String(studentYear ?? '').trim().toLowerCase();
         const allowedStudentYears = ['freshman', 'sophomore', 'junior', 'senior'];
+
+        if (!turnstileToken) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Turnstile token is required'
+            });
+        }
 
         // Validation
         if (!email || !username || !password || !normalizedStudentYear) {
@@ -23,6 +31,14 @@ export const signup = async (req, res, next) => {
                 status: 'Error',
                 message: 'Please provide email, username, password, and student year'
             });
+        }
+
+        const isHuman = await verifyTurnstile(turnstileToken, req.ip);
+        if (!isHuman.success) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Captcha failed',
+            })
         }
 
         if (!allowedStudentYears.includes(normalizedStudentYear)) {
@@ -80,10 +96,17 @@ export const signup = async (req, res, next) => {
     }
 };
 
-//Login controller
+// Login controller
 export const login = async (req, res, next) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, turnstileToken } = req.body;
+
+        if (!turnstileToken) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Turnstile token is required'
+            });
+        }
 
         // Validation
         if (!username || !password) {
@@ -91,6 +114,14 @@ export const login = async (req, res, next) => {
                 status: 'Error',
                 message: 'Please provide username and password'
             });
+        }
+
+        const isHuman = await verifyTurnstile(turnstileToken, req.ip);
+        if (!isHuman.success) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Captcha failed',
+            })
         }
 
         // Find user
