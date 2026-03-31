@@ -3,6 +3,10 @@ import jwt from 'jsonwebtoken'; // saves a token so we dont need to go through t
 import User from '../models/user.model.js'
 import { Op } from 'sequelize';
 import { verifyTurnstile } from '../utils/verifyTurnstile.js';
+import crypto from "crypto";
+import PasswordResetToken from '../models/passwordReset.model.js';
+import { transporter } from '../config/mailer.js'
+
 
 const COOKIE_OPTIONS = {
     httpOnly: true,
@@ -10,6 +14,10 @@ const COOKIE_OPTIONS = {
     sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000
 };
+
+function generateResetToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
 
 // Sign up controller
 export const signup = async (req, res, next) => {
@@ -33,6 +41,9 @@ export const signup = async (req, res, next) => {
             });
         }
 
+        const normalizedEmail = email.toLowerCase()
+        const normalizedUsername = username.toLowerCase()
+
         const isHuman = await verifyTurnstile(turnstileToken, req.ip);
         if (!isHuman.success) {
             return res.status(400).json({
@@ -52,8 +63,8 @@ export const signup = async (req, res, next) => {
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [
-                { email },
-                { username }
+                { normalizedEmail },
+                { normalizedUsername }
                 ]
             }
             });
@@ -71,8 +82,8 @@ export const signup = async (req, res, next) => {
 
         // Create new user
         const newUser = await User.create({
-            email,
-            username,
+            email: normalizedEmail,
+            username: normalizedUsername,
             password: hashedPassword,
             studentYear: normalizedStudentYear
         })
@@ -101,6 +112,7 @@ export const login = async (req, res, next) => {
     try {
         const { username, password, turnstileToken } = req.body;
 
+
         if (!turnstileToken) {
             return res.status(400).json({
                 status: 'Error',
@@ -116,6 +128,8 @@ export const login = async (req, res, next) => {
             });
         }
 
+        const normalizedUsername = username.toLowerCase();
+
         const isHuman = await verifyTurnstile(turnstileToken, req.ip);
         if (!isHuman.success) {
             return res.status(400).json({
@@ -125,7 +139,7 @@ export const login = async (req, res, next) => {
         }
 
         // Find user
-        const user = await User.findOne({ where: { username } });
+        const user = await User.findOne({ where: { normalizedUsername } });
 
 
         if (!user) {
@@ -212,10 +226,131 @@ export const logout = async (req, res) => {
 };
 
 export const requestPasswordReset = async (req, res) => {
-    const { email } = req.body
+    try {
+        const { email } = req.body
+        const normalizedEmail = email.toLowerCase()
+
+        // Verify email
+        const user = await User.findOne({ where: { email: normalizedEmail } })
+
+        if (!user) {
+            return res.json({
+                message: "If that email exists, a reset link has been sent"
+            })
+        }
+
+        const resetToken = generateResetToken()
+
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(resetToken)
+            .digest('hex')
+
+        const expiresAt = new Date(Date.now() + 1000 * 60 * 15)   // 15 min
+
+        // Revoke old tokens
+        await PasswordResetToken.update(
+            { revokedAt: new Date() },
+            {
+                where: {
+                    userid: user.id,
+                    usedAt: null,
+                    revokedAt: null,
+                }
+            }
+        )
+
+        // Create new token entry
+        await PasswordResetToken.create({
+            userid: user.id,
+            tokenHash: hashedToken,
+            expiresAt,
+            requestIp: req.ip,
+            userAgent: req.headers['user-agent']
+        })
+
+        const resetURL = `https://planbear.io/reset-password?token=${resetToken}`
+
+        await transporter.sendMail({
+            from: 'PlanBear <noreply@planbear.io>',
+            to: user.email,
+            subject: "Reset your password",
+            html: `
+                <p>You requested a password reset.</p>
+                <p>Click the link below:</p>
+                <a href="${resetURL}">${resetURL}</a>
+                <p>This link expires in 15 minutes.</p>
+            `,
+            });
+
+        return res.json({
+            message: "If that email exists, a reset link has been sent",
+        });
+    } catch (error) {
+        console.error('Password reset request error:', error);
+        res.status(500).json({
+            status: 'Error',
+            message: 'Server error during password reset request'
+        })
+    }
 }
 
 
 export const resetPassword = async (req, res) => {
-    const { token, password } = req.body
+    try {
+        const { token, password } = req.body
+
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(token)
+            .digest('hex')
+
+        const tokenRequest = await PasswordResetToken.findOne({
+            where: {
+                tokenHash: hashedToken,
+                usedAt: null,
+                revokedAt: null,
+                expiresAt: {
+                    [Op.gt]: new Date(),
+                }
+            }
+        })
+
+        if (!tokenRequest) {
+            return res.status(400).json({
+                message: "Invalid or expired token"
+            })
+        }
+
+        await PasswordResetToken.update(
+            { usedAt: new Date() },
+            {
+                where: {
+                    id: tokenRequest.id,
+                }
+            }
+        
+        )
+
+        await User.update(
+            { password: await bcrypt.hash(password, 10) },
+            {
+                where: {
+                    id: tokenRequest.userid,
+                }
+            }
+        )
+
+        return res.json({
+            message: "Password reset successful"
+        })
+        
+    } catch (error) {
+        console.error('Password reset error:', error);
+        res.status(500).json({
+            status: "Error",
+            message: "Server error during password reset"
+        })
+    }
+
 }

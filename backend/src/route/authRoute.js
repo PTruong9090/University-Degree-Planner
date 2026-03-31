@@ -1,5 +1,5 @@
 // Route handlers for signup/login live in the auth controller.
-import { requestPasswordReset, resetPassword } from '../../../frontend/src/api/authApi.js';
+import { requestPasswordReset, resetPassword } from '../controller/authController.js';
 import { signup, login, logout, me } from '../controller/authController.js';
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { authRateLimiter } from '../middlewares/security.middleware.js';

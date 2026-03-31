@@ -1,4 +1,4 @@
-import { apiFetch } from './http'
+import { apiFetch } from "./http"
 
 export function signup(payload) {
   return apiFetch('/api/auth/signup', {

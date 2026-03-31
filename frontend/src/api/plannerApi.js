@@ -23,3 +23,4 @@ export function deletePlanner(id) {
     method: 'DELETE',
   })
 }
+
