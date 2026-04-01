@@ -52,7 +52,10 @@ It lets students browse courses, drag classes into future quarters, manage multi
 
 The app uses PostgreSQL and the schema diagram is included here:
 
+<img src="./docs/supabase-schema.png" alt="PlanBear database schema" width="1000" />
+
 - [docs/supabase-schema.svg](./docs/supabase-schema.svg)
+- [docs/supabase-schema.png](./docs/supabase-schema.png)
 
 ### Core tables
 
