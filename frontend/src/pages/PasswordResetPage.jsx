@@ -19,13 +19,13 @@ function getPasswordStrength(password) {
     if (/[^a-zA-Z0-9]/.test(password)) score++;
 
     if (score <= 2) {
-        return { text: 'Weak password', tone: 'text-rose-600' };
+        return { text: 'Weak password', tone: 'text-[var(--rose-strong)]' };
     }
     if (score <= 4) {
-        return { text: 'Medium password', tone: 'text-amber-600' };
+        return { text: 'Medium password', tone: 'text-[var(--warning-strong)]' };
     }
 
-    return { text: 'Strong password', tone: 'text-emerald-600' };
+    return { text: 'Strong password', tone: 'text-[var(--sage-strong)]' };
 }
 
 function isValidEmail(email) {
@@ -35,8 +35,8 @@ function isValidEmail(email) {
 function getInputClassName(hasError) {
     return `h-12 w-full rounded-2xl border bg-white px-4 text-sm text-slate-900 outline-none transition focus:ring-4 ${
         hasError
-            ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-100'
-            : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
+            ? 'border-[rgba(141,103,98,0.4)] focus:border-[var(--rose-strong)] focus:ring-[var(--rose)]'
+            : 'border-[var(--border)] focus:border-[var(--accent-strong)] focus:ring-[var(--accent-soft)]'
     }`;
 }
 
@@ -145,63 +145,64 @@ function PasswordResetPage({ mode = 'request' }) {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
+        <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
             <NavBar />
 
             <main className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(148,163,184,0.22),_transparent_34%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(216,226,210,0.72),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(219,229,234,0.8),_transparent_34%)]" />
 
                 <div className="relative mx-auto grid min-h-[calc(100vh-180px)] max-w-7xl gap-10 px-4 py-12 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-20">
                     <section className="flex flex-col justify-center">
-                        <span className="mb-5 inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-700">
-                            PlanBear account recovery
+                        <span className="mb-5 inline-flex w-fit rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-1 text-sm font-semibold text-[var(--muted)]">
+                            Account recovery
                         </span>
-                        <h1 className="max-w-2xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">
+                        <h1 className="font-display max-w-2xl text-4xl font-semibold text-[var(--text)] md:text-6xl">
                             {isResetMode
                                 ? 'Choose a new password and get back to planning.'
-                                : 'Reset access without starting your account over.'}
+                                : 'Reset access without rebuilding your account.'}
                         </h1>
-                        <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
+                        <p className="mt-6 max-w-xl text-base leading-8 text-[var(--muted)] md:text-lg">
                             {isResetMode
-                                ? 'Use the reset link from your email to set a new password. If your backend sends a token, this page can read it from the URL or let you paste it in manually.'
-                                : 'Enter the email tied to your account and we will send a reset link as soon as your backend endpoint is ready.'}
+                                ? 'Use the reset link from your email, or paste the token here if your backend flow needs it.'
+                                : 'Enter the email tied to your account and we will send a reset link if the account exists.'}
                         </p>
 
-                        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">01</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Request link</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Send a recovery email from the frontend without exposing whether an account exists.</p>
+                        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">01</p>
+                                <p className="mt-3 text-lg font-bold text-[var(--text)]">Request a reset</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                                    Send a recovery email without exposing whether an account exists.
+                                </p>
                             </div>
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">02</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Paste token if needed</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Works with a query string token or a manual token field, depending on your backend flow.</p>
-                            </div>
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">03</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Back to login</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Successful resets route users back into the existing account login experience.</p>
+                            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">02</p>
+                                <p className="mt-3 text-lg font-bold text-[var(--text)]">Set a new password</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                                    Once the reset works, you can head straight back to login and continue planning.
+                                </p>
                             </div>
                         </div>
                     </section>
 
                     <section className="flex items-center justify-center">
-                        <div className="w-full max-w-xl rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.10)] md:p-8">
-                            <div className="flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                        <div className="w-full max-w-xl rounded-[32px] border border-[var(--border)] bg-[rgba(255,250,245,0.92)] p-6 shadow-[0_24px_80px_rgba(100,88,74,0.12)] md:p-8">
+                            <div className="flex items-center justify-between gap-4 border-b border-[rgba(217,206,195,0.7)] pb-5">
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
-                                        <img src="/logo.svg" alt="PlanBear logo" className="h-9 w-9" />
-                                    </div>
+                                    <img
+                                        src="/logo.svg"
+                                        alt="PlanBear logo"
+                                        className="h-12 w-12 object-contain drop-shadow-[0_10px_16px_rgba(136,111,84,0.18)]"
+                                    />
                                     <div>
-                                        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">PlanBear.io</p>
-                                        <h2 className="text-2xl font-black text-slate-900">
+                                        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted-soft)]">PlanBear</p>
+                                        <h2 className="font-display text-3xl font-semibold text-[var(--text)]">
                                             {isResetMode ? 'Set a new password' : 'Forgot your password?'}
                                         </h2>
                                     </div>
                                 </div>
                                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                    isResetMode ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
+                                    isResetMode ? 'bg-[var(--sage)] text-[var(--sage-strong)]' : 'bg-[var(--accent-soft)] text-[var(--accent-strong)]'
                                 }`}>
                                     {isResetMode ? 'Reset' : 'Recovery'}
                                 </span>
@@ -213,7 +214,7 @@ function PasswordResetPage({ mode = 'request' }) {
                             >
                                 {!isResetMode ? (
                                     <div>
-                                        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                             Email address
                                         </label>
                                         <input
@@ -227,13 +228,13 @@ function PasswordResetPage({ mode = 'request' }) {
                                             required
                                         />
                                         {errors.email ? (
-                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.email}</p>
+                                            <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.email}</p>
                                         ) : null}
                                     </div>
                                 ) : (
                                     <>
                                         <div>
-                                            <label htmlFor="token" className="mb-2 block text-sm font-semibold text-slate-700">
+                                            <label htmlFor="token" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                                 Reset token
                                             </label>
                                             <input
@@ -247,17 +248,17 @@ function PasswordResetPage({ mode = 'request' }) {
                                                 required
                                             />
                                             {tokenFromQuery ? (
-                                                <p className="mt-2 text-sm text-slate-500">
+                                                <p className="mt-2 text-sm text-[var(--muted)]">
                                                     A token was detected in the URL and pre-filled for the user.
                                                 </p>
                                             ) : null}
                                             {errors.token ? (
-                                                <p className="mt-2 text-sm font-medium text-rose-600">{errors.token}</p>
+                                                <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.token}</p>
                                             ) : null}
                                         </div>
 
                                         <div>
-                                            <label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-700">
+                                            <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                                 New password
                                             </label>
                                             <input
@@ -276,14 +277,14 @@ function PasswordResetPage({ mode = 'request' }) {
                                                 </p>
                                             ) : null}
                                             {errors.password ? (
-                                                <p className="mt-2 text-sm font-medium text-rose-600">{errors.password}</p>
+                                                <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.password}</p>
                                             ) : null}
                                         </div>
 
                                         <div>
                                             <label
                                                 htmlFor="passwordConfirm"
-                                                className="mb-2 block text-sm font-semibold text-slate-700"
+                                                className="mb-2 block text-sm font-semibold text-[var(--text)]"
                                             >
                                                 Confirm new password
                                             </label>
@@ -298,7 +299,7 @@ function PasswordResetPage({ mode = 'request' }) {
                                                 required
                                             />
                                             {errors.passwordConfirm ? (
-                                                <p className="mt-2 text-sm font-medium text-rose-600">
+                                                <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">
                                                     {errors.passwordConfirm}
                                                 </p>
                                             ) : null}
@@ -307,7 +308,7 @@ function PasswordResetPage({ mode = 'request' }) {
                                 )}
 
                                 {successMessage ? (
-                                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                                    <div className="rounded-2xl border border-[var(--sage)] bg-[rgba(216,226,210,0.6)] px-4 py-3 text-sm font-medium text-[var(--sage-strong)]">
                                         {successMessage}
                                     </div>
                                 ) : null}
@@ -316,7 +317,7 @@ function PasswordResetPage({ mode = 'request' }) {
                                     type="submit"
                                     size="lg"
                                     disabled={isSubmitting}
-                                    className="h-12 w-full rounded-2xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
+                                    className="h-12 w-full rounded-2xl bg-[var(--text)] text-[var(--surface)] hover:bg-[#4b5161] disabled:opacity-60"
                                 >
                                     {isSubmitting
                                         ? (isResetMode ? 'Updating password...' : 'Sending reset link...')
@@ -324,11 +325,11 @@ function PasswordResetPage({ mode = 'request' }) {
                                 </Button>
                             </form>
 
-                            <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 text-sm text-slate-500">
+                            <div className="mt-6 flex items-center justify-between gap-4 border-t border-[rgba(217,206,195,0.7)] pt-5 text-sm text-[var(--muted)]">
                                 <p>{isResetMode ? 'Need a fresh reset email?' : 'Remember your password now?'}</p>
                                 <Link
                                     to={isResetMode ? '/forgot-password' : '/login'}
-                                    className="font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                                    className="font-semibold text-[var(--accent-strong)] transition-colors hover:text-[var(--text)]"
                                 >
                                     {isResetMode ? 'Send another link' : 'Back to login'}
                                 </Link>

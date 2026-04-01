@@ -14,8 +14,9 @@ export function Tooltip({ children, rect, visible }) {
         pointerEvents: "none",
       }}
       className="
-        bg-gray-900 text-white text-xs
-        px-2 py-1 rounded shadow-lg
+        rounded-xl border border-[var(--border)]
+        bg-[rgba(255,250,245,0.96)] px-3 py-1.5 text-xs text-[var(--text)]
+        shadow-lg
         whitespace-nowrap
       "
     >

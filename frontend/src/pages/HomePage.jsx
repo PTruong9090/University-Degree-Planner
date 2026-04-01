@@ -202,23 +202,26 @@ const HomePage = () => {
   }, [roadmapPreview.quarterKey]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <NavBar />
 
       <main>
-        <section className="relative overflow-hidden border-b border-slate-200">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.16),_transparent_32%),radial-gradient(circle_at_bottom_left,_rgba(148,163,184,0.25),_transparent_36%)]" />
+        <section className="relative overflow-hidden border-b border-[var(--border)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(216,226,210,0.8),_transparent_34%),radial-gradient(circle_at_bottom_right,_rgba(219,229,234,0.85),_transparent_38%)]" />
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[1.1fr_0.9fr] md:px-6 md:py-24">
             <div className="flex flex-col justify-center">
-              <h1 className="max-w-2xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">
-                Build a cleaner UCLA degree plan without the spreadsheet mess.
+              <span className="inline-flex w-fit rounded-full border border-[var(--border)] bg-[rgba(255,250,245,0.82)] px-4 py-1 text-sm font-semibold text-[var(--muted)]">
+                Academic roadmap
+              </span>
+              <h1 className="font-display mt-6 max-w-2xl text-4xl font-semibold text-[var(--text)] md:text-6xl">
+                Plan your UCLA path one quarter at a time.
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
-                PlanBear keeps your courses, semesters, and graduation path in one place so you can focus on making good decisions instead of formatting tabs.
+              <p className="mt-6 max-w-xl text-base leading-8 text-[var(--muted)] md:text-lg">
+                Build a clean roadmap, keep each quarter visible, and come back whenever you need to adjust your plan.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link to="/planner">
-                  <Button size="lg" className="w-full bg-blue-600 text-white hover:bg-blue-700 sm:w-auto">
+                  <Button size="lg" className="w-full bg-[var(--text)] text-[var(--surface)] hover:bg-[#4b5161] sm:w-auto">
                     Open Planner
                   </Button>
                 </Link>
@@ -226,55 +229,54 @@ const HomePage = () => {
                   <Button
                     variant="secondary"
                     size="lg"
-                    className="w-full border border-slate-200 bg-white text-slate-800 hover:bg-slate-100 sm:w-auto"
+                    className="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:bg-[var(--surface-soft)] sm:w-auto"
                   >
                     Create Account
                   </Button>
                 </Link>
               </div>
-              {/* <div className="mt-10 grid gap-4 text-sm text-slate-600 sm:grid-cols-3">
-                <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
-                  <p className="text-2xl font-bold text-slate-900">4 years</p>
-                  <p className="mt-1">Mapped semester by semester.</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
-                  <p className="text-2xl font-bold text-slate-900">1 view</p>
-                  <p className="mt-1">Your plan, progress, and gaps in one place.</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
-                  <p className="text-2xl font-bold text-slate-900">0 clutter</p>
-                  <p className="mt-1">A focused layout built for fast updates.</p>
-                </div>
-              </div> */}
+              <div className="mt-10 flex flex-wrap gap-3 text-sm text-[var(--muted)]">
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2">
+                  Quarter-by-quarter planning
+                </span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2">
+                  Guest mode or account
+                </span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2">
+                  PDF export when you need it
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center">
-              <div className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/80">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="w-full rounded-[32px] border border-[var(--border)] bg-[rgba(255,250,245,0.92)] p-6 shadow-[0_28px_80px_rgba(100,88,74,0.12)]">
+                <div className="flex items-center justify-between border-b border-[rgba(217,206,195,0.7)] pb-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
-                      <img src="/logo.svg" alt="PlanBear logo" className="h-9 w-9" />
-                    </div>
+                    <img
+                      src="/logo.svg"
+                      alt="PlanBear logo"
+                      className="h-12 w-12 object-contain drop-shadow-[0_10px_16px_rgba(136,111,84,0.18)]"
+                    />
                     <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">PlanBear.io</p>
-                      <p className="text-lg font-bold text-slate-900">Academic roadmap</p>
+                      <p className="font-display text-2xl font-semibold text-[var(--text)]">PlanBear</p>
+                      <p className="text-sm font-medium text-[var(--muted)]">Academic roadmap</p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                    Organized
+                  <span className="rounded-full bg-[var(--sage)] px-3 py-1 text-xs font-semibold text-[var(--sage-strong)]">
+                    This quarter
                   </span>
                 </div>
 
                 <div className="mt-6 space-y-4">
-                  <div className="rounded-2xl bg-slate-50 p-4">
+                  <div className="rounded-[28px] bg-[var(--surface-soft)] p-4">
                     <div className="mb-3 flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-slate-800">{roadmapHeading}</p>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                        <p className="font-semibold text-[var(--text)]">{roadmapHeading}</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted-soft)]">
                           {formatYearLabel(roadmapPreview.yearKey)}
                         </p>
                       </div>
-                      <span className="text-xs font-semibold text-blue-600">
+                      <span className="text-xs font-semibold text-[var(--accent-strong)]">
                         {roadmapPreview.isLoading
                           ? 'Loading...'
                           : roadmapPreview.totalCourses > 0
@@ -284,21 +286,21 @@ const HomePage = () => {
                     </div>
                     <div className="space-y-2">
                       {roadmapPreview.isLoading ? (
-                        <div className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-500">
+                        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-3 text-sm text-[var(--muted)]">
                           Loading your planned courses...
                         </div>
                       ) : roadmapPreview.courses.length > 0 ? (
                         roadmapPreview.courses.map((course) => (
                           <div
                             key={course.courseID}
-                            className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-700"
+                            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-3 text-sm text-[var(--text)]"
                           >
                             {course.courseID}
                             {course.course_name ? ` - ${course.course_name}` : ''}
                           </div>
                         ))
                       ) : (
-                        <div className="rounded-xl border border-dashed border-slate-300 bg-white px-3 py-3 text-sm font-medium text-slate-500">
+                        <div className="rounded-2xl border border-dashed border-[var(--border-strong)] bg-[var(--surface)] px-3 py-3 text-sm font-medium text-[var(--muted)]">
                           No courses placed for this section yet.
                         </div>
                       )}
@@ -306,20 +308,20 @@ const HomePage = () => {
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
-                    <div className="rounded-2xl border border-slate-200 p-4">
-                      <p className="text-sm font-semibold text-slate-500">Progress</p>
-                      <p className="mt-2 text-3xl font-black text-slate-900">{roadmapPreview.totalCourses}</p>
-                      <p className="mt-1 text-sm text-slate-500">Courses currently placed in this quarter.</p>
+                    <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-4">
+                      <p className="text-sm font-semibold text-[var(--muted)]">Courses placed</p>
+                      <p className="mt-2 text-3xl font-extrabold text-[var(--text)]">{roadmapPreview.totalCourses}</p>
+                      <p className="mt-1 text-sm text-[var(--muted)]">A quick snapshot of this section.</p>
                     </div>
-                    <div className="rounded-2xl border border-slate-200 p-4">
-                      <p className="text-sm font-semibold text-slate-500">Next move</p>
-                      <p className="mt-2 text-base font-bold text-slate-900">
+                    <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-4">
+                      <p className="text-sm font-semibold text-[var(--muted)]">Next step</p>
+                      <p className="mt-2 text-base font-bold text-[var(--text)]">
                         {roadmapPreview.totalCourses > 0 ? 'Review this quarter' : 'Start planning this quarter'}
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">
+                      <p className="mt-1 text-sm text-[var(--muted)]">
                         {roadmapPreview.totalCourses > 0
-                          ? 'Open the planner to update the rest of this section.'
-                          : 'Add courses to this quarter from the planner when you are ready.'}
+                          ? 'Open the planner to make the rest of this year feel clear.'
+                          : 'Drop courses into this section when you are ready to start.'}
                       </p>
                     </div>
                   </div>
@@ -331,58 +333,36 @@ const HomePage = () => {
 
         <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
           <div className="mb-10 max-w-2xl">
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
-              Clean structure and simple to use
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">What you can do</p>
+            <h2 className="font-display mt-3 text-3xl font-semibold text-[var(--text)] md:text-4xl">
+              Simple tools for staying organized
             </h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">01</p>
-              <h3 className="mt-4 text-xl font-bold text-slate-900">Course-first planning</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Build each term around real classes and see the shape of your degree instantly.
+            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">01</p>
+              <h3 className="mt-4 text-xl font-bold text-[var(--text)]">Quarter-by-quarter planning</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Lay out each term in one place and see how the full roadmap fits together.
               </p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">02</p>
-              <h3 className="mt-4 text-xl font-bold text-slate-900">Track class enrollments</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Keep track of available seats and get alerted when a spot opens up.
+            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">02</p>
+              <h3 className="mt-4 text-xl font-bold text-[var(--text)]">Guest mode or account</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Start right away, then save your roadmap to an account whenever you want sync across devices.
               </p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">03</p>
-              <h3 className="mt-4 text-xl font-bold text-slate-900">Save your plan</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Export and save your PDF without having to create an account.
+            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">03</p>
+              <h3 className="mt-4 text-xl font-bold text-[var(--text)]">Export when ready</h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Keep a PDF copy of your plan for advising, review, or your own records.
               </p>
             </div>
           </div>
         </section>
-
-        {/* <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6">
-          <div className="rounded-3xl bg-blue-600 px-6 py-10 text-white shadow-xl shadow-blue-200 md:px-10 md:py-14">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div className="max-w-2xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-100">Start planning</p>
-                <h2 className="mt-3 text-3xl font-black tracking-tight md:text-4xl">
-                  Open your roadmap and make the next quarter obvious.
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-blue-100 md:text-base">
-                </p>
-              </div>
-              <Link to="/planner">
-                <Button
-                  size="lg"
-                  className="w-full bg-white text-blue-700 hover:bg-blue-50 md:w-auto"
-                >
-                  Launch PlanBear
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section> */}
       </main>
 
       <Footer />

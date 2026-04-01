@@ -1,24 +1,23 @@
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { AppShell } from '../components/layout/AppShell';
 import { CourseCard } from '../features/Planner/components/CourseCard';
-import { NavBar } from '../features/Planner/components/NavBar';
 import { Footer } from '../features/Planner/components/Footer.jsx';
+import { NavBar } from '../features/Planner/components/NavBar';
 import { usePlannerState } from '../features/Planner/hooks/usePlannerState';
 
-
 function PlannerPage() {
-  const plannerState = usePlannerState()
+  const plannerState = usePlannerState();
 
   if (plannerState.isLoading) {
     return (
       <>
         <NavBar />
-        <div className="flex min-h-[70vh] items-center justify-center bg-gray-100 px-4 text-slate-600">
+        <div className="flex min-h-[70vh] items-center justify-center bg-[var(--bg)] px-4 text-[var(--muted)]">
           Loading planners...
         </div>
         <Footer />
       </>
-    )
+    );
   }
   
   return (
@@ -26,15 +25,12 @@ function PlannerPage() {
       onDragStart={plannerState.handleDragStart}
       onDragEnd={plannerState.handleDragEnd}
     >
-      <NavBar/>
-      <div className="flex flex-col h-full w-full bg-gray-100">
-        
-        <div className="flex-1 flex justify-center p-4">
-          <AppShell
-            plannerState={plannerState}
-          />
+      <NavBar />
+      <div className="flex h-full w-full flex-col bg-[var(--bg)]">
+        <div className="flex flex-1 justify-center px-4 py-6 md:px-6">
+          <AppShell plannerState={plannerState} />
         </div>
-        <Footer/>
+        <Footer />
       </div>
 
       <DragOverlay>
@@ -47,7 +43,7 @@ function PlannerPage() {
         ) : null}
       </DragOverlay>
     </DndContext>
-  )
+  );
 }
 
-export default PlannerPage
+export default PlannerPage;

@@ -1,40 +1,39 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from 'react';
 import { Draggable } from '../../../dnd/Draggable';
 import { Droppable } from '../../../dnd/Droppable';
 import { CourseCard } from './CourseCard';
 
 export function QuarterBox({ yearKey, quarterKey, plan, courseMap }) {
-    // 1. Look up array of course IDs for this quarter
-    const courseIDsInQuarter = plan[yearKey][quarterKey]
+    const courseIDsInQuarter = plan[yearKey][quarterKey];
 
     const totalUnits = useMemo(() => {
         return courseIDsInQuarter.reduce((sum, courseID) => {
-            // Look up full course object by ID
-            const course = courseMap[courseID]
-            const match = String(Array.isArray(course?.units) ? course.units.join(' ') : course?.units ?? '').match(/\d+/)
+            const course = courseMap[courseID];
+            const match = String(Array.isArray(course?.units) ? course.units.join(' ') : course?.units ?? '').match(/\d+/);
             return sum + (match ? Number(match[0]) : 0);
-        }, 0)
-    }, [courseIDsInQuarter, courseMap])
+        }, 0);
+    }, [courseIDsInQuarter, courseMap]);
 
-    // Display name as uppercase
-    const displayQuarter = quarterKey.charAt(0).toUpperCase() + quarterKey.slice(1)
+    const displayQuarter = quarterKey.charAt(0).toUpperCase() + quarterKey.slice(1);
 
     return (
-        // Quarter Box Container
-        <div className="flex min-h-[220px] flex-col rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-            <div className="mb-3 flex items-center justify-between border-b border-slate-100 px-1 pb-3">
+        <div className="flex min-h-[220px] flex-col rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-3 shadow-sm">
+            <div className="mb-3 flex items-center justify-between border-b border-[rgba(217,206,195,0.6)] px-1 pb-3">
                 <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">{yearKey.replace('year', 'Year ')}</p>
-                    <h3 className="text-base font-bold text-slate-900">{displayQuarter}</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted-soft)]">
+                        {yearKey.replace('year', 'Year ')}
+                    </p>
+                    <h3 className="text-base font-bold text-[var(--text)]">{displayQuarter}</h3>
                 </div>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                <span className="rounded-full bg-[var(--surface-soft)] px-3 py-1 text-xs font-semibold text-[var(--muted)]">
                     {totalUnits} units
                 </span>
             </div>
 
-            {/* Droppable Area */}
             <Droppable
-                className={({ isOver }) => `flex flex-1 flex-col gap-2 overflow-y-auto rounded-2xl border p-2 transition-colors ${isOver ? 'border-blue-300 bg-blue-50/80' : 'border-slate-200 bg-slate-50/60'}`}
+                className={({ isOver }) => `flex flex-1 flex-col overflow-y-auto rounded-[24px] border p-2 transition-colors ${
+                    isOver ? 'border-[var(--accent-strong)] bg-[var(--accent-soft)]' : 'border-[var(--border)] bg-[rgba(244,236,227,0.52)]'
+                }`}
                 id={`${yearKey}-${quarterKey}`}
                 data={{
                     type: 'plan',
@@ -45,14 +44,15 @@ export function QuarterBox({ yearKey, quarterKey, plan, courseMap }) {
                 {({ isOver }) => (
                     <>
                         {courseIDsInQuarter.length === 0 ? (
-                            <div className={`flex h-full min-h-[120px] items-center justify-center rounded-xl border-2 border-dashed p-4 text-center text-sm ${isOver ? 'border-blue-300 text-blue-700' : 'border-slate-200 text-slate-400'}`}>
+                            <div className={`flex h-full min-h-[120px] items-center justify-center rounded-2xl border-2 border-dashed p-4 text-center text-sm ${
+                                isOver ? 'border-[var(--accent-strong)] text-[var(--accent-strong)]' : 'border-[var(--border)] text-[var(--muted)]'
+                            }`}>
                                 Drag courses into {displayQuarter}
                             </div>
                         ) : (
-                            // Map over course IDs and render the Draggable CourseCard
                             courseIDsInQuarter.map((courseID) => {
-                                const course = courseMap[courseID]
-                                if (!course) return null
+                                const course = courseMap[courseID];
+                                if (!course) return null;
 
                                 return (
                                     <Draggable
@@ -70,13 +70,13 @@ export function QuarterBox({ yearKey, quarterKey, plan, courseMap }) {
                                             variant='plan'
                                         />
                                     </Draggable>
-                                )
+                                );
                             })
                         )}
                     </>
                 )}
             </Droppable>
         </div>
-    )
+    );
 
 }

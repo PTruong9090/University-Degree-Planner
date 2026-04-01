@@ -1,5 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
+
+:root {
+  --bg: #f7f1ea;
+  --bg-soft: #efe6dc;
+  --surface: #fffaf5;
+  --surface-soft: #f4ece3;
+  --surface-muted: #ece2d7;
+  --border: #d9cec3;
+  --border-strong: #c5b7a7;
+  --text: #2f3441;
+  --muted: #67707d;
+  --muted-soft: #8b90a0;
+  --accent: #8ca0af;
+  --accent-strong: #6f8593;
+  --accent-soft: #dbe5ea;
+  --sage: #d8e2d2;
+  --sage-strong: #5f7565;
+  --rose: #eeddd8;
+  --rose-strong: #8d6762;
+  --warning: #e5d6be;
+  --warning-strong: #907554;
+}
 
 html, body, #root {
   height: 100%;
+}
+
+html {
+  background: linear-gradient(180deg, var(--bg) 0%, #f3ebe2 100%);
+}
+
+body {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(216, 226, 210, 0.6), transparent 32%),
+    radial-gradient(circle at top right, rgba(219, 229, 234, 0.72), transparent 34%),
+    linear-gradient(180deg, var(--bg) 0%, #f3ebe2 100%);
+  color: var(--text);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: rgba(140, 160, 175, 0.25);
+}
+
+.font-display {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: -0.04em;
 }

@@ -1,9 +1,11 @@
 export function Footer() {
+    const currentYear = new Date().getFullYear()
+
     return (
-        <footer className="border-t border-slate-200 py-5 text-center text-slate-500 text-sm bg-slate-50">
-            <p>&copy; 2025 PlanBear.io</p>
-            <p className="mt-2 text-xs text-slate-400">
-                Not affiliated with UCLA. Go Bruins!
+        <footer className="border-t border-[var(--border)] bg-[rgba(255,250,245,0.8)] py-5 text-center text-sm text-[var(--muted)]">
+            <p className="font-medium">&copy; {currentYear} PlanBear</p>
+            <p className="mt-2 text-xs text-[var(--muted-soft)]">
+                Built for student planning. Not affiliated with UCLA.
             </p>
         </footer>
     )

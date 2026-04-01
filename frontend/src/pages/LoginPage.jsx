@@ -1,12 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { login, signup } from '../api/authApi';
 import { Button } from '../components/ui/Button';
 import { Footer } from '../features/Planner/components/Footer';
 import { NavBar } from '../features/Planner/components/NavBar';
-import { Turnstile } from '@marsidev/react-turnstile';
 
-// Allowed years for signup
 const STUDENT_YEAR_OPTIONS = [
     { value: 'freshman', label: 'Freshman' },
     { value: 'sophomore', label: 'Sophomore' },
@@ -28,13 +27,13 @@ function getPasswordStrength(password) {
     if (/[^a-zA-Z0-9]/.test(password)) score++;
 
     if (score <= 2) {
-        return { text: 'Weak password', tone: 'text-rose-600' };
+        return { text: 'Weak password', tone: 'text-[var(--rose-strong)]' };
     }
     if (score <= 4) {
-        return { text: 'Medium password', tone: 'text-amber-600' };
+        return { text: 'Medium password', tone: 'text-[var(--warning-strong)]' };
     }
 
-    return { text: 'Strong password', tone: 'text-emerald-600' };
+    return { text: 'Strong password', tone: 'text-[var(--sage-strong)]' };
 }
 
 function isValidEmail(email) {
@@ -44,8 +43,8 @@ function isValidEmail(email) {
 function getInputClassName(hasError) {
     return `h-12 w-full rounded-2xl border bg-white px-4 text-sm text-slate-900 outline-none transition focus:ring-4 ${
         hasError
-            ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-100'
-            : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
+            ? 'border-[rgba(141,103,98,0.4)] focus:border-[var(--rose-strong)] focus:ring-[var(--rose)]'
+            : 'border-[var(--border)] focus:border-[var(--accent-strong)] focus:ring-[var(--accent-soft)]'
     }`;
 }
 
@@ -96,14 +95,13 @@ function LoginPage({ initialMode = 'login' }) {
             nextErrors.studentYear = 'Please choose your current year.';
         }
 
-        // Check all fields for errors
         if (Object.keys(nextErrors).length > 0) {
             setErrors(nextErrors);
             return;
         }
 
         if (!token) {
-            setErrors({ captcha: "Please complete the captcha." })
+            setErrors({ captcha: 'Please complete the captcha.' });
             return;
         }
 
@@ -156,7 +154,7 @@ function LoginPage({ initialMode = 'login' }) {
         }
 
         if (!token) {
-            setErrors({ captcha: "Please complete the captcha." })
+            setErrors({ captcha: 'Please complete the captcha.' });
             return;
         }
 
@@ -185,63 +183,64 @@ function LoginPage({ initialMode = 'login' }) {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
+        <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
             <NavBar />
 
             <main className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(148,163,184,0.22),_transparent_34%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(216,226,210,0.72),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(219,229,234,0.8),_transparent_34%)]" />
 
                 <div className="relative mx-auto grid min-h-[calc(100vh-180px)] max-w-7xl gap-10 px-4 py-12 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-20">
                     <section className="flex flex-col justify-center">
-                        <span className="mb-5 inline-flex w-fit rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-700">
-                            PlanBear account access
+                        <span className="mb-5 inline-flex w-fit rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-1 text-sm font-semibold text-[var(--muted)]">
+                            Account access
                         </span>
-                        <h1 className="max-w-2xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">
-                            Save your roadmap across devices and keep every plan in one place.
+                        <h1 className="font-display max-w-2xl text-4xl font-semibold text-[var(--text)] md:text-6xl">
+                            Keep your roadmap with you.
                         </h1>
-                        <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
-                            Sign in to sync planners to your account, or create one now so your course plans stop living in a single browser.
+                        <p className="mt-6 max-w-xl text-base leading-8 text-[var(--muted)] md:text-lg">
+                            Sign in to save your plans across devices, or create an account when you want something permanent.
                         </p>
 
-                        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">01</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Multiple plans</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Keep alternate schedules, graduation paths, and backup quarter options.</p>
+                        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">01</p>
+                                <p className="mt-3 text-lg font-bold text-[var(--text)]">Save multiple plans</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                                    Keep alternate versions of your roadmap without losing the one you already like.
+                                </p>
                             </div>
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">02</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Cloud-backed</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Pick up the same planner from another laptop without rebuilding it from scratch.</p>
-                            </div>
-                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">03</p>
-                                <p className="mt-3 text-lg font-bold text-slate-900">Fast planning</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">Same clean planner, now with account access when you need it.</p>
+                            <div className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[0_16px_40px_rgba(100,88,74,0.08)]">
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted-soft)]">02</p>
+                                <p className="mt-3 text-lg font-bold text-[var(--text)]">Pick up where you left off</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                                    Use the same planner on another device without rebuilding your schedule.
+                                </p>
                             </div>
                         </div>
                     </section>
 
                     <section className="flex items-center justify-center">
-                        <div className="w-full max-w-xl rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.10)] md:p-8">
-                            <div className="flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                        <div className="w-full max-w-xl rounded-[32px] border border-[var(--border)] bg-[rgba(255,250,245,0.92)] p-6 shadow-[0_24px_80px_rgba(100,88,74,0.12)] md:p-8">
+                            <div className="flex items-center justify-between gap-4 border-b border-[rgba(217,206,195,0.7)] pb-5">
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
-                                        <img src="/logo.svg" alt="PlanBear logo" className="h-9 w-9" />
-                                    </div>
+                                    <img
+                                        src="/logo.svg"
+                                        alt="PlanBear logo"
+                                        className="h-12 w-12 object-contain drop-shadow-[0_10px_16px_rgba(136,111,84,0.18)]"
+                                    />
                                     <div>
-                                        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">PlanBear.io</p>
-                                        <h2 className="text-2xl font-black text-slate-900">
+                                        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted-soft)]">PlanBear</p>
+                                        <h2 className="font-display text-3xl font-semibold text-[var(--text)]">
                                             {isLogin ? 'Welcome back' : 'Create your account'}
                                         </h2>
                                     </div>
                                 </div>
-                                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isLogin ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isLogin ? 'bg-[var(--sage)] text-[var(--sage-strong)]' : 'bg-[var(--accent-soft)] text-[var(--accent-strong)]'}`}>
                                     {isLogin ? 'Login' : 'Signup'}
                                 </span>
                             </div>
 
-                            <div className="mt-6 inline-flex rounded-2xl border border-slate-200 bg-slate-50 p-1">
+                            <div className="mt-6 inline-flex rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-1">
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -250,7 +249,7 @@ function LoginPage({ initialMode = 'login' }) {
                                         setSuccessMessage('');
                                     }}
                                     className={`rounded-2xl px-5 py-2 text-sm font-semibold transition-colors ${
-                                        isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                                        isLogin ? 'bg-[var(--surface)] text-[var(--text)] shadow-sm' : 'text-[var(--muted)] hover:text-[var(--text)]'
                                     }`}
                                 >
                                     Log In
@@ -263,7 +262,7 @@ function LoginPage({ initialMode = 'login' }) {
                                         setSuccessMessage('');
                                     }}
                                     className={`rounded-2xl px-5 py-2 text-sm font-semibold transition-colors ${
-                                        !isLogin ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                                        !isLogin ? 'bg-[var(--surface)] text-[var(--text)] shadow-sm' : 'text-[var(--muted)] hover:text-[var(--text)]'
                                     }`}
                                 >
                                     Sign Up
@@ -273,7 +272,7 @@ function LoginPage({ initialMode = 'login' }) {
                             <form onSubmit={isLogin ? handleLogin : handleSignup} className="mt-6 space-y-5">
                                 {!isLogin ? (
                                     <div>
-                                        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                             Email address
                                         </label>
                                         <input
@@ -287,14 +286,14 @@ function LoginPage({ initialMode = 'login' }) {
                                             required
                                         />
                                         {errors.email ? (
-                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.email}</p>
+                                            <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.email}</p>
                                         ) : null}
                                     </div>
                                 ) : null}
 
                                 {!isLogin ? (
                                     <div>
-                                        <label htmlFor="studentYear" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        <label htmlFor="studentYear" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                             Current year
                                         </label>
                                         <select
@@ -312,13 +311,13 @@ function LoginPage({ initialMode = 'login' }) {
                                             ))}
                                         </select>
                                         {errors.studentYear ? (
-                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.studentYear}</p>
+                                            <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.studentYear}</p>
                                         ) : null}
                                     </div>
                                 ) : null}
 
                                 <div>
-                                    <label htmlFor="username" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    <label htmlFor="username" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                         Username
                                     </label>
                                     <input
@@ -332,12 +331,12 @@ function LoginPage({ initialMode = 'login' }) {
                                         required
                                     />
                                     {errors.username ? (
-                                        <p className="mt-2 text-sm font-medium text-rose-600">{errors.username}</p>
+                                        <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.username}</p>
                                     ) : null}
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                         Password
                                     </label>
                                     <input
@@ -356,13 +355,13 @@ function LoginPage({ initialMode = 'login' }) {
                                         </p>
                                     ) : null}
                                     {errors.password ? (
-                                        <p className="mt-2 text-sm font-medium text-rose-600">{errors.password}</p>
+                                        <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.password}</p>
                                     ) : null}
                                     {isLogin ? (
                                         <div className="mt-3 flex justify-end">
                                             <Link
                                                 to="/forgot-password"
-                                                className="text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                                                className="text-sm font-semibold text-[var(--accent-strong)] transition-colors hover:text-[var(--text)]"
                                             >
                                                 Forgot password?
                                             </Link>
@@ -372,7 +371,7 @@ function LoginPage({ initialMode = 'login' }) {
 
                                 {!isLogin ? (
                                     <div>
-                                        <label htmlFor="passwordConfirm" className="mb-2 block text-sm font-semibold text-slate-700">
+                                        <label htmlFor="passwordConfirm" className="mb-2 block text-sm font-semibold text-[var(--text)]">
                                             Confirm password
                                         </label>
                                         <input
@@ -386,29 +385,33 @@ function LoginPage({ initialMode = 'login' }) {
                                             required
                                         />
                                         {errors.passwordConfirm ? (
-                                            <p className="mt-2 text-sm font-medium text-rose-600">{errors.passwordConfirm}</p>
+                                            <p className="mt-2 text-sm font-medium text-[var(--rose-strong)]">{errors.passwordConfirm}</p>
                                         ) : null}
                                     </div>
                                 ) : null}
 
                                 {successMessage ? (
-                                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                                    <div className="rounded-2xl border border-[var(--sage)] bg-[rgba(216,226,210,0.6)] px-4 py-3 text-sm font-medium text-[var(--sage-strong)]">
                                         {successMessage}
                                     </div>
                                 ) : null}
 
                                 <Turnstile
-                                ref={turnstileRef}
-                                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                                onSuccess={(newToken) => setToken(newToken)}
-                                onExpire={() => setToken(null)}
-                            />
+                                    ref={turnstileRef}
+                                    siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                                    onSuccess={(newToken) => setToken(newToken)}
+                                    onExpire={() => setToken(null)}
+                                />
+
+                                {errors.captcha ? (
+                                    <p className="text-sm font-medium text-[var(--rose-strong)]">{errors.captcha}</p>
+                                ) : null}
 
                                 <Button
                                     type="submit"
                                     size="lg"
                                     disabled={!token || isSubmitting}
-                                    className="h-12 w-full rounded-2xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
+                                    className="h-12 w-full rounded-2xl bg-[var(--text)] text-[var(--surface)] hover:bg-[#4b5161] disabled:opacity-60"
                                 >
                                     {isSubmitting
                                         ? (isLogin ? 'Logging in...' : 'Creating account...')
@@ -416,7 +419,7 @@ function LoginPage({ initialMode = 'login' }) {
                                 </Button>
                             </form>
 
-                            <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 text-sm text-slate-500">
+                            <div className="mt-6 flex items-center justify-between gap-4 border-t border-[rgba(217,206,195,0.7)] pt-5 text-sm text-[var(--muted)]">
                                 <p>
                                     {isLogin ? "Don't have an account yet?" : 'Already have an account?'}
                                 </p>
@@ -428,7 +431,7 @@ function LoginPage({ initialMode = 'login' }) {
                                         setErrors({});
                                         setSuccessMessage('');
                                     }}
-                                    className="font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                                    className="font-semibold text-[var(--accent-strong)] transition-colors hover:text-[var(--text)]"
                                 >
                                     {isLogin ? 'Create one' : 'Log in'}
                                 </Link>
