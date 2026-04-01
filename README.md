@@ -48,6 +48,76 @@ It lets students browse courses, drag classes into future quarters, manage multi
 - JWT auth with `HttpOnly` cookies
 - Nodemailer
 
+## Database Schema
+
+The app uses PostgreSQL and the schema diagram is included here:
+
+- [docs/supabase-schema.svg](./docs/supabase-schema.svg)
+
+### Core tables
+
+- `users`: account records, student year, login identity
+- `planners`: saved roadmap plans for each user
+- `courses`: catalog course records
+- `course_offerings`: term-specific offering data for a course
+- `offering_snapshots`: historical snapshots of offering availability
+- `user_tracked_offerings`: user-to-offering watch records
+- `password_reset_tokens`: reset token storage for password recovery
+
+### Main relationships
+
+- One `user` has many `planners`
+- One `course` has many `course_offerings`
+- One `course_offering` has many `offering_snapshots`
+- `users` and `course_offerings` are connected through `user_tracked_offerings`
+- `password_reset_tokens` belong to `users`
+
+### Schema setup options
+
+#### Option 1: Local development with Sequelize sync
+
+This is the easiest way to bootstrap the tables during development.
+
+1. Create your PostgreSQL database.
+2. Set your backend env values for `DB_*` or `DATABASE_URL`.
+3. Temporarily set:
+
+```bash
+ALLOW_SEQUELIZE_SYNC=true
+```
+
+4. Start the backend once:
+
+```bash
+cd backend
+npm run dev
+```
+
+5. After the tables are created, set it back to:
+
+```bash
+ALLOW_SEQUELIZE_SYNC=false
+```
+
+6. Seed the course catalog:
+
+```bash
+cd backend
+npm run seed:dev
+```
+
+#### Option 2: Supabase Postgres
+
+If you want to use Supabase as your hosted Postgres database:
+
+1. Create a Supabase project.
+2. Copy the Postgres connection string into `DATABASE_URL`.
+3. Use the included schema diagram in [docs/supabase-schema.svg](./docs/supabase-schema.svg) as the table reference.
+4. Bootstrap the tables with `ALLOW_SEQUELIZE_SYNC=true` on first run, or create the tables manually to match the backend models in [backend/src/models](./backend/src/models).
+5. Run the course import script after the schema exists.
+
+The backend is using Sequelize models as the source of truth, so the database should match those model definitions.
+
 ## Project Structure
 
 ```text
@@ -74,6 +144,8 @@ University Degree Planner/
 |   |   |-- route/
 |   |   |-- scripts/
 |   |   `-- utils/
+|-- docs/
+|   `-- supabase-schema.svg
 |-- package.json
 `-- README.md
 ```
