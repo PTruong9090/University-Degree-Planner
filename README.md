@@ -1,52 +1,33 @@
 # PlanBear
 
-PlanBear is a UCLA-style degree planning app for building quarter-based academic roadmaps, organizing multiple plans, and keeping course schedules in one place.
+PlanBear is a quarter-based academic planner built for mapping out a UCLA-style degree roadmap.
 
-The app supports both guest and authenticated usage:
+It lets students browse courses, drag classes into future quarters, manage multiple plans, and export a clean PDF version of their roadmap. The app also supports guest mode, so planning can start right away without creating an account.
 
-- Guest mode stores plans in browser `localStorage`
-- Account mode stores plans in PostgreSQL through the backend
+## Features
 
-## What It Does
+- Quarter-by-quarter academic roadmap
+- Drag-and-drop planner with a four-year layout
+- Searchable course catalog
+- Multiple saved plans per user
+- Guest mode with browser `localStorage`
+- Account mode backed by PostgreSQL
+- Homepage roadmap preview for the current quarter
+- Password reset flow
+- Contact form with Turnstile protection
+- Client-side PDF export
+- Responsive frontend for desktop and mobile
 
-- Browse and search a large course catalog
-- Build a four-year quarter-based plan with drag and drop
-- Create, rename, switch, and delete multiple planners
-- Use the planner without creating an account
-- Sign up with a student year: `freshman`, `sophomore`, `junior`, or `senior`
-- Show an Academic Roadmap preview on the homepage for the current quarter
-- Use the signed-in student's year to choose the roadmap section
-- Fall back to `Year 1` on the homepage when the user is not signed in
-- Export plans to PDF
-- Work on desktop and mobile
+## Current Product Shape
 
-## How The Planner Works
+- The homepage is focused on the academic roadmap preview
+- Planning works in guest mode and logged-in mode
+- Authenticated users can save planners to the backend
+- Guest users keep planners locally in the browser
+- Password reset emails and contact emails work when mailer env vars are configured
+- Cloudflare Turnstile is used on signup, login, and contact submission
 
-### Guest mode
-
-- Anyone can open the planner immediately
-- Plans are saved in browser `localStorage`
-- If backend auth is unavailable, the planner falls back to guest mode
-
-### Account mode
-
-- Users can sign up and log in
-- Planner records are tied to the authenticated user
-- Saved plans are loaded from the backend
-- The homepage roadmap card uses the student's saved year to decide which planner year to preview
-
-## Academic Roadmap Card
-
-The homepage includes an Academic Roadmap preview that:
-
-- detects the current quarter from the current date
-- selects the matching planner year based on the signed-in student's year
-- defaults to `year1` if the user is not signed in
-- shows the first 3 courses in that quarter
-- shows a placeholder if there are no planned courses
-- falls back to guest planner data when the user is working locally
-
-## Stack
+## Tech Stack
 
 ### Frontend
 
@@ -56,6 +37,7 @@ The homepage includes an Academic Roadmap preview that:
 - React Router
 - `@dnd-kit/core`
 - jsPDF
+- Headless UI
 
 ### Backend
 
@@ -63,44 +45,8 @@ The homepage includes an Academic Roadmap preview that:
 - Express
 - Sequelize
 - PostgreSQL
-- JWT authentication with `HttpOnly` cookies
-
-## Security Notes
-
-The backend currently includes a few basic hardening measures:
-
-- JWT session cookie stored as `HttpOnly`
-- `helmet` for common HTTP security headers
-- auth route rate limiting on login and signup
-- cookie-based authenticated planner routes
-- password hashing with `bcryptjs`
-
-Current limitations:
-
-- development uses Sequelize model sync in non-production mode
-- database SSL is enabled, but certificate verification should still be reviewed for production deployment
-- there is no full CSRF protection layer yet
-
-## API Surface
-
-### Auth
-
-- `POST /api/auth/signup`
-- `POST /api/auth/login`
-- `GET /api/auth/me`
-- `POST /api/auth/logout`
-
-### Planners
-
-- `GET /api/planners`
-- `POST /api/planners`
-- `GET /api/planners/:id`
-- `PUT /api/planners/:id`
-- `DELETE /api/planners/:id`
-
-### Courses
-
-- `GET /api/courses`
+- JWT auth with `HttpOnly` cookies
+- Nodemailer
 
 ## Project Structure
 
@@ -111,82 +57,112 @@ University Degree Planner/
 |   |-- src/
 |   |   |-- api/
 |   |   |-- components/
+|   |   |-- data/
+|   |   |-- dnd/
 |   |   |-- features/
 |   |   |-- hooks/
 |   |   |-- pages/
+|   |   |-- styles/
 |   |   `-- utils/
-|
 |-- backend/
-|   |-- migrations/
 |   |-- src/
 |   |   |-- config/
 |   |   |-- controller/
+|   |   |-- data/
 |   |   |-- middlewares/
 |   |   |-- models/
 |   |   |-- route/
-|   |   `-- scripts/
-|
+|   |   |-- scripts/
+|   |   `-- utils/
+|-- package.json
 `-- README.md
 ```
 
-## Local Development
+## How It Works
+
+### Guest Mode
+
+- Anyone can open the planner immediately
+- Plans are saved in browser `localStorage`
+- The homepage roadmap preview can fall back to guest planner data
+
+### Account Mode
+
+- Users can sign up, log in, and save multiple plans
+- Planner data is tied to the authenticated user
+- The homepage roadmap preview uses the signed-in student's year to choose which planner year to preview
+
+## Local Setup
 
 ### 1. Install dependencies
-
-Install root dependencies if needed:
-
-```bash
-npm install
-```
-
-Install frontend dependencies:
 
 ```bash
 cd frontend
 npm install
 ```
 
-Install backend dependencies:
-
 ```bash
 cd backend
 npm install
 ```
 
-### 2. Configure environment variables
+### 2. Create frontend env
 
-Frontend environment files:
-
-- `frontend/.env.development`
-- `frontend/.env.production`
-
-Typical frontend variable:
+Use a Vite env file such as `frontend/.env.development`.
 
 ```bash
 VITE_API_BASE_URL=http://localhost:3000
+VITE_TURNSTILE_SITE_KEY=your_turnstile_site_key
 ```
 
-Backend environment files:
+### 3. Create backend env
 
-- `backend/.env`
-- `backend/.env.development`
+The backend loads:
 
-Typical backend development variables:
+- `backend/.env.development` when `NODE_ENV` is not `production`
+- `backend/.env` in production
+
+Example development config:
 
 ```bash
 NODE_ENV=development
 PORT=3000
+APP_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+TRUST_PROXY=true
+
+DB_HOST=localhost
+DB_PORT=5432
 DB_NAME=postgres
 DB_USER=postgres
 DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
-DATABASE_URL=postgres://username:password@localhost:5432/postgres
-SECRET_KEY=your_secret
-JWT_SECRET=your_jwt_secret
+DATABASE_URL=postgres://postgres:your_password@localhost:5432/postgres
+DB_SSL=false
+DB_SSL_REJECT_UNAUTHORIZED=false
+
+SECRET_KEY=replace_me
+JWT_SECRET=replace_me
+TURNSTILE_SECRET_KEY=your_turnstile_secret_key
+
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_USER=your_email_user
+EMAIL_PASS=your_email_password
+CONTACT_RECEIVER=your_email@example.com
+
+ALLOW_DB_TEST_ROUTE=false
+ALLOW_SEQUELIZE_SYNC=false
 ```
 
-### 3. Start the backend
+### 4. Seed course data
+
+```bash
+cd backend
+npm run seed:dev
+```
+
+### 5. Start the backend
 
 ```bash
 cd backend
@@ -199,7 +175,7 @@ Backend default URL:
 http://localhost:3000
 ```
 
-### 4. Start the frontend
+### 6. Start the frontend
 
 ```bash
 cd frontend
@@ -212,7 +188,7 @@ Frontend default URL:
 http://localhost:5173
 ```
 
-## Common Scripts
+## Scripts
 
 ### Frontend
 
@@ -220,6 +196,7 @@ http://localhost:5173
 npm run dev
 npm run build
 npm run preview
+npm run lint
 ```
 
 ### Backend
@@ -228,15 +205,43 @@ npm run preview
 npm run dev
 npm run start
 npm run seed:dev
+npm run poll:offerings
 ```
+
+## Main API Routes
+
+### Auth
+
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
+
+### Planner
+
+- `GET /api/planners`
+- `POST /api/planners`
+- `GET /api/planners/:id`
+- `PUT /api/planners/:id`
+- `DELETE /api/planners/:id`
+
+### Other
+
+- `GET /api/courses`
+- `POST /api/contact`
+- `GET /health`
 
 ## Notes
 
-- The frontend caches course data to reduce repeated catalog fetches
-- Public course browsing does not require login
-- Planner routes require authentication
-- PDF export is generated client-side
-- In non-production mode, the backend currently runs `sequelize.sync({ alter: true })`
+- Planner PDF export is generated on the frontend
+- Auth uses cookie-based sessions with JWTs in `HttpOnly` cookies
+- Login and signup are rate-limited
+- Contact and auth forms use Cloudflare Turnstile
+- Password reset links are emailed from the backend and point to the frontend reset page
+- In development, Sequelize sync only runs when `ALLOW_SEQUELIZE_SYNC=true`
+- The root `package.json` is not the main app entry point; day-to-day work happens inside `frontend/` and `backend/`
 
 ## Contributors
 
