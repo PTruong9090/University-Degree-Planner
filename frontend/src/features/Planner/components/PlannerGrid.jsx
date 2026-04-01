@@ -18,12 +18,12 @@ export const PlannerGrid = forwardRef(({ activeYearIndex, plan, planName, setAct
         const pdf = new jsPDF("l", "mm", "a4");
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 10;
-        const topAreaHeight = 20;
+        const margin = 7;
+        const topAreaHeight = 12;
         const columns = 4;
         const rows = 4;
-        const gutterX = 5;
-        const gutterY = 5;
+        const gutterX = 3;
+        const gutterY = 3;
         const gridTop = margin + topAreaHeight;
         const cardWidth = (pageWidth - (margin * 2) - (gutterX * (columns - 1))) / columns;
         const cardHeight = (pageHeight - gridTop - margin - (gutterY * (rows - 1))) / rows;
@@ -31,22 +31,33 @@ export const PlannerGrid = forwardRef(({ activeYearIndex, plan, planName, setAct
             0,
             ...Object.values(plan).flatMap((year) => quarterKeys.map((quarterKey) => year[quarterKey].length))
         );
-        const contentStartOffset = 11;
-        const availableCourseHeight = cardHeight - contentStartOffset - 4;
-        const lineHeight = Math.max(2.3, Math.min(4, availableCourseHeight / Math.max(1, maxCoursesInQuarter || 1)));
-        const courseFontSize = Math.max(4.5, Math.min(7.5, lineHeight * 1.75));
+        const headerBandHeight = 6;
+        const headerContentHeight = 7;
+        const contentTopOffset = headerBandHeight + headerContentHeight + 2.5;
+        const contentBottomPadding = 2.5;
+        const availableCourseHeight = cardHeight - contentTopOffset - contentBottomPadding;
+        const courseColumns = maxCoursesInQuarter > 12 ? 2 : 1;
+        const rowsPerColumn = Math.max(1, Math.ceil(maxCoursesInQuarter / courseColumns));
+        const lineHeight = Math.max(1.8, Math.min(3, availableCourseHeight / rowsPerColumn));
+        const courseFontSize = Math.max(3.9, Math.min(6.1, lineHeight * 1.9));
+
+        const getUnitValue = (units) => {
+            const match = String(Array.isArray(units) ? units.join(' ') : units ?? '').match(/\d+/);
+            return match ? Number(match[0]) : 0;
+        };
 
         pdf.setFillColor(249, 244, 237);
         pdf.rect(0, 0, pageWidth, pageHeight, "F");
 
         pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(16);
+        pdf.setFontSize(15);
         pdf.setTextColor(47, 52, 65);
-        pdf.text(planName || "4-Year Plan", margin, 14);
+        pdf.text(planName || "4-Year Plan", margin, 9);
 
         pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(8);
+        pdf.setFontSize(7);
         pdf.setTextColor(103, 112, 125);
+        pdf.text("Academic roadmap", margin, 13);
 
         Object.keys(plan).forEach((yearKey, yearIndex) => {
             quarterKeys.forEach((quarterKey, quarterIndex) => {
@@ -54,50 +65,53 @@ export const PlannerGrid = forwardRef(({ activeYearIndex, plan, planName, setAct
                 const y = gridTop + (yearIndex * (cardHeight + gutterY));
                 const courseIDs = plan[yearKey][quarterKey]
                     .filter((courseID) => Boolean(courseMap[courseID]));
+                const totalUnits = courseIDs.reduce((sum, courseID) => {
+                    return sum + getUnitValue(courseMap[courseID]?.units);
+                }, 0);
+                const columnWidth = (cardWidth - 6 - ((courseColumns - 1) * 2)) / courseColumns;
 
                 pdf.setDrawColor(217, 206, 195);
                 pdf.setFillColor(255, 250, 245);
-                pdf.roundedRect(x, y, cardWidth, cardHeight, 2, 2, "FD");
+                pdf.roundedRect(x, y, cardWidth, cardHeight, 1.8, 1.8, "FD");
 
                 pdf.setFillColor(219, 229, 234);
-                pdf.roundedRect(x + 2, y + 2, cardWidth - 4, 7, 1.5, 1.5, "F");
+                pdf.roundedRect(x + 2, y + 2, cardWidth - 4, headerBandHeight, 1.2, 1.2, "F");
 
                 pdf.setFont("helvetica", "bold");
-                pdf.setFontSize(6.5);
+                pdf.setFontSize(5.8);
                 pdf.setTextColor(111, 133, 147);
-                pdf.text(yearNames[yearIndex], x + 4, y + 6.5);
+                pdf.text(yearNames[yearIndex], x + 3.2, y + 5.7);
 
                 pdf.setFont("helvetica", "bold");
-                pdf.setFontSize(8);
+                pdf.setFontSize(7.1);
                 pdf.setTextColor(47, 52, 65);
-                pdf.text(quarterKey.charAt(0).toUpperCase() + quarterKey.slice(1), x + 4, y + 13);
+                pdf.text(quarterKey.charAt(0).toUpperCase() + quarterKey.slice(1), x + 3.2, y + 10.8);
+
+                pdf.setFont("helvetica", "normal");
+                pdf.setFontSize(5.4);
+                pdf.setTextColor(103, 112, 125);
+                pdf.text(`${totalUnits} units`, x + cardWidth - 3.2, y + 10.8, { align: "right" });
 
                 if (courseIDs.length === 0) {
                     pdf.setFont("helvetica", "italic");
-                    pdf.setFontSize(6);
+                    pdf.setFontSize(5.3);
                     pdf.setTextColor(139, 144, 160);
-                    pdf.text("No courses", x + 4, y + 17);
+                    pdf.text("No courses", x + 3.2, y + 15.5);
                     return;
                 }
-
-                const maxVisibleCourses = Math.max(1, Math.floor(availableCourseHeight / lineHeight));
-                const visibleCourseIDs = courseIDs.slice(0, maxVisibleCourses);
 
                 pdf.setFont("helvetica", "normal");
                 pdf.setFontSize(courseFontSize);
                 pdf.setTextColor(47, 52, 65);
 
-                visibleCourseIDs.forEach((courseID, index) => {
-                    const lineY = y + contentStartOffset + (index * lineHeight);
-                    pdf.text(`- ${courseID}`, x + 4, lineY + 4);
-                });
+                courseIDs.forEach((courseID, index) => {
+                    const columnIndex = Math.floor(index / rowsPerColumn);
+                    const rowIndex = index % rowsPerColumn;
+                    const textX = x + 3.2 + (columnIndex * (columnWidth + 2));
+                    const lineY = y + contentTopOffset + (rowIndex * lineHeight);
 
-                if (courseIDs.length > maxVisibleCourses) {
-                    pdf.setFont("helvetica", "italic");
-                    pdf.setFontSize(5);
-                    pdf.setTextColor(103, 112, 125);
-                    pdf.text(`+${courseIDs.length - maxVisibleCourses} more`, x + 4, y + cardHeight - 2.5);
-                }
+                    pdf.text(courseID, textX, lineY);
+                });
             });
         });
 
@@ -116,7 +130,7 @@ export const PlannerGrid = forwardRef(({ activeYearIndex, plan, planName, setAct
                         <button
                             key={label}
                             onClick={() => setActiveYearIndex(index)}
-                            className={`rounded-2xl px-3 py-2 text-sm font-semibold transition-colors ${
+                            className={`flex items-center justify-center rounded-2xl px-3 py-2 text-center text-sm font-semibold transition-colors ${
                                 activeYearIndex === index
                                     ? 'bg-[var(--accent-soft)] text-[var(--text)]'
                                     : 'bg-[var(--surface-soft)] text-[var(--muted)] hover:bg-[var(--surface-muted)]'
