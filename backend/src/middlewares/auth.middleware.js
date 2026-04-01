@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { ENV } from '../config/env.js';
 
 export const requireAuth = (req, res, next) => {
     try {
@@ -11,7 +12,14 @@ export const requireAuth = (req, res, next) => {
             })
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || process.env.SECRET_KEY)
+        if (!ENV.JWT_SECRET) {
+            return res.status(500).json({
+                status: 'Error',
+                message: 'Authentication is not configured correctly'
+            })
+        }
+
+        const decoded = jwt.verify(token, ENV.JWT_SECRET)
 
         req.user = {
             id: decoded.id,

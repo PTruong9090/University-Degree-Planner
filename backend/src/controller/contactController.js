@@ -1,5 +1,5 @@
-import express from 'express'
-import { transporter } from '../config/mailer.js'
+import { isMailerConfigured, transporter } from '../config/mailer.js'
+import { ENV } from '../config/env.js'
 import { verifyTurnstile } from '../utils/verifyTurnstile.js'
 
 export const sendEmail = async (req, res) => {
@@ -22,10 +22,14 @@ export const sendEmail = async (req, res) => {
         return res.status(400).json({ error: 'Message is required' })
     }
 
+    if (!isMailerConfigured || !ENV.CONTACT_RECEIVER) {
+        return res.status(503).json({ error: 'Contact email is not configured' })
+    }
+
     try {
         await transporter.sendMail({
             from: 'PlanBear <noreply@planbear.io>',
-            to: process.env.CONTACT_RECEIVER,
+            to: ENV.CONTACT_RECEIVER,
             replyTo: email || undefined,
             subject: 'New Contact Form Submission',
             text: `

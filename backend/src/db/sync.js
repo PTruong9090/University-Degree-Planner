@@ -1,4 +1,4 @@
-import sequelize from "./sequelize.js";
+import sequelize from "../config/database.js";
 import "../models/index.js";
 
 await sequelize.authenticate()

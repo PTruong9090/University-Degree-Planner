@@ -1,18 +1,21 @@
-import bcrypt from 'bcryptjs'; // encrypts passwords so if database hypothetically gets breached it would be encrypted W security
-import jwt from 'jsonwebtoken'; // saves a token so we dont need to go through the database for every call ICL i dont understand this code much... 
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js'
 import { Op } from 'sequelize';
 import { verifyTurnstile } from '../utils/verifyTurnstile.js';
 import crypto from "crypto";
 import PasswordResetToken from '../models/passwordReset.model.js';
-import { transporter } from '../config/mailer.js'
+import { isMailerConfigured, transporter } from '../config/mailer.js'
+import sequelize from '../config/database.js';
+import { ENV } from '../config/env.js';
 
 
 const COOKIE_OPTIONS = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: ENV.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 24 * 60 * 60 * 1000,
+    ...(ENV.COOKIE_DOMAIN ? { domain: ENV.COOKIE_DOMAIN } : {}),
 };
 
 function generateResetToken() {
@@ -41,8 +44,15 @@ export const signup = async (req, res, next) => {
             });
         }
 
-        const normalizedEmail = email.toLowerCase()
-        const normalizedUsername = username.toLowerCase()
+        if (password.length < 8) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Password must be at least 8 characters long'
+            });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase()
+        const normalizedUsername = username.trim().toLowerCase()
 
         const isHuman = await verifyTurnstile(turnstileToken, req.ip);
         if (!isHuman.success) {
@@ -63,8 +73,8 @@ export const signup = async (req, res, next) => {
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [
-                { normalizedEmail },
-                { normalizedUsername }
+                { email: normalizedEmail },
+                { username: normalizedUsername }
                 ]
             }
             });
@@ -128,7 +138,7 @@ export const login = async (req, res, next) => {
             });
         }
 
-        const normalizedUsername = username.toLowerCase();
+        const normalizedUsername = username.trim().toLowerCase();
 
         const isHuman = await verifyTurnstile(turnstileToken, req.ip);
         if (!isHuman.success) {
@@ -139,7 +149,7 @@ export const login = async (req, res, next) => {
         }
 
         // Find user
-        const user = await User.findOne({ where: { normalizedUsername } });
+        const user = await User.findOne({ where: { username: normalizedUsername } });
 
 
         if (!user) {
@@ -160,9 +170,16 @@ export const login = async (req, res, next) => {
         }
 
         // Generate JWT token
+        if (!ENV.JWT_SECRET) {
+            return res.status(500).json({
+                status: 'Error',
+                message: 'Authentication is not configured correctly'
+            });
+        }
+
         const token = jwt.sign(
             { id: user.id, username: user.username },
-            process.env.JWT_SECRET || process.env.SECRET_KEY, 
+            ENV.JWT_SECRET, 
             { expiresIn: '24h' }
         );
 
@@ -228,7 +245,15 @@ export const logout = async (req, res) => {
 export const requestPasswordReset = async (req, res) => {
     try {
         const { email } = req.body
-        const normalizedEmail = email.toLowerCase()
+
+        if (!email) {
+            return res.status(400).json({
+                status: 'Error',
+                message: 'Email is required'
+            })
+        }
+
+        const normalizedEmail = email.trim().toLowerCase()
 
         // Verify email
         const user = await User.findOne({ where: { email: normalizedEmail } })
@@ -236,6 +261,13 @@ export const requestPasswordReset = async (req, res) => {
         if (!user) {
             return res.json({
                 message: "If that email exists, a reset link has been sent"
+            })
+        }
+
+        if (!isMailerConfigured) {
+            return res.status(503).json({
+                status: 'Error',
+                message: 'Password reset email is not configured'
             })
         }
 
@@ -269,7 +301,7 @@ export const requestPasswordReset = async (req, res) => {
             userAgent: req.headers['user-agent']
         })
 
-        const resetURL = `https://planbear.io/reset-password?token=${resetToken}`
+        const resetURL = `${ENV.FRONTEND_URL.replace(/\/$/, '')}/reset-password?token=${resetToken}`
 
         await transporter.sendMail({
             from: 'PlanBear <noreply@planbear.io>',
@@ -297,8 +329,26 @@ export const requestPasswordReset = async (req, res) => {
 
 
 export const resetPassword = async (req, res) => {
+    let transaction
+
     try {
+
         const { token, password } = req.body
+
+        if (!token || !password) {
+            return res.status(400).json({
+                message: "Token and password are required"
+            })
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({
+                message: "Password must be at least 8 characters long"
+            })
+        }
+
+        transaction = await sequelize.transaction()
+
 
         const hashedToken = crypto
             .createHash('sha256')
@@ -313,39 +363,58 @@ export const resetPassword = async (req, res) => {
                 expiresAt: {
                     [Op.gt]: new Date(),
                 }
-            }
+            },
+            transaction,
+            lock: transaction.LOCK.UPDATE
         })
 
         if (!tokenRequest) {
+            await transaction.rollback()
             return res.status(400).json({
                 message: "Invalid or expired token"
             })
         }
 
-        await PasswordResetToken.update(
+        // Use token
+        const [updatedCount] = await PasswordResetToken.update(
             { usedAt: new Date() },
             {
                 where: {
                     id: tokenRequest.id,
-                }
+                    usedAt: null,
+                    revokedAt: null,
+                },
+                transaction,
             }
-        
         )
+
+        // Extra safety for race conditions
+        if (updatedCount !== 1) {
+            await transaction.rollback()
+            return res.status(500).json({
+                message: "Failed to use token"
+            })
+        }
 
         await User.update(
             { password: await bcrypt.hash(password, 10) },
             {
                 where: {
                     id: tokenRequest.userid,
-                }
+                },
+                transaction,
             }
         )
 
+        await transaction.commit()
         return res.json({
             message: "Password reset successful"
         })
         
     } catch (error) {
+        if (transaction) {
+            await transaction.rollback()
+        }
         console.error('Password reset error:', error);
         res.status(500).json({
             status: "Error",
